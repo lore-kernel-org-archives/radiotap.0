@@ -1,10 +1,9 @@
-From: "dan blah" <dan.blah-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
 Subject: test
-Date: Tue, 16 Jan 2007 15:53:19 -0600
-Message-ID: <a210c29f0701161353y4d498123xc86703e8526e74c5@mail.gmail.com>
+Date: Tue, 6 Feb 2007 16:02:52 -0600
+Message-ID: <20070206220252.GC31900@che.ojctech.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
@@ -18,7 +17,10 @@ List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
 To: radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-test
+Test.
+
+Dave
 
 -- 
-Daniel
+David Young             OJC Technologies
+dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933
