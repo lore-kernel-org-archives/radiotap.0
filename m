@@ -1,13 +1,14 @@
-From: Pavel Roskin <proski-mXXj517/zsQ@public.gmane.org>
-Subject: Re: RFC: radiotap discrepancy in Linux vs OpenBSD
-Date: Mon, 26 Mar 2007 18:45:49 -0400
-Message-ID: <1174949149.28132.49.camel__7064.59452999315$1216696504$gmane$org@dv>
-References: <20070325232416.64xwkc0kw04oosg0@webmail.spamcop.net>
-	 <20070326033729.GG31621@che.ojctech.com>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Subject: PLCP header information (was: Re: [PATCH] zd1211rw-mac80211: Fix
+ for monitor mode bug)
+Date: Wed, 28 Mar 2007 12:18:42 +0200
+Message-ID: <1175077122.5151.43.camel__21651.673972565$1216696505$gmane$org@johannes.berg>
+References: <20070325231817.9C5887B409F@zog.reactivated.net>
+	 <200703262239.07013.mb@bu3sch.de> <1175073595.5151.28.camel@johannes.berg>
+	 <200703281155.52208.mb@bu3sch.de>
 Mime-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-In-Reply-To: <20070326033729.GG31621-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-oX1+TeLDf4ofHViDVkXa"
+In-Reply-To: <200703281155.52208.mb-fseUSCV1ubazQB+pC5nmwQ@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -17,55 +18,62 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
-Cc: linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Scott Raynel <scottraynel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
+To: Michael Buesch <mb-fseUSCV1ubazQB+pC5nmwQ@public.gmane.org>
+Cc: Andy Green <andy-/Zus8d0mwwtBDgjK7y7TUQ@public.gmane.org>, Jiri Benc <jbenc-AlSwsSmVLrQ@public.gmane.org>, Daniel Drake <dsd-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>, linville-2XuSBdqkA4R54TAoqtyWWQ@public.gmane.org, linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kune-hUSrv6EASfkEnNRfnnE9gw@public.gmane.org, radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-On Sun, 2007-03-25 at 22:37 -0500, David Young wrote:
+--=-oX1+TeLDf4ofHViDVkXa
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-> > One is found in the current wireless-2.6.git:
-> > 
-> >         IEEE80211_RADIOTAP_RX_FLAGS = 14,
-> >         IEEE80211_RADIOTAP_TX_FLAGS = 15,
-> >         IEEE80211_RADIOTAP_RTS_RETRIES = 16,
-> >         IEEE80211_RADIOTAP_DATA_RETRIES = 17,
-> 
-> These fields are slated to become part of the standard, I just haven't got
-> around to updating the manual page, yet.  I have time to do that tonight.
+On Wed, 2007-03-28 at 11:55 +0200, Michael Buesch wrote:
 
-OK.  I was wrong to assume that non-standard fields were introduced on
-the Linux side.
+> I think we need at least two "stages" for this config.
+> One that says: Get all packets with bad FCS
+> And one that says: Get all packets with bad FCS and everything else
+> that looks like a signal, which is probably your microwave oven, though.
 
-> > Another set of the flags can be found in CVS OpenBSD:
-> > 
-> >         IEEE80211_RADIOTAP_FCS = 14,
-> >         IEEE80211_RADIOTAP_HWQUEUE = 15,
-> >         IEEE80211_RADIOTAP_RSSI = 16,
-> 
-> These fields are not part of the standard, and they will not become part
-> of the standard with these numbers.  This is the first time I have ever
-> heard of HWQUEUE and RSSI, actually.  What are they for?
+I agree.
 
-IEEE80211_RADIOTAP_HWQUEUE specifies the hardware queue.  This is used
-in the drivers for Atheros and Intel ipw3945 to report transmitted
-frames to the userspace.
+> So, when these packets are passed up the stack the PLCP is stripped.
+> I think we should make the stack aware of the PLCP (and add an RX flag
+> PLCP_available) so that it is able to check the PLCP checksum.
+> Otherwise the only way to detect your microwave oven from the packet
+> stream would be failed FCS. Which would also most likely failed then, but
+> I think it's probably useful for the user to see the PLCP, too, on
+> a mon interface.
+>=20
+> So we need RX flags "PLCP_available" and "Not_checksummed".
 
-In case of Atheros, the value would always be 0, but the way it's
-written (HAL_TX_QUEUE_ID_DATA_MIN), I assume the value is supposed to be
-hardware specific rather than a number from the 802.11e standard.  Other
-values in the same enum are 6, 7, 8 and 9.
+Also "PLCP checksummed" or such. And we need to think about how we
+represent the PLCP in radiotap.
 
-In case of the ipw3945 driver, it's always 0, but it's used as an index
-in an array of size 4, so at least it a number from 0 to 3.
+The PLCP header has different lengths depending on the type of PHY used,
+for Clause 17 (A) it is 40 bits, for the others (I think) it is 48 bits.
+For N I think the whole notion was changed a bit with the stuff being
+defined in terms of microseconds and not bits.
 
-The description in ieee80211_radiotap.h is: "A specific hardware queue
-(used by WME)" and it's one 8-bit integer.
+It'd be useful to make this part of radiotap but it'd need a length byte
+too. I propose always padding it to a multiple of 8 bytes with a length
+byte as the first byte.
 
-IEEE80211_RADIOTAP_HWQUEUE is described as "A relative Received Signal
-Strength Index" and it's two 8-bit integers, RSSI and max RSSI.  It's
-used by many drivers and includes uncalibrated signal data.  It looks
-like noise data is not included.
+For mac80211, we'd add a new item s16 plcp offset that tells us where in
+the radiotap header that the driver generated the plcp header can be
+found so that in the RX path we don't need to parse the radiotap header
+to find the PLCP if necessary.
 
--- 
-Regards,
-Pavel Roskin
+johannes
+
+--=-oX1+TeLDf4ofHViDVkXa
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Comment: Johannes Berg (powerbook)
+
+iD8DBQBGCkEC/ETPhpq3jKURArGoAKCnmjXZCvmgDh8Kqt1TCqSg3BFV+wCgtTl/
++spbR8U09UWATK1VjxvWMRI=
+=Lh8g
+-----END PGP SIGNATURE-----
+
+--=-oX1+TeLDf4ofHViDVkXa--
