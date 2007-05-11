@@ -1,12 +1,12 @@
-From: Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
+From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
 Subject: Re: BPF code generation for radiotap
-Date: Fri, 11 May 2007 16:49:56 -0700
-Message-ID: <46450124.1010809@alum.mit.edu>
-References: <20070511231511.GB20770@che.ojctech.com>
+Date: Fri, 11 May 2007 18:52:04 -0500
+Message-ID: <20070511235204.GC20770@che.ojctech.com>
+References: <20070511231511.GB20770@che.ojctech.com> <46450124.1010809@alum.mit.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-In-Reply-To: <20070511231511.GB20770-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <46450124.1010809-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -19,13 +19,19 @@ List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
 To: radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-David Young wrote:
-> Can I help someone with BPF know-how to write a radiotap code generator?
-> It would be great if we could use BPF to filter out packets with, say,
-> an RSSI below a certain threshold.
+On Fri, May 11, 2007 at 04:49:56PM -0700, Guy Harris wrote:
+> David Young wrote:
+> >Can I help someone with BPF know-how to write a radiotap code generator?
+> >It would be great if we could use BPF to filter out packets with, say,
+> >an RSSI below a certain threshold.
+> 
+> That will be possible only if the RSSI can be found without a loop, or 
+> if you're willing to have all the filtering done in userland.  The 
 
-That will be possible only if the RSSI can be found without a loop, or 
-if you're willing to have all the filtering done in userland.  The 
-kernel BPF interpreter doesn't support backwards branches; the userland 
-one does, to support chasing IPv6 protocol headers, but backward 
-branches completely screw up the optimizer (so it gets turned off).
+Right now, all radiotap fields can be found without a loop.
+
+Dave
+
+-- 
+David Young             OJC Technologies
+dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933
