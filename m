@@ -1,12 +1,12 @@
 From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: BPF code generation for radiotap
-Date: Fri, 11 May 2007 20:53:45 -0500
-Message-ID: <20070512015344.GD20770@che.ojctech.com>
-References: <20070511231511.GB20770@che.ojctech.com> <46450124.1010809@alum.mit.edu> <20070511235204.GC20770@che.ojctech.com> <46451D83.2070003@alum.mit.edu>
+Subject: Re: WiMAX extensions
+Date: Sat, 12 May 2007 22:32:18 -0500
+Message-ID: <20070513033218.GL20770@che.ojctech.com>
+References: <50721.65.74.1.247.1178691838.squirrel@webmail.cs.umd.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <46451D83.2070003-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
+In-Reply-To: <50721.65.74.1.247.1178691838.squirrel-2RFepEojUI1Vf4MZnIYnAze48wsgrGvP@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -16,24 +16,20 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org
+To: radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-On Fri, May 11, 2007 at 06:50:59PM -0700, Guy Harris wrote:
-> David Young wrote:
-> 
-> >Right now, all radiotap fields can be found without a loop.
-> 
-> I.e., can be found with a completely unrolled loop.
+On Wed, May 09, 2007 at 02:23:58AM -0400, Charles Clancy wrote:
+> What does the list think about adding WiMAX (IEEE 802.16) fields to the
+> Radiotap header?  While the name is relatively generic, implying any sort
+> of radio, so far it's very WiFi-centric.
 
-Correct.
+Sounds ok to me.
 
-*snip snip*
-> or the 802.11 header in full generality (some frames have 
-> 4 MAC addresses - those are frames being sent from one access point to 
-> another access point, right?).
+> I can put together a list of fields that it would be good to define, if
+> the list thinks this is an appropriate use for Radiotap.
 
-Right.
+Yes, please.
 
 Dave
 
