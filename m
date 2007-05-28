@@ -1,13 +1,13 @@
 From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Subject: Re: WiMAX extensions
-Date: Mon, 28 May 2007 20:00:00 +0200
-Message-ID: <1180375200.3604.73.camel@johannes.berg>
+Date: Mon, 28 May 2007 20:01:16 +0200
+Message-ID: <1180375276.3604.75.camel@johannes.berg>
 References: <50721.65.74.1.247.1178691838.squirrel@webmail.cs.umd.edu>
 	 <20070513033218.GL20770@che.ojctech.com> <465B128D.9070904@cs.umd.edu>
-	 <465B144F.2070403@alum.mit.edu>
+	 <465B144F.2070403@alum.mit.edu>  <465B184C.1000306@cs.umd.edu>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-DkfzH5Kt4xh3msNziARF"
-In-Reply-To: <465B144F.2070403-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-jxeO4u+9ygdtssFcSs/p"
+In-Reply-To: <465B184C.1000306-VX+DGZyGJwM3uPMLIKxrzw@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -17,42 +17,34 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
+To: Charles Clancy <clancy-VX+DGZyGJwM3uPMLIKxrzw@public.gmane.org>
 Cc: radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Id: radiotap@radiotap.org
 
---=-DkfzH5Kt4xh3msNziARF
+--=-jxeO4u+9ygdtssFcSs/p
 Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2007-05-28 at 10:41 -0700, Guy Harris wrote:
-> Charles Clancy wrote:
->=20
-> > There would certainly be overlap with 802.11.  However most=20
-> > implementations I've seen seem to prefix the fields with IEEE80211_, so=
-=20
-> > I'd think these would all need to be replicated for 802.16.  I'm not=20
-> > sure the best way to handle it.
->=20
-> Replicated, or renamed, with the old names kept around for source=20
-> compatibility - or with IEEE80211_ and IEEE80216_ names for the same valu=
-e?
+On Mon, 2007-05-28 at 13:58 -0400, Charles Clancy wrote:
 
-I'd rather see them renamed to something that doesn't carry the 802
-number, more use cases might come up.
+> Is Radiotap meant to be used on outgoing packets as well?  If so, there=20
+> are a variety of outgoing packet fields that might also be useful.
+
+I think it wasn't meant to originally, but in Linux we are going to do
+that.
 
 johannes
 
---=-DkfzH5Kt4xh3msNziARF
+--=-jxeO4u+9ygdtssFcSs/p
 Content-Type: application/pgp-signature; name=signature.asc
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 Comment: Johannes Berg (powerbook)
 
-iD8DBQBGWxig/ETPhpq3jKURAp3BAJ0eVmD8+Guu3nCwW29bGpEUZi2yxwCfe9Yb
-FH9WwIRo3hEbEMMW9vAO8tI=
-=Mm3c
+iD8DBQBGWxjs/ETPhpq3jKURAkHaAJ48ymxGWUwMhwCxQbMxOzc3BDFHkwCgrsYI
+t9CHDnhUrCkl96WC5MJjKgE=
+=UhLj
 -----END PGP SIGNATURE-----
 
---=-DkfzH5Kt4xh3msNziARF--
+--=-jxeO4u+9ygdtssFcSs/p--
