@@ -1,9 +1,12 @@
-From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: radiotap for TX
-Date: Wed, 20 Jun 2007 23:44:13 +0200
-Message-ID: <1182375853.3714.103.camel__15631.6254557625$1216696514$gmane$org@johannes.berg>
+From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: radiotap for TX
+Date: Thu, 21 Jun 2007 12:55:41 -0500
+Message-ID: <20070621175541.GQ19613__45245.7381914884$1216696515$gmane$org@che.ojctech.com>
+References: <1182375853.3714.103.camel@johannes.berg>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-VUw67X+5RWkBi2VBNlrR"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1182375853.3714.103.camel-YfaajirXv214zXjbi5bjpg@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -13,63 +16,89 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org
-Cc: linux-wireless <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Andy Green <andy-/Zus8d0mwwtBDgjK7y7TUQ@public.gmane.org>
+To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Cc: radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org, linux-wireless <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Andy Green <andy-/Zus8d0mwwtBDgjK7y7TUQ@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
---=-VUw67X+5RWkBi2VBNlrR
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+On Wed, Jun 20, 2007 at 11:44:13PM +0200, Johannes Berg wrote:
+> Hey,
+> 
+> I'm currently working on using radiotap for some stuff in the Linux
+> wireless stack (mac80211), and ran across the case where we want
+> userspace to be able to send the frame to a high-priority queue. I'm
+> thinking this should probably be in radiotap.
+> 
+> There are also other things that need to be controlled via radiotap,
+> here's what I can propose so far:
+> 
+>  * IEEE80211_RADIOTAP_SEND_AC		u8		access category
 
-Hey,
+The MAC access parameters are an important parameter to control, but
+I think that if the control is self-contained, then people will use it
+in a predictable and consistent way.  As is, you have to interpret the
+access category by reference to the current MAC settings for the AC
+(AIFS, CWmin, CWmax, et cetera), which can change.
 
-I'm currently working on using radiotap for some stuff in the Linux
-wireless stack (mac80211), and ran across the case where we want
-userspace to be able to send the frame to a high-priority queue. I'm
-thinking this should probably be in radiotap.
+I propose that we add a field such as this,
 
-There are also other things that need to be controlled via radiotap,
-here's what I can propose so far:
+	IEEE80211_RADIOTAP_TX_WMEPARAM	u32	WME access parameters
 
- * IEEE80211_RADIOTAP_SEND_AC		u8		access category
- *
- *	Indicates which access category to send the frame in, 0-3.
- *
- * IEEE80211_RADIOTAP_SEND_FLAGS	u8		flags
- *
-   IEEE80211_RADIOTAP_SEND_FLAG_ENCRYPT (1<<0)
-   /* encrypt with key for the station named in addr1 or default key */
+with three 8-bit fields for AIFS, log(CWmin), and log(CWmax), and the
+remaining 8 bits reserved and set to 0.
 
-   IEEE80211_RADIOTAP_SEND_FLAG_AUTO_RTSCTS (1<<1)
-   /* automatically decide whether rts/cts are used, if unset then
-    * rts/cts are used depending on IEEE80211_RADIOTAP_F_TX_{CTS,RTS} */
+This gives us the flexibility to use more MACs to the extent of their
+capabilities.  IIRC, one Realtek MAC lets us set the access parameters
+packet by packet, instead of category by category or queue by queue.
 
-   IEEE80211_RADIOTAP_SEND_FLAG_RATE_CONTROL (1<<2)
-   /* should rate control be applied to this algorithm? if not, take
-    * the value of IEEE80211_RADIOTAP_RATE or lowest rate */
+Some 802.11 MACs have different transmit priority queues, but the queues'
+access parameters are not adjustable.  For those MACs, we should provide
+for selecting the queue by number:
 
-   IEEE80211_RADIOTAP_SEND_FLAG_SEQNR (1<<3)
-   /* set if the sequence number in the packet shouldn't be changed,
-    * if not set then the packet is sequence numbered properly */
+	IEEE80211_RADIOTAP_TX_QNUM		u8		queue number
 
-So far that's all I would need, but some regular fields would also be
-used like I said above for example IEEE80211_RADIOTAP_F_TX_{CTS,RTS}. A
-good text on using radiotap for this purpose should probably be written,
-I think somebody other than Andy and me was working on something like
-this so we really should work together and define this properly.
+I think it's reasonable to say in the _TX_QNUM definition that the queue
+numbers do not necessarily have any relationship to queue priority level
+or access parameters.
 
-johannes
+>  *	Indicates which access category to send the frame in, 0-3.
+>  *
+>  * IEEE80211_RADIOTAP_SEND_FLAGS	u8		flags
+...
+>    IEEE80211_RADIOTAP_SEND_FLAG_SEQNR (1<<3)
+>    /* set if the sequence number in the packet shouldn't be changed,
+>     * if not set then the packet is sequence numbered properly */
 
---=-VUw67X+5RWkBi2VBNlrR
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Description: This is a digitally signed message part
+Let's re-use and augment IEEE80211_RADIOTAP_TX_FLAGS for transmission
+control.  For example, let the bits _F_TX_CTS/_F_TX_RTS indicate "use CTS"
+and "use RTS" when we transmit.  But see below.  Also, add _F_TX_SEQNR.
 
------BEGIN PGP SIGNATURE-----
-Comment: Johannes Berg (powerbook)
+>    IEEE80211_RADIOTAP_SEND_FLAG_ENCRYPT (1<<0)
+>    /* encrypt with key for the station named in addr1 or default key */
 
-iD8DBQBGeZ+t/ETPhpq3jKURAhcGAKCWu20gdaLLh+sD6EyK/qxC+3gzIQCcCEzw
-zwYr800yBk4dmZja3ZCaUGs=
-=JeA7
------END PGP SIGNATURE-----
+Let's re-use IEEE80211_RADIOTAP_FLAGS[IEEE80211_RADIOTAP_F_WEP] for this.
 
---=-VUw67X+5RWkBi2VBNlrR--
+>    IEEE80211_RADIOTAP_SEND_FLAG_AUTO_RTSCTS (1<<1)
+>    /* automatically decide whether rts/cts are used, if unset then
+>     * rts/cts are used depending on IEEE80211_RADIOTAP_F_TX_{CTS,RTS} */
+
+I believe implementors will have an easier time if you invert this:
+NOAUTO or (errr...) MANUAL.
+
+16-bit fields IEEE80211_RADIOTAP_RTS_THRESHOLD and
+IEEE80211_RADIOTAP_CTS_THRESHOLD may be better: if absent, autoselect.
+If present and equal to 0, always use RTS(CTS).  If present and greater
+than or equal to the maximum packet length, never use RTS(CTS).  We can
+likewise control fragmentation.
+
+>    IEEE80211_RADIOTAP_SEND_FLAG_RATE_CONTROL (1<<2)
+>    /* should rate control be applied to this algorithm? if not, take
+>     * the value of IEEE80211_RADIOTAP_RATE or lowest rate */
+
+Control this by the presence of the _RATE parameter.  If _RATE is absent,
+let the driver or NIC autoselect.
+
+Dave
+
+-- 
+David Young             OJC Technologies
+dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933 ext 24
