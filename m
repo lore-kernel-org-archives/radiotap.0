@@ -1,12 +1,12 @@
-From: Andy Green <andy-/Zus8d0mwwtBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: radiotap for TX
-Date: Thu, 21 Jun 2007 22:12:56 +0100
-Message-ID: <467AE9D8.2030602__48728.9385324859$1216696516$gmane$org@warmcat.com>
-References: <1182375853.3714.103.camel@johannes.berg> <467AE460.1070606@errno.com>
+From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: WiMAX extensions
+Date: Sun, 24 Jun 2007 00:28:17 -0500
+Message-ID: <20070624052817.GO19613@che.ojctech.com>
+References: <50721.65.74.1.247.1178691838.squirrel@webmail.cs.umd.edu> <20070513033218.GL20770@che.ojctech.com> <465B128D.9070904@cs.umd.edu> <465B144F.2070403@alum.mit.edu> <465B184C.1000306@cs.umd.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-In-Reply-To: <467AE460.1070606-zZXckVAlHaQAvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <465B184C.1000306-VX+DGZyGJwM3uPMLIKxrzw@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -16,37 +16,46 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: Sam Leffler <sam-zZXckVAlHaQAvxtiuMwx3w@public.gmane.org>
-Cc: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>, radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org, linux-wireless <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-Sam Leffler wrote:
+On Mon, May 28, 2007 at 01:58:36PM -0400, Charles Clancy wrote:
+> Guy Harris wrote:
+> >>There would certainly be overlap with 802.11.  However most 
+> >>implementations I've seen seem to prefix the fields with IEEE80211_, 
+> >>so I'd think these would all need to be replicated for 802.16.  I'm 
+> >>not sure the best way to handle it.
+> >
+> >Replicated, or renamed, with the old names kept around for source 
+> >compatibility - or with IEEE80211_ and IEEE80216_ names for the same value?
+> 
+> Ideally, I'd think renaming fields that apply to any wireless standard 
+> would be best, keeping around the old values for compatibility, of 
+> course.  Then there could be protocol-specific fields for each standard.
 
-> Note that using a monitor mode interface for transmit is a bad idea.  It
-> is likely you will encounter devices that disallow any packet transmit
-> when operating in monitor mode.  In practice this can be worked around
-> by using a non-monitor operating mode for the device (e.g. adhoc mode
-> w/o setting up beacons) but exporting this notion to user mode is bad
-> IMO.  In net80211 there is an adhoc-demo mode which is essentially adhoc
-> mode which was originally added for functionality found in old lucent
-> cards but more recently has been used for building applications that
-> want a "raw 802.11 device".
+I think that what you mean is, for the fields that WiMax and WiFi
+have in common, add a generic alias---e.g., IEEE80211_RADIOTAP_RATE =
+RADIOTAP_RATE, but do not assign new presence bits for common fields.
 
-Hi -
+That sounds ok to me.
 
-In mac80211 you can run multiple network interfaces off the one physical
-device, so you can have an associated WPA connection on one network
-interface and another logical "monitor mode" network interface up on the
-one physical device.  "Monitor mode" in this case can be the results of
-a promiscuous hardware RX that is filtered for the Managed mode logical
-interface ... this is AIUI.  So in that way "Monitor Mode" no longer
-means a single modal device setting, but really the delivery somehow of
-packets to a logical network interface that belongs to the physical device.
+> I think the following would be globally useful:
+> 
+> IEEE80211_RADIOTAP_TSFT
+> IEEE80211_RADIOTAP_RATE
+> IEEE80211_RADIOTAP_DB*
+> IEEE80211_RADIOTAP_ANTENNA
 
-Injecting down a "monitor mode interface" then only means to use a
-logical network interface that locally is configured to "Monitor Mode",
-it doesn't have the same definite implication for physical device
-configuration as before mac80211.  (Well.. AIUI).  So hopefully this
-objection may not apply.
+All of those fields have specific definitions.  Do they apply equally
+well to WiMax?
 
--Andy
+> IEEE80211_RADIOTAP_FLAGS (though you might need a general flag set and a 
+> protocol-specific flag set)
+
+Sure.  The flags have almost run out, though. :-)
+
+Dave
+
+-- 
+David Young             OJC Technologies
+dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933 ext 24
