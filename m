@@ -1,12 +1,12 @@
 From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Subject: Re: radiotap for TX
-Date: Mon, 25 Jun 2007 08:39:40 +0200
-Message-ID: <1182753581.21939.147.camel__27234.5889978626$1216696517$gmane$org@johannes.berg>
+Date: Mon, 25 Jun 2007 09:24:32 +0200
+Message-ID: <1182756272.21939.154.camel__17995.6462969587$1216696518$gmane$org@johannes.berg>
 References: <1182375853.3714.103.camel@johannes.berg>
-	 <20070621175541.GQ19613@che.ojctech.com>
+	 <467AE460.1070606@errno.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-JRbk5TE1C9pJrNLHDG5O"
-In-Reply-To: <20070621175541.GQ19613-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-/Vv/w5rJthMmZrzvDS+g"
+In-Reply-To: <467AE460.1070606-zZXckVAlHaQAvxtiuMwx3w@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -16,128 +16,76 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+To: Sam Leffler <sam-zZXckVAlHaQAvxtiuMwx3w@public.gmane.org>
 Cc: radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org, linux-wireless <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Andy Green <andy-/Zus8d0mwwtBDgjK7y7TUQ@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
---=-JRbk5TE1C9pJrNLHDG5O
+--=-/Vv/w5rJthMmZrzvDS+g
 Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2007-06-21 at 12:55 -0500, David Young wrote:
+On Thu, 2007-06-21 at 13:49 -0700, Sam Leffler wrote:
 
-> >  * IEEE80211_RADIOTAP_SEND_AC		u8		access category
+> This is the control state available on FreeBSD for doing raw 802.11=20
+> frame xmit (packets need not include all this; I've just provided the=20
+> most complete set of knobs):
 >=20
-> The MAC access parameters are an important parameter to control, but
-> I think that if the control is self-contained, then people will use it
-> in a predictable and consistent way.  As is, you have to interpret the
-> access category by reference to the current MAC settings for the AC
-> (AIFS, CWmin, CWmax, et cetera), which can change.
+>          uint8_t         ibp_flags;
+> #define IEEE80211_BPF_SHORTPRE  0x01    /* tx with short preamble */
+> #define IEEE80211_BPF_NOACK     0x02    /* tx with no ack */
+> #define IEEE80211_BPF_CRYPTO    0x04    /* tx with h/w encryption */
+> #define IEEE80211_BPF_FCS       0x10    /* frame incldues FCS */
+> #define IEEE80211_BPF_DATAPAD   0x20    /* frame includes data padding */
+> #define IEEE80211_BPF_RTS       0x40    /* tx with RTS/CTS */
+> #define IEEE80211_BPF_CTS       0x80    /* tx with CTS only */
+>          uint8_t         ibp_pri;        /* WME/WMM AC+tx antenna */
+>          uint8_t         ibp_try0;       /* series 1 try count */
+>          uint8_t         ibp_rate0;      /* series 1 IEEE tx rate */
+>          uint8_t         ibp_power;      /* tx power (device units) */
+>          uint8_t         ibp_ctsrate;    /* IEEE tx rate for CTS */
+>          uint8_t         ibp_try1;       /* series 2 try count */
+>          uint8_t         ibp_rate1;      /* series 2 IEEE tx rate */
+>          uint8_t         ibp_try2;       /* series 3 try count */
+>          uint8_t         ibp_rate2;      /* series 3 IEEE tx rate */
+>          uint8_t         ibp_try3;       /* series 4 try count */
+>          uint8_t         ibp_rate3;      /* series 4 IEEE tx rate */
 
-Good point. However, not all hardware allows setting these with each
-frame, the Broadcom hardware I work with most allows only setting up the
-parameters for four access categories and then using them by putting the
-frame into different DMA rings.
+Sounds simillar to what we're trying here though Dave had some good
+comments that equally well apply here. I expect I'll be posting a
+radiotap patch, maybe you can comment on that then? Even wrt. how well
+you could implement this, possibly even on top of those fields you have.
 
-> I propose that we add a field such as this,
->=20
-> 	IEEE80211_RADIOTAP_TX_WMEPARAM	u32	WME access parameters
->=20
-> with three 8-bit fields for AIFS, log(CWmin), and log(CWmax), and the
-> remaining 8 bits reserved and set to 0.
+> Note that using a monitor mode interface for transmit is a bad idea.  It=20
+> is likely you will encounter devices that disallow any packet transmit=20
+> when operating in monitor mode.  In practice this can be worked around=20
+> by using a non-monitor operating mode for the device (e.g. adhoc mode=20
+> w/o setting up beacons) but exporting this notion to user mode is bad=20
+> IMO.  In net80211 there is an adhoc-demo mode which is essentially adhoc=20
+> mode which was originally added for functionality found in old lucent=20
+> cards but more recently has been used for building applications that=20
+> want a "raw 802.11 device".
 
-That makes sense.
+There's a tradeoff here; the actual notion to userspace ought to be a
+monitor interface because that is what tools need to have opened anyway.
+It is also natural to use from userspace via libpcap. Also, most modern
+hardware doesn't actually care what you send.
 
-> This gives us the flexibility to use more MACs to the extent of their
-> capabilities.  IIRC, one Realtek MAC lets us set the access parameters
-> packet by packet, instead of category by category or queue by queue.
-
-Oh ok, that'd be perfect for those then.
-
-> Some 802.11 MACs have different transmit priority queues, but the queues'
-> access parameters are not adjustable.  For those MACs, we should provide
-> for selecting the queue by number:
->=20
-> 	IEEE80211_RADIOTAP_TX_QNUM		u8		queue number
-
-That would work, although I think I'd still prefer being able to select
-an AC as well because in most cases the queues would be set up according
-to the four ACs. However, we can standardise that within the QNUM field
-as well.
-
-> I think it's reasonable to say in the _TX_QNUM definition that the queue
-> numbers do not necessarily have any relationship to queue priority level
-> or access parameters.
-
-Definitely.
-
-> >  *	Indicates which access category to send the frame in, 0-3.
-> >  *
-> >  * IEEE80211_RADIOTAP_SEND_FLAGS	u8		flags
-> ...
-> >    IEEE80211_RADIOTAP_SEND_FLAG_SEQNR (1<<3)
-> >    /* set if the sequence number in the packet shouldn't be changed,
-> >     * if not set then the packet is sequence numbered properly */
->=20
-> Let's re-use and augment IEEE80211_RADIOTAP_TX_FLAGS for transmission
-> control.  For example, let the bits _F_TX_CTS/_F_TX_RTS indicate "use CTS=
-"
-> and "use RTS" when we transmit.  But see below.  Also, add _F_TX_SEQNR.
-
-Sounds good to me as well.
-
-> >    IEEE80211_RADIOTAP_SEND_FLAG_ENCRYPT (1<<0)
-> >    /* encrypt with key for the station named in addr1 or default key */
->=20
-> Let's re-use IEEE80211_RADIOTAP_FLAGS[IEEE80211_RADIOTAP_F_WEP] for this.
-
-Sure
-
-> >    IEEE80211_RADIOTAP_SEND_FLAG_AUTO_RTSCTS (1<<1)
-> >    /* automatically decide whether rts/cts are used, if unset then
-> >     * rts/cts are used depending on IEEE80211_RADIOTAP_F_TX_{CTS,RTS} *=
-/
->=20
-> I believe implementors will have an easier time if you invert this:
-> NOAUTO or (errr...) MANUAL.
-
-Heh, probably.
-
-> 16-bit fields IEEE80211_RADIOTAP_RTS_THRESHOLD and
-> IEEE80211_RADIOTAP_CTS_THRESHOLD may be better: if absent, autoselect.
-> If present and equal to 0, always use RTS(CTS).  If present and greater
-> than or equal to the maximum packet length, never use RTS(CTS).  We can
-> likewise control fragmentation.
-
-Good point. However, in some cases where we may end up wanting to use
-this feature, this means querying the kernel for the current
-fragmentation threshold only to send it back into the kernel in the
-radiotap header. That's perfectly acceptable of course.
-
-> >    IEEE80211_RADIOTAP_SEND_FLAG_RATE_CONTROL (1<<2)
-> >    /* should rate control be applied to this algorithm? if not, take
-> >     * the value of IEEE80211_RADIOTAP_RATE or lowest rate */
->=20
-> Control this by the presence of the _RATE parameter.  If _RATE is absent,
-> let the driver or NIC autoselect.
-
-Yeah, good enough.
-
-Thanks for your comments! Do you want me to send a patch against the
-authoritative version of the radiotap header?
+If we ever end up being able to support such cards that do care, then I
+expect we'll either be able to work around the problem in the driver or
+need some special instructions for users of such hardware.
 
 johannes
 
---=-JRbk5TE1C9pJrNLHDG5O
+--=-/Vv/w5rJthMmZrzvDS+g
 Content-Type: application/pgp-signature; name=signature.asc
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 Comment: Johannes Berg (powerbook)
 
-iD8DBQBGf2Ms/ETPhpq3jKURAsYNAKCVCQGgMeGFPKZbAyuUJlNnfHLIXQCffF+t
-79OpbTJONUPTytrraWyDdsw=
-=G5fZ
+iD8DBQBGf22w/ETPhpq3jKURAu9FAKCWMTxpgwDfrElRif9nLrsAqtnw7QCglvbZ
+bKK0yfj1ssoZ1vM27ulqgNw=
+=wH49
 -----END PGP SIGNATURE-----
 
---=-JRbk5TE1C9pJrNLHDG5O--
+--=-/Vv/w5rJthMmZrzvDS+g--
