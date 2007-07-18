@@ -1,10 +1,12 @@
-From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
-Subject: RFC: moving Radiotap forward
-Date: Mon, 16 Jul 2007 16:48:20 -0500
-Message-ID: <20070716214820.GD19812@che.ojctech.com>
+From: Charles Clancy <clancy-VX+DGZyGJwM3uPMLIKxrzw@public.gmane.org>
+Subject: Re: RFC: moving Radiotap forward
+Date: Wed, 18 Jul 2007 21:30:47 +0100
+Message-ID: <469E7877.2080603@cs.umd.edu>
+References: <20070716214820.GD19812@che.ojctech.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <20070716214820.GD19812-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -17,45 +19,36 @@ List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
 To: radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-I have written some proposals and desires for moving Radiotap forward.
+> 1 This list will "keep" the Radiotap standard.  That is, this is the venue
+>   at which to propose new fields for discussion and eventual adoption.
+>   We will adopt new fields into the standard when there is "rough
+>   consensus and running code."
+ > ...
+ > 3 We need to set minimum requirements for a field, such as specifying
+ >   its width, alignment, name, and interpretation.
 
-1 This list will "keep" the Radiotap standard.  That is, this is the venue
-  at which to propose new fields for discussion and eventual adoption.
-  We will adopt new fields into the standard when there is "rough
-  consensus and running code."  Let's strive for general agreement of the
-  list membership, at least one driver and at least one packet capture
-  tool that groks a new field.
+Sounds very IETF-ish.  Any thoughts on publishing Radiotap as an 
+Internet Draft and eventually RFC?  You could set up an IANA registry 
+for the extensible fields.  IETF is typically L3+, but Radiotap could be 
+pitched abstractly enough that it wouldn't necessarily violate that.
 
-  The list membership needs to be representative of folks who have
-  a stake in Radiotap, especially developers of device drivers
-  for Linux, OpenSolaris, *BSD, et cetera, and developers of packet
-  capture/filter/dissection/display software such as WireShark, libpcap,
-  Kismet, and TCPDump.  "Are we all here?"
+I have significant experience with the IETF, and could help out with the 
+process if the group is interested.
 
-2 The Radiotap documentation needs to appear on "neutral ground" on the
-  web---i.e., not in a NetBSD manual page.  Web resources need to be
-  "beefed up" to include a careful specification, lists of assigned
-  numbers, examples, reference implementations, and tests.  I have
-  reserved a couple of Radiotap domain names to hold that information.
-  Radiotap needs a volunteer web admin.
+> 5 It seems to me that we need to decide
+> 
+>     Will we adopt fields for WiMax?  Do we have enough people both with a
+>     stake and with expertise in WiMax to do that?
 
-3 We need to set minimum requirements for a field, such as specifying
-  its width, alignment, name, and interpretation.
+Well, I'm one...
 
-4 We need to prioritize arresting Radiotap fragmentation.  I do not know
-  if we can reconcile the conflicting uses for bits 14 and upward, but
-  I hope Radiotap stakeholders can be reconciled with our introduction
-  of a consensus process.
+>     Do we / how will we support vendor-specific fields?
 
-5 It seems to me that we need to decide
-
-    Will we adopt fields for WiMax?  Do we have enough people both with a
-    stake and with expertise in WiMax to do that?
-
-    Do we / how will we support vendor-specific fields?
-
-Dave
+In similar situations in the past, I've defined field identifiers in 
+general to be 6 bytes, with the first four bytes being the vendor's 
+object identifier (OID) and the last two being the actual field. 
+OID==0x00000000 represents the non-vendor-specific list of 2^16 possible 
+fields.
 
 -- 
-David Young             OJC Technologies
-dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933 ext 24
+t. charles clancy, ph.d.  <>  tcc-e45ueOrobK4@public.gmane.org  <>  www.cs.umd.edu/~clancy
