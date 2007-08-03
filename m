@@ -1,12 +1,9 @@
-From: Charles Clancy <clancy-VX+DGZyGJwM3uPMLIKxrzw@public.gmane.org>
-Subject: Re: RFC: moving Radiotap forward
-Date: Wed, 18 Jul 2007 21:30:47 +0100
-Message-ID: <469E7877.2080603@cs.umd.edu>
-References: <20070716214820.GD19812@che.ojctech.com>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Subject: new RX flag request: bad PLCP
+Date: Fri, 03 Aug 2007 23:28:31 +0200
+Message-ID: <1186176511.13315.2.camel@johannes.berg>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-In-Reply-To: <20070716214820.GD19812-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-T2kazIWXPTAWtu/YbAyE"
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -19,36 +16,32 @@ List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
 To: radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-> 1 This list will "keep" the Radiotap standard.  That is, this is the venue
->   at which to propose new fields for discussion and eventual adoption.
->   We will adopt new fields into the standard when there is "rough
->   consensus and running code."
- > ...
- > 3 We need to set minimum requirements for a field, such as specifying
- >   its width, alignment, name, and interpretation.
+--=-T2kazIWXPTAWtu/YbAyE
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Sounds very IETF-ish.  Any thoughts on publishing Radiotap as an 
-Internet Draft and eventually RFC?  You could set up an IANA registry 
-for the extensible fields.  IETF is typically L3+, but Radiotap could be 
-pitched abstractly enough that it wouldn't necessarily violate that.
+Some people actually want to see frames their microwave sends; thus we
+need a flag to indicate that the PLCP checksum failed. I thus propose:
 
-I have significant experience with the IETF, and could help out with the 
-process if the group is interested.
+/* frame failed PLCP check; for the benefit of older software (and
+ * because it is most likely true) you should also set the BADFCS flag) */
+#define IEEE80211_RADIOTAP_F_RX_BADPLCPCHECK  0x0002  /* frame failed PLCP =
+check */
 
-> 5 It seems to me that we need to decide
-> 
->     Will we adopt fields for WiMax?  Do we have enough people both with a
->     stake and with expertise in WiMax to do that?
+Comments?
 
-Well, I'm one...
+johannes
 
->     Do we / how will we support vendor-specific fields?
+--=-T2kazIWXPTAWtu/YbAyE
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: This is a digitally signed message part
 
-In similar situations in the past, I've defined field identifiers in 
-general to be 6 bytes, with the first four bytes being the vendor's 
-object identifier (OID) and the last two being the actual field. 
-OID==0x00000000 represents the non-vendor-specific list of 2^16 possible 
-fields.
+-----BEGIN PGP SIGNATURE-----
+Comment: Johannes Berg (powerbook)
 
--- 
-t. charles clancy, ph.d.  <>  tcc-e45ueOrobK4@public.gmane.org  <>  www.cs.umd.edu/~clancy
+iD8DBQBGs53//ETPhpq3jKURAvjoAJ44JvMIudt8QWp/xSIY/Sl6umIiwQCfZMgN
+JSB/oI4bcNSs7imZh/l42/8=
+=v35n
+-----END PGP SIGNATURE-----
+
+--=-T2kazIWXPTAWtu/YbAyE--
