@@ -1,9 +1,12 @@
-From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: use of radiotap bit 14?
-Date: Fri, 31 Aug 2007 00:16:54 +0200
-Message-ID: <1188512214.7585.3.camel@johannes.berg>
+From: Pavel Roskin <proski-mXXj517/zsQ@public.gmane.org>
+Subject: Re: use of radiotap bit 14?
+Date: Fri, 31 Aug 2007 10:47:08 -0400
+Message-ID: <1188571628.24684.7.camel@dv>
+References: <1188512214.7585.3.camel@johannes.berg>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-p9ZoxseOC57Ey2lXxZew"
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <1188512214.7585.3.camel-YfaajirXv214zXjbi5bjpg@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -13,34 +16,31 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: Gerald Combs <gerald-IZ8446WsY0/dtAWm4Da02A@public.gmane.org>
-Cc: radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
+To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Cc: Gerald Combs <gerald-IZ8446WsY0/dtAWm4Da02A@public.gmane.org>, radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
---=-p9ZoxseOC57Ey2lXxZew
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+On Fri, 2007-08-31 at 00:16 +0200, Johannes Berg wrote:
+> Our radiotap header in Linux defines bit 14 as
+> IEEE80211_RADIOTAP_RX_FLAGS; however running wireshark on it tells me
+> that this bit means "FCS in header". Does anybody know which use is
+> correct, if any?
 
-Our radiotap header in Linux defines bit 14 as
-IEEE80211_RADIOTAP_RX_FLAGS; however running wireshark on it tells me
-that this bit means "FCS in header". Does anybody know which use is
-correct, if any?
+As far as I know, "FCS in header" is a FreeBSD thing, which came to
+Linux in MadWifi.  "Rx flags" comes from Linux Libertas driver.
 
-Maybe we should simply skip to bit 32 or something and start redefining
-things properly?
+The standard uses the later:
+http://netbsd.gw.com/cgi-bin/man-cgi?ieee80211_radiotap+9+NetBSD-current
 
-johannes
+MadWifi has removed the non-standard use of bit 14.  Now it's time to
+fix wireshark.
 
---=-p9ZoxseOC57Ey2lXxZew
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Description: This is a digitally signed message part
+> Maybe we should simply skip to bit 32 or something and start redefining
+> things properly?
 
------BEGIN PGP SIGNATURE-----
-Comment: Johannes Berg (powerbook)
+And what would be "properly"?  How would it prevent drivers from adding
+non-standard fields?
 
-iD8DBQBG10HV/ETPhpq3jKURAme3AJ4grp/Cd1nz2K+iz3CRJu4UlSRsWQCgsWS8
-KmFwsT34gTqMCnXjMAhIWWA=
-=jPBE
------END PGP SIGNATURE-----
-
---=-p9ZoxseOC57Ey2lXxZew--
+-- 
+Regards,
+Pavel Roskin
