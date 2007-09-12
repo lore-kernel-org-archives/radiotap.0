@@ -1,12 +1,13 @@
-From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+From: Pavel Roskin <proski-mXXj517/zsQ@public.gmane.org>
 Subject: Re: use of radiotap bit 14?
-Date: Wed, 12 Sep 2007 13:06:19 -0500
-Message-ID: <20070912180619.GB17887@che.ojctech.com>
+Date: Wed, 12 Sep 2007 15:03:58 -0400
+Message-ID: <1189623838.15104.26.camel@dv>
 References: <1188512214.7585.3.camel@johannes.berg>
+	 <20070912180619.GB17887@che.ojctech.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1188512214.7585.3.camel-YfaajirXv214zXjbi5bjpg@public.gmane.org>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <20070912180619.GB17887-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -16,43 +17,41 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
+To: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+Cc: radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-On Fri, Aug 31, 2007 at 12:16:54AM +0200, Johannes Berg wrote:
-> Our radiotap header in Linux defines bit 14 as
-> IEEE80211_RADIOTAP_RX_FLAGS; however running wireshark on it tells me
-> that this bit means "FCS in header". Does anybody know which use is
-> correct, if any?
-> 
-> Maybe we should simply skip to bit 32 or something and start redefining
-> things properly?
+Hello, David!
 
-There are technical reasons that we cannot simply skip.  I have a couple
-of technical solutions in mind.
+On Wed, 2007-09-12 at 13:06 -0500, David Young wrote:
 
-Solution 1: introduce a new bit, m, that nobody has used so far.
-        Let it stand for the presence of a 32-bit magic number.
-        When an interpreter sees a header whose presence bit 14 is
-        set, let it test presence bit m.  If m is not present, let the
-        interpreter abort.  If m is present, let the interpreter skip
-        forward until it finds the magic at a 32-bit boundary.  Let it
-        continue processing presence bits > m in the usual way.
+> There are technical reasons that we cannot simply skip.  I have a couple
+> of technical solutions in mind.
 
-Solution 2: increase the radiotap version number, and start over from
-        bit 0.  Now we need a "legacy" parser for v0, 0 <= bit <= 13,
-        and a "next gen" parser for v1.  No v0 header with bits >=
-        14 set can be interpreted without ambiguity.
+Before we start addressing the technical side, we should probably
+consider the "political" side.  Did the documentation specify where
+unapproved extensions should be encoded?  Were the extensions added in
+violation of the rules?  How widespread is the non-standard use of bit
+14?  What can be done to avoid such situations in the future?
 
-        2a: adopt all of the legacy presence bits 0 through 13 in v1
-        2b: adopt some of the legacy presence bits in v1
-        2c: start from scratch for v1
+I would hate to see the protocol changed to work around the symptoms
+without addressing the real problem.
 
-We could also use both Solution 1 and Solution 2; let interpreters treat
-every v0 bit >= 14 as vendor-specific.
+I would probably try to put the workaround completely in userspace.  I
+think the bit 14 abusers can be detected by the fact that bit 14 is the
+highest byte they set and that they allocate 2 extra bytes for the
+header (since FCS is 32 whereas RX flags is 16 bit).
 
-Dave
+Failing that, I think we can just obsolete bit 14 and use something else
+(e.g. bit 18) for RX flags, or squeeze RX flags into the TX flags field,
+perhaps into the upper byte.  I think it's much less intrusive than
+adding any "magic" that would need special interpretation.
+
+My preference is to change the protocol version only if we are going to
+support radically new media or change something fundamental in the way
+the header data is aligned.  Just adding "magic" would probably require
+the protocol change.
 
 -- 
-David Young             OJC Technologies
-dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933 ext 24
+Regards,
+Pavel Roskin
