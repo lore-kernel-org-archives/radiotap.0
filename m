@@ -1,13 +1,12 @@
-From: Pavel Roskin <proski-mXXj517/zsQ@public.gmane.org>
+From: Gerald Combs <gerald-IZ8446WsY0/dtAWm4Da02A@public.gmane.org>
 Subject: Re: use of radiotap bit 14?
-Date: Wed, 12 Sep 2007 15:03:58 -0400
-Message-ID: <1189623838.15104.26.camel@dv>
-References: <1188512214.7585.3.camel@johannes.berg>
-	 <20070912180619.GB17887@che.ojctech.com>
+Date: Wed, 12 Sep 2007 12:21:34 -0700
+Message-ID: <46E83C3E.4010803@wireshark.org>
+References: <1188512214.7585.3.camel@johannes.berg> <1188571628.24684.7.camel@dv> <46D846E4.20103@wireshark.org> <1188597475.7585.46.camel@johannes.berg> <20070912171755.GA17887@che.ojctech.com>
 Mime-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-In-Reply-To: <20070912180619.GB17887-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
+In-Reply-To: <20070912171755.GA17887-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -17,41 +16,29 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
-Cc: radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
+To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>, Pavel Roskin <proski-mXXj517/zsQ@public.gmane.org>, radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-Hello, David!
+David Young wrote:
+> On Fri, Aug 31, 2007 at 11:57:55PM +0200, Johannes Berg wrote:
+>> On Fri, 2007-08-31 at 09:50 -0700, Gerald Combs wrote:
+>>
+>>> An earlier email from David Young discussed placing the Radiotap 
+>>> documentation in a more "official" location -- I think this would help 
+>>> immensely.  For a developer starting from scratch, it's not immediately 
+>>> obvious where the canonical Radiotap specification is and it's very easy 
+>>> to get started down the wrong path.  For example, if NetBSD Radiotap 
+>>> header and man page show up in Google's rankings for "radiotap" and 
+>>> "radiotap specification", they're pretty far down the list.
+>> I second that. If somebody has a domain registered, I can host a wiki
+>> over with linuxwireless.org.
+> 
+> Thank you for the offer!  Beggars cannot be choosers, but perhaps the
+> WireShark wiki is closer to "neutral ground" for a spec that the various
+> operating systems (*BSD, Linux, Solaris??) will share?  (Gerald?)
+> 
+> Can we grant access to the radiotap wiki page to only active radiotap
+> developers?
 
-On Wed, 2007-09-12 at 13:06 -0500, David Young wrote:
-
-> There are technical reasons that we cannot simply skip.  I have a couple
-> of technical solutions in mind.
-
-Before we start addressing the technical side, we should probably
-consider the "political" side.  Did the documentation specify where
-unapproved extensions should be encoded?  Were the extensions added in
-violation of the rules?  How widespread is the non-standard use of bit
-14?  What can be done to avoid such situations in the future?
-
-I would hate to see the protocol changed to work around the symptoms
-without addressing the real problem.
-
-I would probably try to put the workaround completely in userspace.  I
-think the bit 14 abusers can be detected by the fact that bit 14 is the
-highest byte they set and that they allocate 2 extra bytes for the
-header (since FCS is 32 whereas RX flags is 16 bit).
-
-Failing that, I think we can just obsolete bit 14 and use something else
-(e.g. bit 18) for RX flags, or squeeze RX flags into the TX flags field,
-perhaps into the upper byte.  I think it's much less intrusive than
-adding any "magic" that would need special interpretation.
-
-My preference is to change the protocol version only if we are going to
-support radically new media or change something fundamental in the way
-the header data is aligned.  Just adding "magic" would probably require
-the protocol change.
-
--- 
-Regards,
-Pavel Roskin
+The wiki software we're using (MoinMoin) lets you add ACL groups pretty easily.
+ Just let me know (offline or online) who needs access to the page.
