@@ -1,12 +1,12 @@
 From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
 Subject: Re: use of radiotap bit 14?
-Date: Wed, 12 Sep 2007 12:17:55 -0500
-Message-ID: <20070912171755.GA17887@che.ojctech.com>
-References: <1188512214.7585.3.camel@johannes.berg> <1188571628.24684.7.camel@dv> <46D846E4.20103@wireshark.org> <1188597475.7585.46.camel@johannes.berg>
+Date: Wed, 12 Sep 2007 13:06:19 -0500
+Message-ID: <20070912180619.GB17887@che.ojctech.com>
+References: <1188512214.7585.3.camel@johannes.berg>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1188597475.7585.46.camel-YfaajirXv214zXjbi5bjpg@public.gmane.org>
+In-Reply-To: <1188512214.7585.3.camel-YfaajirXv214zXjbi5bjpg@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -16,30 +16,40 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Cc: Gerald Combs <gerald-IZ8446WsY0/dtAWm4Da02A@public.gmane.org>, Pavel Roskin <proski-mXXj517/zsQ@public.gmane.org>, radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
+To: radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-On Fri, Aug 31, 2007 at 11:57:55PM +0200, Johannes Berg wrote:
-> On Fri, 2007-08-31 at 09:50 -0700, Gerald Combs wrote:
+On Fri, Aug 31, 2007 at 12:16:54AM +0200, Johannes Berg wrote:
+> Our radiotap header in Linux defines bit 14 as
+> IEEE80211_RADIOTAP_RX_FLAGS; however running wireshark on it tells me
+> that this bit means "FCS in header". Does anybody know which use is
+> correct, if any?
 > 
-> > An earlier email from David Young discussed placing the Radiotap 
-> > documentation in a more "official" location -- I think this would help 
-> > immensely.  For a developer starting from scratch, it's not immediately 
-> > obvious where the canonical Radiotap specification is and it's very easy 
-> > to get started down the wrong path.  For example, if NetBSD Radiotap 
-> > header and man page show up in Google's rankings for "radiotap" and 
-> > "radiotap specification", they're pretty far down the list.
-> 
-> I second that. If somebody has a domain registered, I can host a wiki
-> over with linuxwireless.org.
+> Maybe we should simply skip to bit 32 or something and start redefining
+> things properly?
 
-Thank you for the offer!  Beggars cannot be choosers, but perhaps the
-WireShark wiki is closer to "neutral ground" for a spec that the various
-operating systems (*BSD, Linux, Solaris??) will share?  (Gerald?)
+There are technical reasons that we cannot simply skip.  I have a couple
+of technical solutions in mind.
 
-Can we grant access to the radiotap wiki page to only active radiotap
-developers?
+Solution 1: introduce a new bit, m, that nobody has used so far.
+        Let it stand for the presence of a 32-bit magic number.
+        When an interpreter sees a header whose presence bit 14 is
+        set, let it test presence bit m.  If m is not present, let the
+        interpreter abort.  If m is present, let the interpreter skip
+        forward until it finds the magic at a 32-bit boundary.  Let it
+        continue processing presence bits > m in the usual way.
+
+Solution 2: increase the radiotap version number, and start over from
+        bit 0.  Now we need a "legacy" parser for v0, 0 <= bit <= 13,
+        and a "next gen" parser for v1.  No v0 header with bits >=
+        14 set can be interpreted without ambiguity.
+
+        2a: adopt all of the legacy presence bits 0 through 13 in v1
+        2b: adopt some of the legacy presence bits in v1
+        2c: start from scratch for v1
+
+We could also use both Solution 1 and Solution 2; let interpreters treat
+every v0 bit >= 14 as vendor-specific.
 
 Dave
 
