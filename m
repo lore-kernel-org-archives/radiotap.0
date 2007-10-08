@@ -1,12 +1,14 @@
-From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Subject: Re: use of radiotap bit 14?
-Date: Sun, 7 Oct 2007 18:55:51 -0500
-Message-ID: <20071007235551.GN6429@che.ojctech.com>
-References: <1188512214.7585.3.camel@johannes.berg> <20070912180619.GB17887@che.ojctech.com> <1189668582.6161.91.camel@johannes.berg>
+Date: Mon, 08 Oct 2007 11:45:08 +0200
+Message-ID: <1191836708.4063.17.camel@johannes.berg>
+References: <1188512214.7585.3.camel@johannes.berg>
+	 <20070912180619.GB17887@che.ojctech.com>
+	 <1189668582.6161.91.camel@johannes.berg>
+	 <20071007235551.GN6429@che.ojctech.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1189668582.6161.91.camel-YfaajirXv214zXjbi5bjpg@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-Lmk35N0kZ1tieRsg8wJl"
+In-Reply-To: <20071007235551.GN6429-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -16,96 +18,115 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
+To: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+Cc: radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-On Thu, Sep 13, 2007 at 09:29:42AM +0200, Johannes Berg wrote:
-> On Wed, 2007-09-12 at 13:06 -0500, David Young wrote:
-> 
-> > Solution 2: increase the radiotap version number, and start over from
-> >         bit 0.  Now we need a "legacy" parser for v0, 0 <= bit <= 13,
-> >         and a "next gen" parser for v1.  No v0 header with bits >=
-> >         14 set can be interpreted without ambiguity.
-> > 
-> >         2a: adopt all of the legacy presence bits 0 through 13 in v1
-> >         2b: adopt some of the legacy presence bits in v1
-> >         2c: start from scratch for v1
-> 
-> Personally, I favour solution 2a as it allows us to easily port parsers
-> and even share code,
+--=-Lmk35N0kZ1tieRsg8wJl
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Johannes,
+On Sun, 2007-10-07 at 18:55 -0500, David Young wrote:
 
-My problem with #2 right now is that you and I are acting as stronger
-advocates for the folks who adopted conflicting radiotap numbers than
-they themselves are.  Meanwhile, v0 has some momentum: FreeBSD has
-introduced useful new fields, FreeBSD and NetBSD are in agreement,
-and there are NO interpreters in tcpdump or in wireshark for any field
-past 15.  Let's stick with v0 until somebody objects.
+> My problem with #2 right now is that you and I are acting as stronger
+> advocates for the folks who adopted conflicting radiotap numbers than
+> they themselves are.  Meanwhile, v0 has some momentum: FreeBSD has
+> introduced useful new fields, FreeBSD and NetBSD are in agreement,
+> and there are NO interpreters in tcpdump or in wireshark for any field
+> past 15.  Let's stick with v0 until somebody objects.
 
-> but before we do that, we need a good way to allow
-> vendor-specific extensions. I've been thinking that a format with an
-> explicit length field like 802.11 information elements would have been
-> easier for this (think 802.11 vendor-specific IEs) but I'm sure we can
-> come up with a solution for vendor-specific fields, for example breaking
-> the "bit ordering" == "element ordering" for them and requiring them to
-> be last at all times or something similar.
+Ok. I just need a bunch of fields in the Linux code for injection
+purposes and am actually developing userspace code to parse/create
+these. Also, here I am actually using bit 14/15/16/17 as RX/TX flags,
+RTS/DATA retries. It would help much if we could go forward with hosting
+the radiotap header "on neutral ground" and standardise these fields, no
+matter how.
 
-I propose to add two new presence bits, 29 and 30.  Let them both reset
-the bitmap index to 0.  That is, the bits in following next 32-bit
-presence word are interpreted as bits in 0..31, not n..31+n.  We must
-use both of these bits in conjunction with the extension bit, bit 31,
-or else they will have no effect.
+> I propose to add two new presence bits, 29 and 30.  Let them both reset
+> the bitmap index to 0.  That is, the bits in following next 32-bit
+> presence word are interpreted as bits in 0..31, not n..31+n.  We must
+> use both of these bits in conjunction with the extension bit, bit 31,
+> or else they will have no effect.
+>=20
+> Let bit 29 make the interpreter change to a vendor namespace, and let
+> bit 30 make the interpreter change back to the default radiotap namespace=
+.
 
-Let bit 29 make the interpreter change to a vendor namespace, and let
-bit 30 make the interpreter change back to the default radiotap namespace.
-Some detailed field specs follow.
+This doesn't seem to require two bits, why not just use a single one to
+mean "next bitmap is vendor namespace"?
 
-Vendor Namespace Field (29)
+> Some detailed field specs follow.
+>=20
+> Vendor Namespace Field (29)
+>=20
+>         presence bit IEEE80211_RADIOTAP_NSVENDOR =3D 29
+>         1-byte alignment
+>         5 bytes long
+>         scope: this bit is reserved in all namespaces, and it is
+>                interpreted identically in every namespace
+>=20
+>         The Vendor Namespace Field contains three sub-fields.  The first
+>         sub-field is 3 bytes long.  It contains the vendor's IEEE 802
+>         Organizationally Unique Identifier (OUI).  The fourth byte is
+>         a vendor-specific "namespace selector."
+>=20
+>         Before it resumes interpretation of presence bits in the followin=
+g
+>         32-bit presence words, if any, the interpreter shall reset its
+>         presence-bitmap index to 0, and change to the vendor namespace
+>         specified by the OUI and selector.
+>=20
+>         The fifth byte, skip_length, tells the interpreter how many bytes
+>         of data after the end of the Vendor Namespace Field can only be
+>         interpreted according to the vendor namespace.  If a radiotap
+>         header changes to a namespace that the interpreter does not
+>         understand, and back, the interpreter may resume interpretation
+>         in the new namespace by skipping skip_length data bytes after
+>         the end of the Vendor Namespace Field.
+>=20
+> Reset Namespace Field (30)
+>=20
+>         presence bit IEEE80211_RADIOTAP_NSRESET =3D 30
+>         1-byte alignment
+>         0 bytes long
+>         scope: this bit is reserved in all namespaces, and it is
+>                interpreted identically in every namespace
+>=20
+>         Upon interpreting this field, the interpreter shall reset its
+>         presence-bitmap index to 0, and change to the default radiotap
+>         namespace, before it interprets subsequent presence-bitmap words.
+>=20
+> If we adopt Reset/Vendor Namespace, it is possible for a radiotap field
+> to appear twice or more in one radiotap header.  I believe that this is
+> a feature, and I have some ideas for using Reset Namespace to specify /
+> record transmit strategies.
 
-        presence bit IEEE80211_RADIOTAP_NSVENDOR = 29
-        1-byte alignment
-        5 bytes long
-        scope: this bit is reserved in all namespaces, and it is
-               interpreted identically in every namespace
+Ah, I see, ok, yes, now I know why you want two bits. Sounds good to me,
+although I think you could add some ascii art example as this
+description is quite procedural and gives little overview :)
 
-        The Vendor Namespace Field contains three sub-fields.  The first
-        sub-field is 3 bytes long.  It contains the vendor's IEEE 802
-        Organizationally Unique Identifier (OUI).  The fourth byte is
-        a vendor-specific "namespace selector."
+johannes
 
-        Before it resumes interpretation of presence bits in the following
-        32-bit presence words, if any, the interpreter shall reset its
-        presence-bitmap index to 0, and change to the vendor namespace
-        specified by the OUI and selector.
+--=-Lmk35N0kZ1tieRsg8wJl
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: This is a digitally signed message part
 
-        The fifth byte, skip_length, tells the interpreter how many bytes
-        of data after the end of the Vendor Namespace Field can only be
-        interpreted according to the vendor namespace.  If a radiotap
-        header changes to a namespace that the interpreter does not
-        understand, and back, the interpreter may resume interpretation
-        in the new namespace by skipping skip_length data bytes after
-        the end of the Vendor Namespace Field.
+-----BEGIN PGP SIGNATURE-----
+Comment: Johannes Berg (powerbook)
 
-Reset Namespace Field (30)
+iQIVAwUARwn8I6Vg1VMiehFYAQIyFg/+Iw1t+TXzlH3mln1oeVjK6VoLQlI0yOgL
+ncC5p85DgPRe2QWQ8R6JSA5JiEGmiLYNkpaboZpuMQbzD1OZ/GTlL5dmqE9wJ3SH
+0st4t4fGWuUiUtHM1Vc7LsUR4oXdgwPxevpQQS5qxiZqsYUZugbj662QgB4BcmXX
++yXc9E50qugMRRvocgL3gVm5NYZQOXtaOJ0xjgS6919iT2wKJdjklvahAL1+iaXs
+TVNsxS2zFqvzuQigu07HrvXd/bBNS93LAocW7Xt/k0V6M0O6IHdKUqGH4kfJJroU
+qKM5T7ih+3AdpkygvtD67H/KqgBDDgs0sI7C7cq4EMJePKm8+1/gFkRBmzZPk8Cr
+VmwOO1TUzCUUr55xOpAvloWkr2RXy/8r5K7Ak3WVb34/isrrrttqBccPxjkMRF9/
+HiRAEO3TfsgeN4brKm0Z2KEprd3kskjovp8Kdvls+owY0K5kH4oJfamCQ6p7nSeO
+lMbcgZdCIKNjOw1QuCrAMVJ64sI+7+LWBaLPcjRhq7KFeSu5S8McGmt+030bajD3
+NeDwoicPYME1UlzwPf4Rzp7Nn4hE6DcV79wyjeTjSPvZLVGMMQcVPYKb0a3s57Tx
+NmTIJkFt9GxYAiQUbWKbL0c+uDi4sXQ5Ie0WO3yJhvZUMtQLRh5zsY674TwPvwCu
+Dyj5n8kLw58=
+=1VoX
+-----END PGP SIGNATURE-----
 
-        presence bit IEEE80211_RADIOTAP_NSRESET = 30
-        1-byte alignment
-        0 bytes long
-        scope: this bit is reserved in all namespaces, and it is
-               interpreted identically in every namespace
-
-        Upon interpreting this field, the interpreter shall reset its
-        presence-bitmap index to 0, and change to the default radiotap
-        namespace, before it interprets subsequent presence-bitmap words.
-
-If we adopt Reset/Vendor Namespace, it is possible for a radiotap field
-to appear twice or more in one radiotap header.  I believe that this is
-a feature, and I have some ideas for using Reset Namespace to specify /
-record transmit strategies.
-
-Dave
-
--- 
-David Young             OJC Technologies
-dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933 ext 24
+--=-Lmk35N0kZ1tieRsg8wJl--
