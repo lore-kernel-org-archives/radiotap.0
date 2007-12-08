@@ -1,10 +1,11 @@
-From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
-Subject: rfc: "canonical" radiotap parser
-Date: Thu, 6 Dec 2007 22:55:45 -0600
-Message-ID: <20071207045545.GO3568@che.ojctech.com>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Subject: Re: rfc: "canonical" radiotap parser
+Date: Sat, 08 Dec 2007 11:39:57 +0100
+Message-ID: <1197110397.4171.46.camel@johannes.berg>
+References: <20071207045545.GO3568@che.ojctech.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-mhRsvgjiaQfs8NewnruW"
+In-Reply-To: <20071207045545.GO3568-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -14,41 +15,53 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org
+To: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+Cc: radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org, Andy Green <andy-/Zus8d0mwwtBDgjK7y7TUQ@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-At <http://svn.cuwireless.net/svn/cuw/trunk/src/radiotap/> is the radiotap
-parser that I mentioned the other day.  I believe the parser captures
-all of the essential ideas of radiotap.  It is also a somewhat useful
-program that uses libpcap to listen on the interface you specify on the
-command line for radiotap frames (DLT_IEEE802_11_RADIO).  I have tried
-to make it just as portable and self-contained C99 code as I can.
+--=-mhRsvgjiaQfs8NewnruW
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-The parser is table-driven: adding new fields is a matter of adding
-entries to the tables field_spec[] and field_info[].  The first table,
-field_spec[], contains the Minimal Specification for a field.  The Minimal
-Specification is the field's alignment and its width.  The alignment
-must be a power-of-two, whole number of bytes.  The width must be a
-non-negative, whole number of bytes.  Every radiotap interpreter needs to
-know the minimal specification of fields 0..n in order to skip past those
-fields to a field of interest, field n+1.  The second table, field_info[],
-tells each field's name (long and short form) and units.  I use some macro
-magic to link each entry in field_info[] to its Minimal Specification.
-Call the information in field_info[] and in field_spec[] for each field,
-that field's Complete Specification.  An interpreter such as tcpdump or
-wireshark needs a field's Complete Specification in order to render the
-field for you and I to read it.
+Hi Dave,
 
-I have included all of these fields in the parser,
+I just took a quick look at the parser, it looks pretty good. Andy has
+done something similar and was willing to relicense it under BSD last I
+asked him, his code is part of the Linux kernel right now:
 
-        IEEE80211_RADIOTAP_RX_FLAGS
-        IEEE80211_RADIOTAP_TX_FLAGS
-        IEEE80211_RADIOTAP_RTS_RETRIES
-        IEEE80211_RADIOTAP_DATA_RETRIES
-        IEEE80211_RADIOTAP_XCHANNEL
+http://git.kernel.org/?p=3Dlinux/kernel/git/torvalds/linux-2.6.git;a=3Dblob=
+;f=3Dnet/wireless/radiotap.c;hb=3DHEAD
 
-Dave
+It does a lot less than your parser since that already includes code to
+print out the result which we obviously don't have in the kernel, but
+other than that it's pretty similar conceptually. Just for reference.
+Yours also has more detailed error reporting.
 
--- 
-David Young             OJC Technologies
-dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933 ext 24
+Small question on the code: why did you declare that radiotap_field is
+aligned? It can potentially come from anywhere unaligned, no?
+
+johannes
+
+--=-mhRsvgjiaQfs8NewnruW
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Comment: Johannes Berg (powerbook)
+
+iQIVAwUAR1p0fKVg1VMiehFYAQK1ew//VuJ3GFDpFgzw7Z2mFegRygBHaZ1t4dXk
+Of2fOabcEvbSm2xR7+0K/hnZ8gx1Tm8Xe/JoZujzREe4QajQj997vPmdfkVC72gv
+VkN82msoBWTcyzvB0bQrnrueOBfFcxqJWmJpBewRJL4eFbfYPOsh/G/VBT2NZS9v
+UVv8jLVU0BlQXJ+NVJwnRestRvEatn2MHjtb0n01NcTFiUtFX+XX18Nz2z5CJdlk
+kVWsYURI/uyPzeqlp0cz7W6CIAQdXFxPOZ0rb3Balt6C3ccX4Zj6UCrx3vASlrjE
+7IYj3g2wXvxmlyK2lGbCFOmOlcgzIDqZDE/cRNPzZjlLKmdGZbhJkVtZoJFSUJbn
+jn9+/qq06GWatofeGWH/oVCAEd99eSQXisnJTXR4hEqg6cm0kUTVD6E0MVuW6LX4
+2QhQb6PHPPm2T/PCDXp9mcI862nb8mhX/gC8o+SU85e3+eVup+JOM6NVeA4UnebZ
+aGNQXDD4guqdHBk92cgUkkj37ID5lpSsygWYH3R1VYFhxrpfMSFlQbQOTvqALxGA
+DF6NZ5lDZ+73THpopXc21ND5kj6yRmlc5lWRPuX0zlkc16crxF7CbCgaf3r6Dz2T
+Ce3yRU+EcYDCIp+vcJelosu4etKiArtMCxHtnkSPTdeb2CdOr0RrTazaN26TXWAM
+yYcj9ilGhIo=
+=M4fo
+-----END PGP SIGNATURE-----
+
+--=-mhRsvgjiaQfs8NewnruW--
