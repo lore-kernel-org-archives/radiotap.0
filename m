@@ -1,12 +1,13 @@
-From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Subject: Re: rfc: "canonical" radiotap parser
-Date: Sat, 8 Dec 2007 15:06:45 -0600
-Message-ID: <20071208210645.GX3568@che.ojctech.com>
-References: <20071207045545.GO3568@che.ojctech.com> <1197110397.4171.46.camel@johannes.berg>
+Date: Mon, 10 Dec 2007 13:37:30 +0100
+Message-ID: <1197290250.6035.69.camel@johannes.berg>
+References: <20071207045545.GO3568@che.ojctech.com>
+	 <1197110397.4171.46.camel@johannes.berg>
+	 <20071208210645.GX3568@che.ojctech.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1197110397.4171.46.camel-YfaajirXv214zXjbi5bjpg@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-qLoaY2Ct7ZsJosbdh/UO"
+In-Reply-To: <20071208210645.GX3568-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -16,48 +17,46 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org
+To: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+Cc: radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-On Sat, Dec 08, 2007 at 11:39:57AM +0100, Johannes Berg wrote:
-> Hi Dave,
-> 
-> I just took a quick look at the parser, it looks pretty good. Andy has
-> done something similar and was willing to relicense it under BSD last I
-> asked him, his code is part of the Linux kernel right now:
-> 
-> http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=blob;f=net/wireless/radiotap.c;hb=HEAD
+--=-qLoaY2Ct7ZsJosbdh/UO
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-I will take a look at that.
 
-> Small question on the code: why did you declare that radiotap_field is
-> aligned? It can potentially come from anywhere unaligned, no?
+> I was trying to give the compiler a hint to help it generate better
+> code on architectures, such as ARM, where unaligned loads may take
+> many instructions.
 
-I was trying to give the compiler a hint to help it generate better
-code on architectures, such as ARM, where unaligned loads may take
-many instructions.  Making the whole structure 64-bit aligned doesn't
-sit very well with me.  I believe this is better,
+Well, yes, but who guarantees that it actually *is* aligned that way?
+Radiotap only specifies that the fields are aligned with respect to the
+start of the header, but there's nothing that guarantees alignment of
+that.
 
-union radiotap_field { 
-        int8_t          f_i8[8];
-        uint8_t         f_u8[8];
-        uint16_t        f_u16[4];
-        uint32_t        f_u32[2];
-        uint64_t        f_u64;
-        struct radiotap_xchan {
-                uint32_t        xc_flags;
-                uint16_t        xc_mhz;
-                uint8_t         xc_chan;
-                int8_t          xc_dbm;
-        } f_xchan __attribute__((__packed__, __aligned__(4)));
-        struct radiotap_chan {
-                uint16_t        c_mhz; 
-                uint16_t        c_flags;
-        } f_chan __attribute__((__packed__, __aligned__(2)));
-};
- 
-Dave
+johannes
 
--- 
-David Young             OJC Technologies
-dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933 ext 24
+--=-qLoaY2Ct7ZsJosbdh/UO
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Comment: Johannes Berg (powerbook)
+
+iQIVAwUAR10zCaVg1VMiehFYAQJewA/+NIimE+mSddkrVb2Rlm3OlumlHI1JF6al
+Bzo7Mkg07S1X20OEGlfyUqBW3BFetbpG++MnRSYyOe3aaXEj7Dfy0/oufcn/YUTQ
+f7Ax1Ic+yeVrtPho2PnLJPHjciFLVFg8HskGYPv7RCT3ZMvNzvaohZONf8vfOD4s
+sgWFaOGxd6dFDAaE+DjZhXSiq7e8mfz41j9AF6eD9ziTP6LoixHDNHOnyp9TODgb
+++MsPvnijeWrw1B93CuCgtzpXdcExgSdA/DLUYuF+TQ3x98b7BgnkjdPkzikkDTH
+qtuwSFCsgvgFV4sXIDfAqUZ+7BFcmB3wm8TyqupC7753Ppia3xWfbVEKsC4bkYxK
+2a6Qk25b9kgLQHKF/devTKLKAYoeVbhHCBqZImC/n5x/lYNDqU8yrgcC0k4Mp3Fy
+iVQSrY5w2nw4e2EwrPFJ6EEeioUIgkBnEyN+w5dgyOgVpL5EMY7OOSdsaciSd3le
+Uw9bCZemC/OgoeFlJY4o/2mgskpIpP212egaQyVsOxOsSy2dbmNgwugiLdD/eqXi
+YKJdQ6ERlXtoII1OVFPM4A68zh+fflwEL9xDb6j82Ay8f3quIy57QlQ5jibkdgAM
+o/lxLgc4MuJiJn4/cCz+mYhwmdxCsg7NP77tjCcAV2mwach6YfbZHHBqGn7Bg4gN
+GHWY2NS+IPo=
+=45Y0
+-----END PGP SIGNATURE-----
+
+--=-qLoaY2Ct7ZsJosbdh/UO--
