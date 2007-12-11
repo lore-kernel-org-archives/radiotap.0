@@ -1,15 +1,11 @@
 From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Subject: Re: rfc: "canonical" radiotap parser
-Date: Tue, 11 Dec 2007 14:32:52 +0100
-Message-ID: <1197379972.4037.11.camel@johannes.berg>
+Date: Tue, 11 Dec 2007 22:38:18 +0100
+Message-ID: <1197409098.6558.18.camel@johannes.berg>
 References: <20071207045545.GO3568@che.ojctech.com>
-	 <1197110397.4171.46.camel@johannes.berg>
-	 <20071208210645.GX3568@che.ojctech.com>
-	 <1197290250.6035.69.camel@johannes.berg>
-	 <20071210191815.GE3568@che.ojctech.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-rHhQo75KESjyZZ4T04PP"
-In-Reply-To: <20071210191815.GE3568-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-HiKgrUYicov9KavmuAl8"
+In-Reply-To: <20071207045545.GO3568-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -23,40 +19,61 @@ To: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
 Cc: radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org
 List-Id: radiotap@radiotap.org
 
---=-rHhQo75KESjyZZ4T04PP
+--=-HiKgrUYicov9KavmuAl8
 Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
 
 
-> The caller of radiotap_parse_first() must supply a 64-bit aligned
-> ieee80211_radiotap_header in the first argument.  If the header is not
-> so aligned, then the parse fails right away with RADIOTAP_ERROR_ALIGNMENT=
-.
+On Thu, 2007-12-06 at 22:55 -0600, David Young wrote:
+> At <http://svn.cuwireless.net/svn/cuw/trunk/src/radiotap/> is the radiota=
+p
 
-Ah. I missed that, sorry.
+Another thing, I think it has endianness issues. Have you tested on big
+endian platforms?
+
+        case IEEE80211_RADIOTAP_LOCK_QUALITY:
+        case IEEE80211_RADIOTAP_TX_ATTENUATION:
+        case IEEE80211_RADIOTAP_DB_TX_ATTENUATION:
+                printf("%s %" PRIu16 " ", fi->fi_shortdesc,
+f->f_u16[0]);
+                break;
+
+That looks like it should have a conversion.
+
+Also, here's an ambiguity in the standard:
+
+ * IEEE80211_RADIOTAP_FHSS              uint16_t        see below
+ *
+ *      For frequency-hopping radios, the hop set (first byte)
+ *      and pattern (second byte).
+
+first/second byte is not really defined, I think this should be defined
+as 2x uint8_t.
+
+FWIW, I'm working on per-field pages on the wiki.
 
 johannes
 
---=-rHhQo75KESjyZZ4T04PP
+--=-HiKgrUYicov9KavmuAl8
 Content-Type: application/pgp-signature; name=signature.asc
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 Comment: Johannes Berg (powerbook)
 
-iQIVAwUAR16Rg6Vg1VMiehFYAQLZhA//cC4TnXmMX8LCn/MhKmL770Gg3Q79Ak/7
-9kPcm/K0bflv3Yn0MptnlL8pP5fqPtkOGYn6MHrgnLzmYD/jOk4rPFzJ8lpI7QOq
-6ZRaBF0AGjks/Omd2A3JnLEjpfwiTHjPqth/WbbnRBpFJHs2FUafpfBkqpayXAa7
-InRC93RmIjoEYMwYA2TiQrbNzDc0H5gOebadfI5yEGzkU93uoeSFZagycnxX7an+
-G35ohuxR00SuEWAGoIirPVsikGVgxlAWt+A64OtC8FzMNRvCZJBvw+zJlWcP+6uB
-WePqAg3cJwhArvLcPu8T/BKZpPimntqgZu8w4WX+AOo/A8zft42kbZDcf5cPpgkM
-fbS/rhfvksD16aGYvooWdCqBuO6zJ9Fm7wsTNg4XHqbXQG2DGqq3IFF3tL975AG3
-iYvasRyMCUZGfEy31kD6s14WmxZdXu1iZ/6CKXQ6zFtHVQlT2whT4P6Rlh+9fM2Y
-Esv/hdRPk2NtzGFBGy+8WZcPDvRvM0i02ZiwIObEbcFkBf0kn5WrKSPlcWQlA3Z9
-sP+ConUrV9ahnj67x+dW3CH95obuQ6GOt0VMB4p9L/eUw2XNBwVPj3hJsSQrGpk7
-beIdZyY+kgZZ9yGED2BJPT68hWQXf1fIpadNx07pPE0Vke200qxhvhsA+uGGwYaY
-myDEzKUr+mU=
-=iRMC
+iQIVAwUAR18DSaVg1VMiehFYAQLy5Q/9Gd/pOqvUfIbnZbdoRR0fqkwXRnQNRoOZ
+k7BIGs64LwbH9AudTdlv//R08a/Jf2UaDRv1w5LNv9UDryJXL4ZV2/i0NTzC/7W0
+FgoH93buLhbftXykFk1dCh/HHjnyGYYRYFXoR2rAhXyuG4pcnN2H90HhA1HsgtHA
+mB99zH69a+ySMhQHm584MMKe6moyZvVi0j8ptMXmz6CEZ+W2oyQ05eO2ol7cXQnM
+GS00KXVZDqot3bJi098Y1gpaIqpeXsHH5mjZGAqC5oEhQtHhUKhEI5Uvnjc58XQG
+2u2o+G5UnfYB6YNQ8JNCpxvPBfS2V0tjLW3l2LhgLQ83s82468cWpqLV8Nsl2Ibu
+lBkiQRRk7MgObOmiGThu0gUgBMvAic4ANjmhWMjFk3eL8XIuMsfn+wXRycPl3wCu
+0Ak3kBys5oUkPanqhWnN3VDlyT9Sh22Cmr2wueeWbBn+xFNMOAis9jqz5fcGmsc4
+0twhxCvzAnKFZBpxYysVnXvdSqCsdSZ3xl9iiVrd+Lu3rb7QtxiT/ZV96Ybub8Vz
+8fz2bcbQ+DwtNiC7o6tw/m06pTCeeuzArZkutlR5XIwplJSxo9RE7YjLZb8Xr2gx
+ygdyqWA2O+6CqlYzghgLeaUCtgvCm+DRdJZVwYJS3Z9IkukAqTAEjMzr1h0S2/5I
+j/2H+gjuVTA=
+=OLsX
 -----END PGP SIGNATURE-----
 
---=-rHhQo75KESjyZZ4T04PP--
+--=-HiKgrUYicov9KavmuAl8--
