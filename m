@@ -1,14 +1,9 @@
 From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: Re: use of radiotap bit 14?
-Date: Wed, 12 Dec 2007 18:27:56 +0100
-Message-ID: <1197480476.6558.130.camel@johannes.berg>
-References: <1188512214.7585.3.camel@johannes.berg>
-	 <20070912180619.GB17887@che.ojctech.com>
-	 <1189668582.6161.91.camel@johannes.berg>
-	 <20071007235551.GN6429@che.ojctech.com>
+Subject: radiotap field definitions on the website
+Date: Sat, 22 Dec 2007 16:38:01 +0100
+Message-ID: <1198337881.6630.9.camel@johannes.berg>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-S+Bql8BV08M+myTnY9cu"
-In-Reply-To: <20071007235551.GN6429-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-AZoZIKUA+zZd2ZjbUwj7"
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -18,64 +13,41 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
-Cc: radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
+To: radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org
 List-Id: radiotap@radiotap.org
 
---=-S+Bql8BV08M+myTnY9cu
+--=-AZoZIKUA+zZd2ZjbUwj7
 Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
 
-> Reset Namespace Field (30)
->=20
->         presence bit IEEE80211_RADIOTAP_NSRESET =3D 30
->         1-byte alignment
->         0 bytes long
->         scope: this bit is reserved in all namespaces, and it is
->                interpreted identically in every namespace
->=20
->         Upon interpreting this field, the interpreter shall reset its
->         presence-bitmap index to 0, and change to the default radiotap
->         namespace, before it interprets subsequent presence-bitmap words.
+Since Luis started to put some documentation up I decided to make an
+"RFC" for the fields section, check out
 
-Maybe we can find somebody whose OUI we can borrow, then we could define
-that the namespace selector 0 within that OUI selects the radiotap
-namespace rather than having an extra bit for it. I think that would be
-simpler to parse and understand.
-
-That way, we could do everything with a single bit. Since that takes
-quite a bit of space (5 bytes plus padding for each switch) the reset
-bit would be useful independently to reset within a namespace. It might
-make sense to define it to have a field too, namely a u8 that indicates
-which offset to reset to: field value * 32 (or 24 if you accept my other
-proposal)
-
-If there is somebody willing to donate part of their radiotap namespace,
-having an "experimental" selector and a selectors for each OS would
-probably be useful as well.
+http://www.radiotap.org/defined-fields
+http://www.radiotap.org/suggested-fields
 
 johannes
 
---=-S+Bql8BV08M+myTnY9cu
+--=-AZoZIKUA+zZd2ZjbUwj7
 Content-Type: application/pgp-signature; name=signature.asc
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 Comment: Johannes Berg (powerbook)
 
-iQIUAwUAR2AaG6Vg1VMiehFYAQJVwA/3cSFzF7eRX6tstS9LET2xEX1UmvP8BtcB
-zqJwOIBZGCL9tPeCWH2N5pqmByk8SUtqsWXT8oqZJ/hsx9Acp/91QpkWXgQlZ1qH
-2kRBwYHGPctE+4EhK5Zgkgm+F7bMCSts7eLZIHM3NfAFBJ4IjoT3hTVj1PhAKylZ
-6DNkf65rzAj7D1600krK3kcNWEpVJFmj9vZe1XxsiQQGabO/p4pRM0YrJ1IfZTO0
-kLXuW9v4DfNOcTjmfvMX3VbPGHyaF2lgqxqRLFUtio1PRubfglQMAySGeM2NKEmN
-iv6tLR9kjstrgo8ebQwJdmNVJsTpuwfYodbqkBvEr6J49i+ZlUw7oFqRlYF/1qb+
-Nvhj2DyilReSfRCMiF2q/R0k8mfPXo3A9oaTHOUG/59g5tJ61ODHW6mGQu7FkUqD
-vkEQig6ebjyKEGu8lzYfIB3YuxWW6uzSSGJ87nHluLKJrBTqPdyJ13pC570haj3J
-5igy36Fncb9aztMbw8QfAgY+7Mi5vP+TGtBbbXsRZGyCVlX1SH31x7tqHEjfMqUe
-po2py6n33RY1XIvBeAz67267Fk9OGbSw1wgeE6iyASoP/prhRkyD4ZM4J6aFxgUY
-4ifU7bstuKsgYdetUdwbTMWdye7dkDDaciL5IO2xTWBKBYb6TxZJTqU2OSOIfot+
-C+6yBV+SQg==
-=dWGA
+iQIVAwUAR20vWKVg1VMiehFYAQINBw//bLqS/pbv/ErViEX6mkFtNzm/m6DMURG2
+Ictc6KwCR195B3custvPxIxbXxGdmhaFipVywQSl9v5heo/XZ4K90h/jsyBsUID9
+YzrLu5A/TP5WgZJZZOLpNt4tUojTWIGeHWk9Pcbqvi8uzdk9x25/ahV9bmKd1vYI
+2+wAJTTS1PCfIgnq/UfU8riXW1evbfhtrQnYj0xnIHIPiCbzhBcT6jN8zos9Sxkn
+enIGQI8Zk0AGe+EqzsQq9icvriOWmlC0hVGmT0YmuMjeMHvpFUAuHuuxY5Ak+ayX
+xxiHVei0yKFYS/e6chPyGS2xf6IMPwp7mINQcPWy1p7Z8UMES+mxjWyPR56ACta1
+PiOxPeeTwFC2fJsGDR/XVD7O+WIfmYxy95GblbF2ghUmYRGLBX7154HalEiZEH85
+akXQLfwUyWz1zMcWgQVQx+77HPQj8Fq1h8wn13B373Db994DRtx2txoU53tmvePs
+rCV3JoQyLhoD0iyDOIPd0gHIfeBAZT5c6fNNB5az5aj4M2Xh9KJPndKZLUmSEcS2
+IfCmrHpTnM5VcgJwST052PcE3fubJMS8fyIdxdZQ0G7xTEvaIvO3HcTjgPbmVOHb
+sv0uucE5zDeguH2cqRrz1K6ZieIEjlKjParCns+at2T6W1LRPNPsbQV+SUUCo6o5
+vqs33okRcPg=
+=P/iK
 -----END PGP SIGNATURE-----
 
---=-S+Bql8BV08M+myTnY9cu--
+--=-AZoZIKUA+zZd2ZjbUwj7--
