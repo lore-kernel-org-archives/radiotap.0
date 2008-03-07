@@ -1,7 +1,7 @@
-From: Ivo van Doorn <ivdoorn-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: bruno randolf <bruno-L9ZBdB2wSWtl57MIdRCFDg@public.gmane.org>
 Subject: Re: [RFC] RCPI support in radiotap and in our wireless subsystems
-Date: Thu, 6 Mar 2008 21:55:17 +0100
-Message-ID: <200803062155.19725.IvDoorn__11570.4779200771$1216696539$gmane$org@gmail.com>
+Date: Fri, 7 Mar 2008 09:32:50 +0900
+Message-ID: <200803070932.51396.bruno__30458.2590856173$1216696539$gmane$org@thinktube.com>
 References: <43e72e890803061238u50847f1fs587627c5fac028d6@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain;
@@ -22,29 +22,72 @@ To: "Luis R. Rodriguez" <mcgrof-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: linux-wireless <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org, Ivan Seskar <Seskar-NvJAj8134tRxEa0u/P/EHDe48wsgrGvP@public.gmane.org>, Haris Kremo <harisk-NvJAj8134tRxEa0u/P/EHDe48wsgrGvP@public.gmane.org>, "John W. Linville" <linville-2XuSBdqkA4R54TAoqtyWWQ@public.gmane.org>, Simon Barber <simon-r/za7OOdgF0ztatW0fm/fQ@public.gmane.org>, Dan Williams <dcbw-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, Luis Carlos Cobo <luisca-W/OLz77bvjtBDgjK7y7TUQ@public.gmane.org>, Javier Cardona <javier-W/OLz77bvjtBDgjK7y7TUQ@public.gmane.org>, Sam Leffler <sam-zZXckVAlHaQAvxtiuMwx3w@public.gmane.org>, Jean Tourrilhes <jt-sDzT885Ts8HQT0dZR+AlfA@public.gmane.org>, Stefano Brivio <stefano.brivio-hl5o88x/ua9eoWH0uzbU5w@public.gmane.org>, Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-Hi.
+On Friday 07 March 2008 05:38:45 Luis R. Rodriguez wrote:
+> I've been reviewing use or RSSI value, signal strength and noise on
+> several Linux drivers, namely MadWifi, ath5k, ipw2200 and b43, and how
+> these are populated using radiotap headers. It quickly became clear we
+> should probably abandon RSSI's use in radiotap and slowly move to
+> using RCPI [1] for both radiotap and for later use on our wireless
+> subsystems. Reasons for doing so is:
 
-> ---
-> 
-> For ipw2200:
-> 
-> s8 antsignal = frame->rssi_dbm - IPW_RSSI_TO_DBM;
-> 
-> and IPW_RSSI_TO_DBM is set to 112.
-> 
-> Is antsignal above the "measure by the PHY sublayer of the received RF
-> power in the channel measured over the entire received frame"?
+i think it's worth the effort to try to clean up this mess and get some 
+standardisation between the devices as far as possible but i'm afraid we are 
+at the mercy of the values the hardware gives us and the information we get 
+from hardware vendors about the meaning of these values.
 
-For completeness, the rt2x00 & RSSI:
+> a. Currently Radiotap's definition and use of
+> IEEE80211_RADIOTAP_DB_ANTSIGNAL and IEEE80211_RADIOTAP_DBM_ANTSIGNAL
+> is not so clear
 
-rt2400pci, rt2500pci, rt2500usb:
-Same as ipw2200 only the IPW_RSSI_TO_DBM varies from 100 to 120 (as
-hardcoded value in the register) to a unsigned char value read from
-the EEPROM. The legacy drivers _suggest_ this is the rssi...
+i think it's quite clear, except that it does not state when this signal is 
+supposed to be measured.
 
-rt61pci, rt73usb:
-The device reports an agc value, this is used as basis for a vague calculation
-to determine the RSSI_TO_DBM offset based on LNA and current operating band.
-Here too, the legacy driver suggests this is the rssi...
+if all devices could use this in the same way that would already be great!
 
-Ivo
+> For Atheros hardware:
+>
+> RSSI is defined to be equivalent to the Signal To Noise (SNR) [3] and
+>
+> SNR = Signal - Noise
+>
+> Now, this is great, however the next question is what Signal is and
+> what Noise is. Is Signal or SNR here the "measure by the PHY sublayer
+> of the received RF power in the channel measured over the entire
+> received frame"?
+
+no, according to the information we have from madwifi it is not:
+
+/*
+ * rx_rssi is in units of dbm above the noise floor.  This value
+ * is measured during the preamble and PLCP; i.e. with the initial
+ * 4us of detection.
+ */
+(this is copied from a comment in hal/ah_desc.h)
+
+> So I propose IEEE80211_RADIOTAP_RCPI, defined as above, and hopefully
+> we can start figuring out what exactly RSSI values are in the
+> different cards we support to compute this. Comments?
+
+it's good to extend radiotap to include this possibility, but at least for 
+atheros hardware we know we can't supply this value (unless newer devices 
+allow us to get a RCPI value somehow, but we probably would need atheros 
+support to know that).
+
+it would already be an important step to better define the variables inside 
+mac80211, so drivers can report what they support (and mac80211 can make the 
+translations to the weird values iwconfig uses).
+
+right now the variable names inside mac80211 are really ambigous and not very 
+well defined. in struct ieee80211_rx_status we have:
+
+ * @ssi: signal strength when receiving this frame
+ * @signal: used as 'qual' in statistics reporting
+ * @noise: PHY noise when receiving this frame
+
+it could be changed to something like:
+
+ * @signal: signal strength in dBm above noise or RCPI according to flag
+ * @noise: PHY noise in dBm when receiving this frame
+ (remove ssi)
+
+bruno
