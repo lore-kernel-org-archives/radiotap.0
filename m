@@ -1,9 +1,12 @@
-From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: naming conventions for "fixed" and "floating" bits
-Date: Thu, 19 Jun 2008 20:54:42 +0200
-Message-ID: <1213901682.8967.74.camel@johannes.berg>
+From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: use of radiotap bit 14?
+Date: Thu, 19 Jun 2008 13:56:46 -0500
+Message-ID: <20080619185646.GA17738@che.ojctech.com>
+References: <1188512214.7585.3.camel@johannes.berg> <1213897499.8967.46.camel@johannes.berg>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-hTSejbJyoFzDPhLRk2JS"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1213897499.8967.46.camel-YfaajirXv214zXjbi5bjpg@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -16,42 +19,72 @@ List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
 To: radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
---=-hTSejbJyoFzDPhLRk2JS
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+On Thu, Jun 19, 2008 at 07:44:59PM +0200, Johannes Berg wrote:
+> Ok, I tried collecting all the information, and here's what I found so
+> far:
+> 
+> http://www.radiotap.org/suggested-fields
+> 
+> Bits 14, 15 and 16 are defined twice.
+> 
+> Can we declare bits 14 through 18 reserved (i.e. may not be used) and
+> continue life at 19? Current parsers would have to be changed (the only
+> one I found is wireshark and internal ones like hostapd, Linux kernel)
+> to treat the presence of those bits to be an abort-condition and as an
+> error if there are any above them, current generators would have to stop
+> generating those fields over time and instead generate standardised
+> versions.
+> 
+> For me, of course, it would be more comfortable to stick with RX/TX
+> flags in 14/15 and RTS retries in 16, but since it's not widely used in
+> Linux yet I can easily discard them.
 
-Hi,
+Johannes,
 
-When we were discussing the namespace bits 29 and 30 we really all knew
-we meant that those bits are reserved in _every_ 32-bit it_present value
-like the extension flag 31, not just reserved as field numbers.
+I favor these assignments:
 
-Would anybody object to adopting the naming convention that the "fixed"
-bits be called "flags" and the "floating" bits be called "field
-indicators", or similar?
+14 /RX flags
+15 /TX flags
+16 /RTS retries
+17 /data retries
+18 /XChannel 
 
-johannes
+> We need to reach a decision though, this is blocking further work on 11w
+> and AP mode in Linux. I'm willing to lead such an effort if you let me
+> "take over" maintainership of the standard.
 
---=-hTSejbJyoFzDPhLRk2JS
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Description: This is a digitally signed message part
+I think that what you mean is to lead a discussion of fields 14 and
+beyond?  I reckon that no fewer than 4 persons or organizations have
+"taken over" maintainership of the standard by now, and that is how we got
+into the current mess, with the same bits used for different purposes. :-)
 
------BEGIN PGP SIGNATURE-----
-Comment: Johannes Berg (powerbook)
+I initiated the mailing list so that there is one place to propose new
+fields for discussion and adoption by the community of radiotap users.
+It's not here so that anybody, least of all you and I, can tell everybody
+else what the fields are.
 
-iQIcBAABAgAGBQJIWqtsAAoJEKVg1VMiehFYBoMP/isqqU507bZSaaSFyzqJUc3E
-UVbw82HMJRAGhdZ4rXQUR75wt97yTyIdXQm5fAASTU2EmBoV8Jn0ZRFX3pGwqxfq
-sS7K9Ti3+y4y3ZJ47q5vMMX5mtTuYFKpQm4iXKznUmrRcnpfigLaKy/FN1wZ55gD
-7jbl8cL+xz+0uKVz+lupdb5EKRvKke2iKoCwWBQg9hBS2sFPZkeeVdvL9ybUUQ12
-DPMn88DFxZgvj/obH57QMe7a86V8Y4oLJJZP7PqgNkUCivQFh3bpSb5UnAcwIe1L
-3vlGfEilwGpc9NAlOVZs3dY4wIYfeF+W/qSD71dmiXUEqf6+7GIPbmuYlBcuMt61
-gVWu654+XB5dxvJossD0tfnbJ8l6irI/fZ4kC+YaNxaQXXziFR6ZWqdVzF8sUAnS
-c+O4AGguEJ4TwiBvwK2ycNX0rcbs2pL4KrvtgtbzOfRKAULda0lKn/UsBx3Ixbm4
-PGKT19X4q1MphDqxJqG0l2pqLO8fbncSAOLr2t32prTgHrzHQv5+G/QiSl9Uk+iK
-UV7N8IbKadgmPvYHA1L7aztG0P1adGMo92B8wfw56xQQWAW+FacxkRI68Lf/KAA0
-bIMg4Nla6hvf/9y4ucnea7uH2FAjQS7VSkXVnod4Cd1harjFJxoDHM6fwbxQZBNv
-hBIr2Glql9zXtgKyI0xD
-=6ofD
------END PGP SIGNATURE-----
+I don't think that reaching agreement on fields 14 and greater is
+necessarily so hard.  Here are three reasons why.
 
---=-hTSejbJyoFzDPhLRk2JS--
+First, Guy Harris invited a lot of people to this discussion list who
+seemed to have a stake in radiotap, and some of them did not show up.
+As I said before, we do not have to act as advocates for people who don't
+show up.  If the person who uses bit 14 for the flavor of packets will
+not stand up for it here, then there is no use wringing our hands over
+the conflicting assignment.
+
+Agreement is in everybody's interest.  Disagreement is not.
+
+This is not the IETF, but I think that "rough consensus and running
+code" is a perfectly fine way to decide what fields we adopt, and there
+is neither a consensus nor running code for some fields.  I think that
+the lack of code makes the current "conflicts" easy to resolve: just how
+much pain can we cause by assigning field 15 to Rx flags if some obscure
+driver emits field 15 equal to a packet's smell, but neither WireShark
+nor TCPDump interprets it at all?
+
+Dave
+
+-- 
+David Young             OJC Technologies
+dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933 ext 24
