@@ -1,12 +1,12 @@
-From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: Re: outgoing interface field
-Date: Thu, 19 Jun 2008 21:44:14 +0200
-Message-ID: <1213904654.8967.96.camel@johannes.berg>
-References: <1213903728.8967.92.camel@johannes.berg>
-	 <1213904505.3240.27.camel@dv>
+From: Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
+Subject: Re: use of radiotap bit 14?
+Date: Thu, 19 Jun 2008 12:51:12 -0700
+Message-ID: <485AB8B0.7060606@alum.mit.edu>
+References: <1188512214.7585.3.camel@johannes.berg> <1213897499.8967.46.camel@johannes.berg> <20080619185646.GA17738@che.ojctech.com> <1213902633.8967.84.camel@johannes.berg> <20080619193958.GB17738@che.ojctech.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-Dfzk2lPTQm2ZKwpuHWy9"
-In-Reply-To: <1213904505.3240.27.camel@dv>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <20080619193958.GB17738-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -16,68 +16,25 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: Pavel Roskin <proski-mXXj517/zsQ@public.gmane.org>
-Cc: radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org, "Luis R. Rodriguez" <mcgrof-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
---=-Dfzk2lPTQm2ZKwpuHWy9
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+David Young wrote:
+> On Thu, Jun 19, 2008 at 09:10:33PM +0200, Johannes Berg wrote:
+>> Problem is, wireshark actually takes bit 14 to mean "FCS in header".
+> 
+> I'd forgotten about that, but I think that we still have some flexibility.
 
+As per my mail, we can just take that out; OpenBSD defines it as "FCS in 
+header", but doesn't appear to use it, and I don't know of any other 
+system that uses it as "FCS in header".
 
-> Are you injecting by sending data to a socket?  I think the sockets are
-> bound to VAPs, not to PHYs since VAPs are seen as network devices.
+Gerald, should we just remove the code that dissects 
+IEEE80211_RADIOTAP_FCS from the 1.0.1 Wireshark release, in preparation 
+for later releases interpreting presence bit 14 as RX flags?
 
-Yes. The socket is bound to a _cooked monitor_ interface.
-
-> Besides, are you going to serve more than one VAP with one socket?  I
-> would not do it without a good reason.  I think ioctl on the socket
-> would be an easier solution, as it needs to be done once per VAP, not
-> once per packet.
-
-Well, yes, of course we're going to serve multiple BSSes with one socket
-if they're all associated to one physical interface. Why not? It makes
-the code much cleaner and nicer. Why do you think I need a good reason
-to do this? I think you need a good reason _not to_ and this isn't a
-good reason. Besides, ioctls suck.
-
-> >  Further uses would be to use, for
-> > data frames, the fragmentation/RTS threshold from the given interface.
-> >=20
-> > I don't, off-hand, see any other OS requiring this, so I'm shopping
-> > around asking vendors if I can have part of their vendor OUI namespace
-> > (one of the sub-namespaces) for Linux, but if anybody sees value in suc=
-h
-> > a field for other OSes we can also add it to the standard.
->=20
-> We could probably register an official Linux OUI for that if the code is
-> intended for Linux.
-
-Who'd pay for it, and why bother to pollute the OUI namespace with
-something we're not using elsewhere?
-
-johannes
-
---=-Dfzk2lPTQm2ZKwpuHWy9
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-Comment: Johannes Berg (powerbook)
-
-iQIcBAABAgAGBQJIWrcKAAoJEKVg1VMiehFYCMUQAL1gBsHjvSVkTONXABA6b9X/
-UmgiVYf7D5gV9ziJqDhQzCMDxjd3Jrcxf85BuhFR7k6F8EDJXVuxa5X5KktQalgv
-NUNQQGSqPpBKYhSKPNtt//zSXC3cZ36yHeOfp/NMRHs9LrlOONYXCpO9ffL6uxWD
-53CtwFvcPARKjfoQnhLOlseuBK9ysBlOEiL0SnwyvHG6Ik/0rhmtoRj+lzK759VL
-Vhq6pZiDKKzfOKhRuwb6KkEAYRZSeagA1WQeScjUnH0I8KUSUq1dawIFJ3sSz+ED
-DjtMBbK5YaBmzZ37K7g71LuVJmYLWJ34sKVVGEM/2MR+YtsAteIuY+YfhNhX+qVa
-lNFvfItlxloiCbJ4b3nhAhZUlAatVcFxSAXnfvb8ywd+EwzVxLsC0UpitpmKeflA
-RS+nZ9gWQU9qyrO7N5FLVE2smxy+8mDQXEaFISowXGL9s/3XksdUVwAEfQxavkqw
-Q+y5X6F8I08nyJ0KkZMWK1L/So2IoLDC0ilqzhayTcHMgYjQcD1YpjMmoTscvt0C
-BfJMTH76BDbJi0lHxGRWVTZAo9jX3Z9YGGVenNpIbvffJS+jMlTZb+mE0QlpNx+G
-rVuGzlW0Dg0Z0apdTfudajlsS3hocHFSden0kTzrpJ6Chqdl5zsi6z3x8AYXTXtS
-ovnYivQLl4jZTPl/8Prq
-=/DlV
------END PGP SIGNATURE-----
-
---=-Dfzk2lPTQm2ZKwpuHWy9--
+The collision problem with 15 and 16 is worse - OpenBSD defines 15 as 
+IEEE80211_RADIOTAP_HWQUEUE, and defines 16 as IEEE80211_RADIOTAP_RSSI, 
+and several of their drivers use one or the other or both.  Wireshark 
+currently doesn't dissect them; it should dissect them according to the 
+standard.
