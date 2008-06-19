@@ -1,12 +1,12 @@
-From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: use of radiotap bit 14?
-Date: Thu, 19 Jun 2008 14:39:58 -0500
-Message-ID: <20080619193958.GB17738@che.ojctech.com>
-References: <1188512214.7585.3.camel@johannes.berg> <1213897499.8967.46.camel@johannes.berg> <20080619185646.GA17738@che.ojctech.com> <1213902633.8967.84.camel@johannes.berg>
+From: Pavel Roskin <proski-mXXj517/zsQ@public.gmane.org>
+Subject: Re: outgoing interface field
+Date: Thu, 19 Jun 2008 15:41:45 -0400
+Message-ID: <1213904505.3240.27.camel@dv>
+References: <1213903728.8967.92.camel@johannes.berg>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1213902633.8967.84.camel-YfaajirXv214zXjbi5bjpg@public.gmane.org>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <1213903728.8967.92.camel-YfaajirXv214zXjbi5bjpg@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -16,44 +16,42 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
+To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Cc: radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org, "Luis R. Rodriguez" <mcgrof-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-On Thu, Jun 19, 2008 at 09:10:33PM +0200, Johannes Berg wrote:
-> On Thu, 2008-06-19 at 13:56 -0500, David Young wrote:
+On Thu, 2008-06-19 at 21:28 +0200, Johannes Berg wrote:
+> For our particular implementation of AP mode with hostapd in Linux, we
+> are using radiotap-injection interfaces to send management frames.
 > 
-> > I favor these assignments:
-> > 
-> > 14 /RX flags
-> > 15 /TX flags
-> > 16 /RTS retries
-> > 17 /data retries
-> > 18 /XChannel 
+> Now, 802.11w (encrypted management frames) requires that those frames
+> are encrypted, due to key management issues we need to do that in the
+> kernel. This means we can no longer simply inject the frames, we need to
+> know, in the kernel, which interface to search for the key, since
+> multiple virtual AP interfaces/BSSes may be configured on a single PHY.
 > 
-> That'd be great to me. Want me to declare them that on the wiki, move
-> them over to the defined-fields and add the other ones as "suggested
-> fields" without assigned numbers?
+> This requires that we have a radiotap field indicating the outgoing
+> interface to use for such key lookups.
 
-Well, you and I agree, but let us give everyone else a chance. :-)
-Let's do this:
+Are you injecting by sending data to a socket?  I think the sockets are
+bound to VAPs, not to PHYs since VAPs are seen as network devices.
 
-1 define the alignment, width, interpretation of the fields (I believe
-  this is done, somewhere.)
-2 produce implementations wireshark and/or tcpdump and for one or
-  more driver
-3 post fields and code here, and on the wiki
-4 leave 7 days for discussion (ordinarily, this should be longer)
-5 if the proposal withstands discussion, re-post proposal in final form
-6 adopt the proposal in 7 days if there are no further objections
-  (discussion is over, however, 7 days lets everyone verify that the
-  proposal and amendments, as discussed, have become the standard)
+Besides, are you going to serve more than one VAP with one socket?  I
+would not do it without a good reason.  I think ioctl on the socket
+would be an easier solution, as it needs to be done once per VAP, not
+once per packet.
 
-> Problem is, wireshark actually takes bit 14 to mean "FCS in header".
+>  Further uses would be to use, for
+> data frames, the fragmentation/RTS threshold from the given interface.
+> 
+> I don't, off-hand, see any other OS requiring this, so I'm shopping
+> around asking vendors if I can have part of their vendor OUI namespace
+> (one of the sub-namespaces) for Linux, but if anybody sees value in such
+> a field for other OSes we can also add it to the standard.
 
-I'd forgotten about that, but I think that we still have some flexibility.
-
-Dave
+We could probably register an official Linux OUI for that if the code is
+intended for Linux.
 
 -- 
-David Young             OJC Technologies
-dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933 ext 24
+Regards,
+Pavel Roskin
