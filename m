@@ -1,16 +1,14 @@
-From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: Re: use of radiotap bit 14?
-Date: Thu, 19 Jun 2008 22:25:18 +0200
-Message-ID: <1213907118.8967.115.camel@johannes.berg>
-References: <1188512214.7585.3.camel@johannes.berg>
-	 <1213897499.8967.46.camel@johannes.berg>
-	 <20080619185646.GA17738@che.ojctech.com>
-	 <1213902633.8967.84.camel@johannes.berg>
-	 <20080619193958.GB17738@che.ojctech.com> <485AB8B0.7060606@alum.mit.edu>
-	 <485ABC4A.4060801@gmail.com>
+From: Pavel Roskin <proski-mXXj517/zsQ@public.gmane.org>
+Subject: Re: outgoing interface field
+Date: Thu, 19 Jun 2008 16:29:11 -0400
+Message-ID: <1213907351.3240.54.camel@dv>
+References: <1213903728.8967.92.camel@johannes.berg>
+	 <1213904505.3240.27.camel@dv>  <1213904654.8967.96.camel@johannes.berg>
+	 <1213906196.3240.47.camel@dv>  <1213906462.8967.110.camel@johannes.berg>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-2784HxwydaIjj4oEeCPf"
-In-Reply-To: <485ABC4A.4060801-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+In-Reply-To: <1213906462.8967.110.camel-YfaajirXv214zXjbi5bjpg@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -20,44 +18,37 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
+To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Cc: radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org, "Luis R. Rodriguez" <mcgrof-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
---=-2784HxwydaIjj4oEeCPf
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+On Thu, 2008-06-19 at 22:14 +0200, Johannes Berg wrote:
 
+> > Besides, radiotap headers are designed to be transferable between
+> > systems.  It should be possible to send frames with radiotap headers
+> > from another system, possibly with a different endianness and
+> > different
+> > wireless hardware.  Encoding local data (VAP number) makes radiotap
+> > headers system-specific.
+> 
+> This isn't designed to be ever saved to disk, it's for communication
+> between userspace and the kernel when running an AP. We just happen to
+> use radiotap for that to save inventing yet another interface.
 
-> AirPcap uses the IEEE80211_RADIOTAP_FCS flag. We can remove it, but all=20
-> the trace files produced with airpcap+radiotap until now include it.
+Then there is very little point in discussing it.  I thought you were
+going to suggest some elegant addition to the standard.  Piggybacking
+the frames with some OS and system specific data is not.
 
-Is that really going to be a problem? It'd be trivial to write a filter
-that rewrites such existing files to have the FCS at end (I never
-understood the need for in-header FCS anyway.) And even if you don't,
-you only lose the FCS?
+> > It's funny, we are creating the rules that exclude us, and then we are
+> > shopping around for sponsors.  We need exceptions for experimental use.
+> 
+> Actually, I just figured out that the OUIs have a 'locally assigned' bit
+> like MAC addresses (well I guess MAC addresses inherit it from OUIs), so
+> we can use that and assign "experimental" OUIs to ourselves as long as
+> they don't clash within radiotap.
 
-johannes
+OK, fine.
 
---=-2784HxwydaIjj4oEeCPf
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-Comment: Johannes Berg (powerbook)
-
-iQIcBAABAgAGBQJIWsCqAAoJEKVg1VMiehFYKiwP/RgbPpArUIFP1gYuUUikRhEt
-TpuHh2VyfbJNxxP7jXYY235GLut2oHiWrvZhj4CWQJ7hXfazO20sP6XfMEpO6HC4
-eQiKlY0/6teQeG94nwLDiRDoj2ZVo7ITPw2kqg3qyla0nXLdt/qTEu+umRMGr2iC
-TMgaCMGtik+JCqUGPJrgHUjHOq3LcRCBp9T2rhovLbJPqOeO/BRZeS9I35ViOyqa
-MZhPof+BVCEhGQGu6ZLItrITfLRfQCAqFchrA+mP8m5GLOKq0stQSLEjZ0B/xMRQ
-7evSjerAMVSBJzosjoOoLEZmqTQSTFWXsSrDH6bzlJON4ltzSLjfKK0cYB0CjKY3
-Dy3rEYfqRg0yFQcSdraw1L3exi+zPhM0rQZ4OdN82Xoyjfq1koDQN6vaZXx2BUSX
-vCLi9EU8+XC6T7RJ2nMZfVFLt2YwrL8/KOuwwUqoYkVXYv2IwS/KA7UlKOJtiZKl
-gui7VlabsU73ieh9QVlfpwrpZYEBZsyAYkcCOE+6qvJnpZAFykDXVTlCVoSgGUze
-8AyGsdNQeyROwJl/bdtD3VssVDkjF6W5kcKaUDdsAyxbxIdVbnQB3fN08rzII/KL
-jk46yWHRvZTwkORg0JlXMh7og/ug6ljaKsly5r7ELRbYXagxzqltjaNOR5LeM3oY
-tDCmy62zEPD//oz+O2xI
-=8GIM
------END PGP SIGNATURE-----
-
---=-2784HxwydaIjj4oEeCPf--
+-- 
+Regards,
+Pavel Roskin
