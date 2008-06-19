@@ -1,14 +1,12 @@
-From: Pavel Roskin <proski-mXXj517/zsQ@public.gmane.org>
-Subject: Re: outgoing interface field
-Date: Thu, 19 Jun 2008 16:29:11 -0400
-Message-ID: <1213907351.3240.54.camel@dv>
-References: <1213903728.8967.92.camel@johannes.berg>
-	 <1213904505.3240.27.camel@dv>  <1213904654.8967.96.camel@johannes.berg>
-	 <1213906196.3240.47.camel@dv>  <1213906462.8967.110.camel@johannes.berg>
-Mime-Version: 1.0
-Content-Type: text/plain
+From: Scott Raynel <scottraynel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: use of radiotap bit 14?
+Date: Fri, 20 Jun 2008 10:33:55 +1200
+Message-ID: <A4D4B4B8-69A4-481D-BFA7-BEE0A52F3148@gmail.com>
+References: <1188512214.7585.3.camel@johannes.berg> <1213897499.8967.46.camel@johannes.berg> <20080619185646.GA17738@che.ojctech.com>
+Mime-Version: 1.0 (Apple Message framework v924)
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
 Content-Transfer-Encoding: 7bit
-In-Reply-To: <1213906462.8967.110.camel-YfaajirXv214zXjbi5bjpg@public.gmane.org>
+In-Reply-To: <20080619185646.GA17738-eZ+MEZF6i8Dc+919tysfdA@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -18,37 +16,64 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Cc: radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org, "Luis R. Rodriguez" <mcgrof-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+Cc: radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-On Thu, 2008-06-19 at 22:14 +0200, Johannes Berg wrote:
+Hi all,
+On 20/06/2008, at 6:56 AM, David Young wrote:
 
-> > Besides, radiotap headers are designed to be transferable between
-> > systems.  It should be possible to send frames with radiotap headers
-> > from another system, possibly with a different endianness and
-> > different
-> > wireless hardware.  Encoding local data (VAP number) makes radiotap
-> > headers system-specific.
-> 
-> This isn't designed to be ever saved to disk, it's for communication
-> between userspace and the kernel when running an AP. We just happen to
-> use radiotap for that to save inventing yet another interface.
+> On Thu, Jun 19, 2008 at 07:44:59PM +0200, Johannes Berg wrote:
+>> Ok, I tried collecting all the information, and here's what I found  
+>> so
+>> far:
+>>
+>> http://www.radiotap.org/suggested-fields
+>>
+>> Bits 14, 15 and 16 are defined twice.
+>>
+>> Can we declare bits 14 through 18 reserved (i.e. may not be used) and
+>> continue life at 19? Current parsers would have to be changed (the  
+>> only
+>> one I found is wireshark and internal ones like hostapd, Linux  
+>> kernel)
+>> to treat the presence of those bits to be an abort-condition and as  
+>> an
+>> error if there are any above them, current generators would have to  
+>> stop
+>> generating those fields over time and instead generate standardised
+>> versions.
+>>
+>> For me, of course, it would be more comfortable to stick with RX/TX
+>> flags in 14/15 and RTS retries in 16, but since it's not widely  
+>> used in
+>> Linux yet I can easily discard them.
+>
+> Johannes,
+>
+> I favor these assignments:
+>
+> 14 /RX flags
+> 15 /TX flags
+> 16 /RTS retries
+> 17 /data retries
+> 18 /XChannel
 
-Then there is very little point in discussing it.  I thought you were
-going to suggest some elegant addition to the standard.  Piggybacking
-the frames with some OS and system specific data is not.
+For what it's worth, back in March 2007 I spent some time making sure  
+that madwifi used these bit assignments (minus XChannel, which I  
+hadn't heard of back then). I took the NetBSD headers to be the  
+"official" source of the Radiotap standard.
 
-> > It's funny, we are creating the rules that exclude us, and then we are
-> > shopping around for sponsors.  We need exceptions for experimental use.
-> 
-> Actually, I just figured out that the OUIs have a 'locally assigned' bit
-> like MAC addresses (well I guess MAC addresses inherit it from OUIs), so
-> we can use that and assign "experimental" OUIs to ourselves as long as
-> they don't clash within radiotap.
+Previously we had been using the in-header FCS flag, which I got rid of.
 
-OK, fine.
+So, madwifi has been using these bit assignments for some time now -  
+hopefully one more reason to not change them :)
 
--- 
-Regards,
-Pavel Roskin
+Cheers,
+
+--
+Scott Raynel
+WAND Network Research Group
+Department of Computer Science
+University of Waikato
+New Zealand
