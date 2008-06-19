@@ -1,11 +1,15 @@
-From: Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Subject: Re: use of radiotap bit 14?
-Date: Thu, 19 Jun 2008 13:17:45 -0700
-Message-ID: <485ABEE9.9060602@alum.mit.edu>
-References: <1188512214.7585.3.camel@johannes.berg> <1213897499.8967.46.camel@johannes.berg> <20080619185646.GA17738@che.ojctech.com> <1213902633.8967.84.camel@johannes.berg> <20080619193958.GB17738@che.ojctech.com> <485AB8B0.7060606@alum.mit.edu> <485ABC4A.4060801@gmail.com>
+Date: Thu, 19 Jun 2008 22:25:18 +0200
+Message-ID: <1213907118.8967.115.camel@johannes.berg>
+References: <1188512214.7585.3.camel@johannes.berg>
+	 <1213897499.8967.46.camel@johannes.berg>
+	 <20080619185646.GA17738@che.ojctech.com>
+	 <1213902633.8967.84.camel@johannes.berg>
+	 <20080619193958.GB17738@che.ojctech.com> <485AB8B0.7060606@alum.mit.edu>
+	 <485ABC4A.4060801@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-2784HxwydaIjj4oEeCPf"
 In-Reply-To: <485ABC4A.4060801-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 Errors-To: radiotap-admin-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
@@ -16,25 +20,44 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: Loris Degioanni <loris.degioanni-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
+To: radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-Loris Degioanni wrote:
+--=-2784HxwydaIjj4oEeCPf
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-> AirPcap uses the IEEE80211_RADIOTAP_FCS flag. We can remove it, but all 
+
+> AirPcap uses the IEEE80211_RADIOTAP_FCS flag. We can remove it, but all=20
 > the trace files produced with airpcap+radiotap until now include it.
 
-Oh, well.
+Is that really going to be a problem? It'd be trivial to write a filter
+that rewrites such existing files to have the FCS at end (I never
+understood the need for in-header FCS anyway.) And even if you don't,
+you only lose the FCS?
 
-Is it time to either rev the version number or pick a new DLT_ for 
-"standard" radiotap?
+johannes
 
-That doesn't help with existing captures - we'd probably have to add a 
-preference setting to control how to interpret bit 14 (and bits 15 and 
-16, if we ever add support for them, given that there's a collision 
-between the NetBSD and OpenBSD uses of them) - but it'd at least give us 
-a new DLT_ or version number value to use in the future, and anybody who 
-wants tcpdump or Wireshark to interpret any presence bits in a 
-non-standard fashion in files with that DLT_ value/version number can be 
-politely told "no, ask for an assignment from the radiotap list".
+--=-2784HxwydaIjj4oEeCPf
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Comment: Johannes Berg (powerbook)
+
+iQIcBAABAgAGBQJIWsCqAAoJEKVg1VMiehFYKiwP/RgbPpArUIFP1gYuUUikRhEt
+TpuHh2VyfbJNxxP7jXYY235GLut2oHiWrvZhj4CWQJ7hXfazO20sP6XfMEpO6HC4
+eQiKlY0/6teQeG94nwLDiRDoj2ZVo7ITPw2kqg3qyla0nXLdt/qTEu+umRMGr2iC
+TMgaCMGtik+JCqUGPJrgHUjHOq3LcRCBp9T2rhovLbJPqOeO/BRZeS9I35ViOyqa
+MZhPof+BVCEhGQGu6ZLItrITfLRfQCAqFchrA+mP8m5GLOKq0stQSLEjZ0B/xMRQ
+7evSjerAMVSBJzosjoOoLEZmqTQSTFWXsSrDH6bzlJON4ltzSLjfKK0cYB0CjKY3
+Dy3rEYfqRg0yFQcSdraw1L3exi+zPhM0rQZ4OdN82Xoyjfq1koDQN6vaZXx2BUSX
+vCLi9EU8+XC6T7RJ2nMZfVFLt2YwrL8/KOuwwUqoYkVXYv2IwS/KA7UlKOJtiZKl
+gui7VlabsU73ieh9QVlfpwrpZYEBZsyAYkcCOE+6qvJnpZAFykDXVTlCVoSgGUze
+8AyGsdNQeyROwJl/bdtD3VssVDkjF6W5kcKaUDdsAyxbxIdVbnQB3fN08rzII/KL
+jk46yWHRvZTwkORg0JlXMh7og/ug6ljaKsly5r7ELRbYXagxzqltjaNOR5LeM3oY
+tDCmy62zEPD//oz+O2xI
+=8GIM
+-----END PGP SIGNATURE-----
+
+--=-2784HxwydaIjj4oEeCPf--
