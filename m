@@ -1,13 +1,13 @@
-From: Sam Leffler <sam-zZXckVAlHaQAvxtiuMwx3w@public.gmane.org>
-Subject: Re: use of radiotap bit 14? [mostly 11n]
-Date: Tue, 01 Jul 2008 09:35:23 -0700
-Message-ID: <486A5CCB.1070606@errno.com>
-References: <1188512214.7585.3.camel@johannes.berg> <1213897499.8967.46.camel@johannes.berg> <20080619185646.GA17738@che.ojctech.com> <1213902633.8967.84.camel@johannes.berg> <20080619193958.GB17738@che.ojctech.com> <485AB8B0.7060606@alum.mit.edu>
+From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: naming conventions for "fixed" and "floating" bits
+Date: Mon, 7 Jul 2008 13:00:22 -0500
+Message-ID: <20080707180022.GK1269@che.ojctech.com>
+References: <1213901682.8967.74.camel@johannes.berg>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Return-path: <radiotap-admin-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org>
-In-Reply-To: <485AB8B0.7060606-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1213901682.8967.74.camel-YfaajirXv214zXjbi5bjpg@public.gmane.org>
 Sender: radiotap-admin-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org
 Errors-To: radiotap-admin-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org
 List-Unsubscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
@@ -17,56 +17,24 @@ List-Help: <mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subj
 List-Subscribe: <http://mail.ojctech.com/mailman/listinfo/radiotap>,
 	<mailto:radiotap-request-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org?subject=subscribe>
 List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
-To: Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
-Cc: radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
+To: radiotap <radiotap-rN9S6JXhQ+WXmMXjJBpWqg@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-Guy Harris wrote:
-> David Young wrote:
->> On Thu, Jun 19, 2008 at 09:10:33PM +0200, Johannes Berg wrote:
->>> Problem is, wireshark actually takes bit 14 to mean "FCS in header".
->>
->> I'd forgotten about that, but I think that we still have some 
->> flexibility.
->
-> As per my mail, we can just take that out; OpenBSD defines it as "FCS 
-> in header", but doesn't appear to use it, and I don't know of any 
-> other system that uses it as "FCS in header".
+On Thu, Jun 19, 2008 at 08:54:42PM +0200, Johannes Berg wrote:
+> Hi,
+> 
+> When we were discussing the namespace bits 29 and 30 we really all knew
+> we meant that those bits are reserved in _every_ 32-bit it_present value
+> like the extension flag 31, not just reserved as field numbers.
+> 
+> Would anybody object to adopting the naming convention that the "fixed"
+> bits be called "flags" and the "floating" bits be called "field
+> indicators", or similar?
 
-Right, as I told you that mechanism was only ever defined by netbsd. 
-Pulling the FCS out of band is not a good idea.  Presumably obsd just 
-brought it over.
+Works for me.
 
->
-> Gerald, should we just remove the code that dissects 
-> IEEE80211_RADIOTAP_FCS from the 1.0.1 Wireshark release, in 
-> preparation for later releases interpreting presence bit 14 as RX flags?
+Dave
 
-As Guy mentioned I worked with him to resolve at least one conflict 
-between various systems.  The definitions in freebsd have been in use 
-for a while and have shipped in released versions of the os so there are 
-many data files "in the field" and unless there's some way to maintain 
-backwards compatibility it's unlikely they'll change.
-
-As to shortgi et al, I've had simple 11n sniffing support for ~2 years 
-and sent Gerald+Guy my mods to provide the most basic support in 
-wireshark (haven't pushed tcpdump mods upstream year but they are in 
-freebsd cvs).  Since then I've done more involved changes for wireshark 
-but haven't pushed them back because I first wanted to leverage the PPI 
-dissector's support for reconstructing AMPDU aggregates.  However my 
-other changes build on the earlier work and that work addresses issues 
-more general than 11n so I believe they are worth keeping.
-
->
-> The collision problem with 15 and 16 is worse - OpenBSD defines 15 as 
-> IEEE80211_RADIOTAP_HWQUEUE, and defines 16 as IEEE80211_RADIOTAP_RSSI, 
-> and several of their drivers use one or the other or both.  Wireshark 
-> currently doesn't dissect them; it should dissect them according to 
-> the standard.
-
-I gave up trying to deal w/ obsd and tell anyone that comes to me w/ 
-data files from them that they need to convert formats if they want to 
-inspect the data.  I know that doesn't help but given the way radiotap 
-is designed (ATM) I don't see a better solution.
-
-    Sam
+-- 
+David Young             OJC Technologies
+dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933 ext 24
