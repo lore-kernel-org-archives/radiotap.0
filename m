@@ -1,7 +1,7 @@
-From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
-Subject: test
-Date: Mon, 22 Sep 2008 11:51:40 -0500
-Message-ID: <20080922165140.GJ26731@che.ojctech.com>
+From: David Young <dyoung-S783fYmB3Ccdnm+yROfE0A@public.gmane.org>
+Subject: testing, 1, 2, 3 ...
+Date: Tue, 11 Nov 2008 20:08:26 +0000
+Message-ID: <20081111200826.GA18040@NetBSD.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Return-path: <radiotap-admin-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org>
@@ -18,10 +18,6 @@ List-Archive: <http://mail.ojctech.com/pipermail/radiotap/>
 To: radiotap-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-Johannes Berg, and only Johannes Berg, let me know if you get this.
+Just a test.  Do not reply.
 
 Dave
-
--- 
-David Young             OJC Technologies
-dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933 ext 24
