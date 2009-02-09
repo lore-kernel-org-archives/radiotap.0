@@ -1,36 +1,14 @@
-From: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-Subject: BOUNCE radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org:    Global taboo body match
-	"/=[8-9a-f][0-9a-f]=[8-9a-f][0-9a-f]=[8-9a-f][0-9a-f]/i" at line 59
-Date: Mon, 9 Feb 2009 11:47:01 -0600
-Message-ID: <20090209174701.GH17342@ojctech.com>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Subject: [RFA] RX flags
+Date: Mon, 9 Feb 2009 12:00:53 -0600
+Message-ID: <1234172982.4175.184.camel@johannes.local>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 Content-Disposition: inline
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-List-Id: radiotap@radiotap.org
-
-Return-Path: <owner-radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org>
-Delivered-To: radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
-Received: from sipsolutions.net (cl-1649.ham-01.de.sixxs.net [IPv6:2001:6f8:900:670::2])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(Client did not present a certificate)
-	by mail.netbsd.org (Postfix) with ESMTPS id E29E463B13B
-	for <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>; Mon,  9 Feb 2009 09:49:50 +0000 (UTC)
-Received: by sipsolutions.net with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-	(Exim 4.69)
-	(envelope-from <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>)
-	id 1LWSlt-0006W4-4j
-	for radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org; Mon, 09 Feb 2009 10:49:46 +0100
-Subject: [RFA] RX flags
-From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 To: radiotap <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-Content-Type: multipart/mixed; boundary="=-lUysiMTCgz5FaPq+jp+v"
-Date: Mon, 09 Feb 2009 10:49:42 +0100
-Message-Id: <1234172982.4175.184.camel-YfaajirXv2244ywRPIzf9A@public.gmane.org>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.22.3.1 
+List-Id: radiotap@radiotap.org
 
 
 --=-lUysiMTCgz5FaPq+jp+v
