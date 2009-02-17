@@ -1,29 +1,45 @@
-From: =?ISO-8859-1?Q?G=E1bor_Stefanik?= <netrolller.3d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Proposal: Add a new flag to the proposed TX flags field to
-	control the sequence number of injected packets
-Date: Mon, 9 Feb 2009 19:57:03 +0100
-Message-ID: <69e28c910902091057y248abef4wf78bc40cc2c37fcd@mail.gmail.com>
-References: <69e28c910902091056h119b3fa4g460e5e18288c1c3c@mail.gmail.com>
+From: Vipin M <vipintm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: packet injection and Suggested fields -
+Date: Tue, 17 Feb 2009 11:44:42 +0530
+Message-ID: <be79082c0902162214y34784ed8u384c01d617ac5e03@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Return-path: <linux-wireless-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <69e28c910902091056h119b3fa4g460e5e18288c1c3c-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-wireless-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org, Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>, "linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/alternative; boundary=0016368e2190107c7b046317389a
+Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
+Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
+To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-On Mon, Feb 9, 2009 at 7:56 PM, G=E1bor Stefanik <netrolller.3d@gmail.c=
-om> wrote:
-> them. So, userspace can in these cases set TX_FLAGS |=3D3D 0x0010 and=
- put
-Sorry for the typo - this was meant to be "TX_FLAGS |=3D 0x0010".
+--0016368e2190107c7b046317389a
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 
-G=E1bor
---=20
-Vista: [V]iruses, [I]ntruders, [S]pyware, [T]rojans and [A]dware. :-)
---
-To unsubscribe from this list: send the line "unsubscribe linux-wireles=
-s" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Hi
+
+I have two doubts regarding radiotap
+
+
+1) In packet injection if radiotap values link "Channel" is set to a
+specific channel does it send in that channel  or it is only for sniffing.
+
+2) The suggested fields ( http://www.radiotap.org/suggested-fields ) can be
+used, is they are incorporated.
+
+
+Thank you
+
+---
+Vipin M
+
+--0016368e2190107c7b046317389a
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hi<br><br>I have two doubts regarding radiotap<br><br><br>1) In packet inje=
+ction if radiotap values link &quot;Channel&quot; is set to a specific chan=
+nel does it send in that channel&nbsp; or it is only for sniffing.<br><br>2=
+) The suggested fields ( <a href=3D"http://www.radiotap.org/suggested-field=
+s">http://www.radiotap.org/suggested-fields</a> ) can be used, is they are =
+incorporated.<br>
+<br><br>Thank you<br><br clear=3D"all">---<br>Vipin M<br>
+
+--0016368e2190107c7b046317389a--
