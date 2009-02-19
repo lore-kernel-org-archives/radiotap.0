@@ -1,59 +1,45 @@
-From: RHS Linux User <xxx-hj3ALZ0n2zLQT0dZR+AlfA@public.gmane.org>
-Subject: Re: packet injection and Suggested fields -
-Date: Wed, 18 Feb 2009 06:27:40 -0500 (EST)
-Message-ID: <Pine.LNX.3.95.1090218062405.1345C-100000@nei>
-References: <1234946748.4149.12.camel@johannes.local>
+From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [RFA] RX flags
+Date: Wed, 18 Feb 2009 20:04:16 -0600
+Message-ID: <20090219020416.GM17342@ojctech.com>
+References: <1234172982.4175.184.camel@johannes.local>
 Mime-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <1234946748.4149.12.camel-YfaajirXv2244ywRPIzf9A@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1234172982.4175.184.camel-YfaajirXv2244ywRPIzf9A@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Cc: Vipin M <vipintm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
+To: radiotap <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-
-Hi All,
-
-   A comment about packet injection.
-
-   Given a "real" monitor mode (all packets and packet fragments).
-   AND a REAL injection mode,
-
-   MOST ALL of the driver packet bugs could be ELIMINATED [bypassed] with
-the proper driver.
-
-   Also ANY number of APs can be created. Mesh can be made to really work
-reliably, etc.
-
-   Subject, as mentioned, to radio [channel changing] limitations of
-course.
-
-   warm regards from COLD NH USA,
-   wiz
-
-
-On Wed, 18 Feb 2009, Johannes Berg wrote:
-
-> Hi,
+On Mon, Feb 09, 2009 at 12:00:53PM -0600, Johannes Berg wrote:
 > 
-> > 1) In packet injection if radiotap values link "Channel" is set to a
-> > specific channel does it send in that channel  or it is only for
-> > sniffing.
+> --=-lUysiMTCgz5FaPq+jp+v
+> Content-Type: text/plain; charset=UTF-8
+> Content-Transfer-Encoding: quoted-printable
 > 
-> Since your PHY can only be on one channel at a time, I suspect this
-> field isn't useful for injection. We certainly haven't implemented it in
-> Linux.
+> This is a request for adoption of the following new radiotap features:
 > 
-> > 2) The suggested fields ( http://www.radiotap.org/suggested-fields )
-> > can be used, is they are incorporated.
-> 
-> Certainly, for example the 0x0008 bit in
-> http://www.radiotap.org/suggested-fields/TX%20flags is useful only for
-> injection.
-> 
-> Maybe we need to clarify which fields are useful for injection and
-> should be supported if injection control is supported?
-> 
-> johannes
-> 
+>  * a new flag in the "flags" field (field 1):
+>     - bad FCS
+>  * the new "RX flags" field (field 14), currently containing the
+>    following flag:
+>     - bad PLCP
+
+Thanks for bringing the proposal, Johannes.  I will update NetBSD to
+agree with these field definitions, if their are not objections in the
+timeline you have described:
+
+> Barring objections, I will repost the normative changes on in two weeks
+> time (Feb 23.) to be adopted on March 2, at which point I will make the
+> changes to the radiotap.org website and post the Linux patch for
+> inclusion.
+
+AFAIK, your definitions are compatible with FreeBSD, too, which is a big
+plus to my mind.
+
+Dave
+
+-- 
+David Young             OJC Technologies
+dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933
