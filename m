@@ -1,59 +1,61 @@
 From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: Re: [RFA] RX flags
-Date: Fri, 13 Mar 2009 12:41:01 +0100
-Message-ID: <1236944461.5235.28.camel@johannes.local>
-References: <1234172982.4175.184.camel@johannes.local>
-	 <20090219020416.GM17342@ojctech.com>
+Subject: [UPDATE] RX flags
+Date: Fri, 13 Mar 2009 12:43:30 +0100
+Message-ID: <1236944610.5235.32.camel@johannes.local>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-S6OJZqsqNlYRsvWvrovD"
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-42fVuD7h9b5T1p8ikIoN"
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <20090219020416.GM17342-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
-Cc: radiotap <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
+To: radiotap <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
 
---=-S6OJZqsqNlYRsvWvrovD
+--=-42fVuD7h9b5T1p8ikIoN
 Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2009-02-18 at 20:04 -0600, David Young wrote:
+Since there were no objections, we have adopted the following radiotap
+changes:
 
-> Thanks for bringing the proposal, Johannes.  I will update NetBSD to
-> agree with these field definitions, if their are not objections in the
-> timeline you have described:
->=20
-> > Barring objections, I will repost the normative changes on in two weeks
-> > time (Feb 23.) to be adopted on March 2, at which point I will make the
-> > changes to the radiotap.org website and post the Linux patch for
-> > inclusion.
+ 1) Add the "bad FCS" flag to the flags field (field 1) with the bit
+    number 6, i.e. mask 0x40. [1]
+ 2) Define the new RX flags field at field number 14, with the following
+    definition:
+     - field contents: a single 16-bit integer
+     - field alignment: 2
+     - define bit 0 (mask 0x0001) to be reserved (it was defined by some
+       implementations as "bad FCS" which is in the flags field)
+     - define bit 1 (mask 0x0002) of this field to mean "frame has bad
+       PLCP"
+     - all other bits (mask 0xfffc) shall be reserved for future
+       assignment
 
-Sorry, I was away for a couple of weeks on business and vacation, I'll
-repost the changes now and make the wiki change.
+
+I will take care to update the Linux implementation, any pointers on
+where to send the wireshark patch would be appreciated.
 
 johannes
 
---=-S6OJZqsqNlYRsvWvrovD
+--=-42fVuD7h9b5T1p8ikIoN
 Content-Type: application/pgp-signature; name=signature.asc
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 Comment: Johannes Berg (powerbook)
 
-iQIcBAABAgAGBQJJukZLAAoJEKVg1VMiehFYebMQAIP9ndo2KbsASZPOO9P9UaX6
-9OHf11+4yslbht6rlKqjkDWeqj8oJyXuuZiKMw4jePmJcIDmX5f2+7O8l9CZRLyk
-2JREIap4MzEf6C5vuhr3cs5JshG/D3v68fka11ARa2u8UPsql/2B+bgUWkwC2aVD
-wwZjlQdhUCGEULR7x2G5nwPr4w4dgyCKDnFGQngt9753Ux4yuBv2uwGXbZtXvR3L
-ZYo85i+BvNV2tN8Xz3G6jHPbpEjIWhQkK0ovWno3xdj2yPE2Xv5TEnBFkZOdjm+x
-I6yrj0o6eU3405G5ScSGQ471J7eAxD8X1+ezrPF0fWssoCGI24knaXXlcO3aOCTs
-AkOMfxfIcumGCghKUWSgkOasL2Kx5LnPqkREQVh0wkfYZN0Bv6SL6nmdszYw36XY
-eeM7QHroOlRKvTn67r4SVyMTDTiVBP/gYnlh5WCcQugQZ1RLPDjSN8fDiZxo4CVj
-1Wfvvj2N+UW0Skas0k1Z0gq3fO19QtoZIYKeuNNNyXibCYpWBI4niet+c3cLNCAv
-3AE3byTlZQkjOiPo5cYDyW5/iZHxbQOFKKdtB878xwn8lr5kirSiacPlp6nCHmz5
-84HKbCpopWc0R8Y9l2CbAvDCh4nEhMjeipneB+hX/8u6JU7+53vqm/w7dgVT7gjd
-H1CGhmVfUBLrbo8H4Qvf
-=HnMo
+iQIcBAABAgAGBQJJukbfAAoJEKVg1VMiehFYQb8QAJ3oV6mfu0hsNj8/Zs7+gbOl
+XXaSegveUsJv3Qa4QJcc8MEoYcyD8tZRlJ/nDoYv++ZYrfO7b5KR60W1/RPERZYv
+kt+ZuHnLGwH4BNDdqdTfaxrLpSjW9o4v37gDxNlGFb41NeZk80wW8MmYaz7g+pH3
+Z0jnFqkRtsT9vnd4wLgTKVcUKIetDO9NS7GtWql/0Bg1PMXgZQumNeM32PWnfV92
+HcEfTkzpbp5Mu+yNVEfTpvWOSRLhUHC2sCXXHti00pXdAmp3tuIXivqKaf2RMke8
+IIu3loD67fFhMJP18hbvlfRhV7VaZru6Z4mko1WJeClsy2/ZIW7CqXT2VAOzvazX
+AVp1nQds23Jto9RmwMhu76ipwIMlyGuekOrAkJbHwirdptdX/eFUXJOIyqd4zJGa
+EEaVkg2bcv/jzeEjToIXnaXGuwVUksSYFsv2Cncphzmf4I4lKPk/PsUIhQ+81Atn
+lfy7A7lzxcS3VhImBFcM/oDWrw5IQN8Lx2tDJG1OJagFbt18RvObYbkTZplziffV
+wIOYy+bCYZ3vhz3ZoGc9VJf5iwJWUJNFtn3FmE1ybpwH9EGL6zy9K5o/nmKQ7H29
+nGGNAam2EuJSzdZJOMegbn/08cU80Nkdy4ybEc8efwHqLA0SQLHrBmpSbGt2Tk9U
+GaEqgeh7YwqHAF/agBJl
+=E04l
 -----END PGP SIGNATURE-----
 
---=-S6OJZqsqNlYRsvWvrovD--
+--=-42fVuD7h9b5T1p8ikIoN--
