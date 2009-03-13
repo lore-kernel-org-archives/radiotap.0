@@ -1,61 +1,53 @@
-From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: [UPDATE] RX flags
-Date: Fri, 13 Mar 2009 12:43:30 +0100
-Message-ID: <1236944610.5235.32.camel@johannes.local>
+From: =?ISO-8859-1?Q?G=E1bor_Stefanik?= <netrolller.3d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [Resend] Proposal: Add a new flag to the proposed TX flags field to
+	control the sequence number of injected packets
+Date: Fri, 13 Mar 2009 16:02:09 +0100
+Message-ID: <69e28c910903130802t1bd879av50e3d51c075f6e2c@mail.gmail.com>
+References: <69e28c910902091056h119b3fa4g460e5e18288c1c3c@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-42fVuD7h9b5T1p8ikIoN"
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <69e28c910902091056h119b3fa4g460e5e18288c1c3c-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: radiotap <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
+To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org, Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>, "linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
+Currently the TX Flags field is defined as a bitmap containing:
+0x0001 Transmission failed due to excessive retries
+0x0002 Transmission used CTS-to-self protection
+0x0004 Transmission used RTS/CTS handshake
+0x0008 Transmission shall not expect an ACK frame and not retry when
+no ACK is received
 
---=-42fVuD7h9b5T1p8ikIoN
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+I'd like to propose the following additional bit:
+0x0010 Transmission has the sequence and fragment numbers pre-set from
+userspace and should not be renumbered
 
-Since there were no objections, we have adopted the following radiotap
-changes:
+This bit is useful for packet injection, where userspace injectors
+might want to control the sequence and fragment numbers of the packets
+it injects. A particular example is aireplay-ng's -5 mode
+(fragmentation attack), where userspace injects pre-made fragments
+one-by-one. The wireless stack usually can't recognize that the
+injected packets are fragments, and instead treats them as complete
+packets, assigning a new sequence number to each fragment, preventing
+the receiving party from correctly reassembling the fragmented packet.
+The userspace does however know that the packets being injected are
+fragments, and such can produce much more correct sequence numbers for
+them. So, userspace can in these cases set TX_FLAGS |=3D3D 0x0010 and put
+pre-generated sequence numbers on the packets it injects.
 
- 1) Add the "bad FCS" flag to the flags field (field 1) with the bit
-    number 6, i.e. mask 0x40. [1]
- 2) Define the new RX flags field at field number 14, with the following
-    definition:
-     - field contents: a single 16-bit integer
-     - field alignment: 2
-     - define bit 0 (mask 0x0001) to be reserved (it was defined by some
-       implementations as "bad FCS" which is in the flags field)
-     - define bit 1 (mask 0x0002) of this field to mean "frame has bad
-       PLCP"
-     - all other bits (mask 0xfffc) shall be reserved for future
-       assignment
+Similar to how 0x0008 works, this bit also should be used when packets
+are being sent, as opposed to when they are being reported as having
+been sent (like the first 3 bits).
 
+I have posted a reference implementation on the linux-wireless mailing
+list about a month ago, and it is also available here:
+http://trac.aircrack-ng.org/svn/trunk/patches/mac80211_2.6.28-rc8-wl_frag+a=
+=3D
+ck_radiotap.patch
+(Note that this patch may not clearly apply to 2.6.29-rc2 or the
+current wireless-testing kernel, as it was made against the
+master-2008-12-17 tag of wireless-testing.)
 
-I will take care to update the Linux implementation, any pointers on
-where to send the wireshark patch would be appreciated.
-
-johannes
-
---=-42fVuD7h9b5T1p8ikIoN
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-Comment: Johannes Berg (powerbook)
-
-iQIcBAABAgAGBQJJukbfAAoJEKVg1VMiehFYQb8QAJ3oV6mfu0hsNj8/Zs7+gbOl
-XXaSegveUsJv3Qa4QJcc8MEoYcyD8tZRlJ/nDoYv++ZYrfO7b5KR60W1/RPERZYv
-kt+ZuHnLGwH4BNDdqdTfaxrLpSjW9o4v37gDxNlGFb41NeZk80wW8MmYaz7g+pH3
-Z0jnFqkRtsT9vnd4wLgTKVcUKIetDO9NS7GtWql/0Bg1PMXgZQumNeM32PWnfV92
-HcEfTkzpbp5Mu+yNVEfTpvWOSRLhUHC2sCXXHti00pXdAmp3tuIXivqKaf2RMke8
-IIu3loD67fFhMJP18hbvlfRhV7VaZru6Z4mko1WJeClsy2/ZIW7CqXT2VAOzvazX
-AVp1nQds23Jto9RmwMhu76ipwIMlyGuekOrAkJbHwirdptdX/eFUXJOIyqd4zJGa
-EEaVkg2bcv/jzeEjToIXnaXGuwVUksSYFsv2Cncphzmf4I4lKPk/PsUIhQ+81Atn
-lfy7A7lzxcS3VhImBFcM/oDWrw5IQN8Lx2tDJG1OJagFbt18RvObYbkTZplziffV
-wIOYy+bCYZ3vhz3ZoGc9VJf5iwJWUJNFtn3FmE1ybpwH9EGL6zy9K5o/nmKQ7H29
-nGGNAam2EuJSzdZJOMegbn/08cU80Nkdy4ybEc8efwHqLA0SQLHrBmpSbGt2Tk9U
-GaEqgeh7YwqHAF/agBJl
-=E04l
------END PGP SIGNATURE-----
-
---=-42fVuD7h9b5T1p8ikIoN--
+G=E1bor
