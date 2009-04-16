@@ -1,105 +1,76 @@
-From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: radiotap feature discovery
-Date: Thu, 16 Apr 2009 13:24:28 -0500
-Message-ID: <20090416182428.GA25412@ojctech.com>
-References: <1239897757.14169.16.camel@johannes.local> <20090416171256.GY25412@ojctech.com> <1239903002.26575.17.camel@johannes.local>
+From: =?ISO-8859-1?Q?G=E1bor_Stefanik?= <netrolller.3d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [Proposal]TX flags
+Date: Thu, 16 Apr 2009 20:47:13 +0200
+Message-ID: <69e28c910904161147h5a68d3b5nd054b043d6ad2719@mail.gmail.com>
+References: <69e28c910904141733m72ce521ap8f1865bec991fff7@mail.gmail.com>
+	<1239902910.26575.14.camel@johannes.local>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1239903002.26575.17.camel-YfaajirXv2244ywRPIzf9A@public.gmane.org>
-Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Return-path: <linux-wireless-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1239902910.26575.14.camel-YfaajirXv2244ywRPIzf9A@public.gmane.org>
+Sender: linux-wireless-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Cc: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org, linux-wireless <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-On Thu, Apr 16, 2009 at 07:30:02PM +0200, Johannes Berg wrote:
-> 
-> > > The other way I could imagine would be to export, in a yet to be defined
-> > > way, a radiotap header that lists the capabilities. For example, upon
-> > > feature query you'd return a header like this:
-> > > 
-> > > 	0x00, 0x00,		// <-- radiotap version
-> > > 	0x0b, 0x00,		// <- radiotap header length
-> > > 	0x04, 0x84, 0x00, 0x00,	// <-- bitmap
-> > > 	0x00,			// <-- rate
-> > > 	0x00,			// <-- tx power
-> > > 	0x08, 0x00		// <-- tx flags
-> > > 
-> > > This would indicate support for controlling
-> > >  * rate
-> > >  * tx power
-> > >  * tx flags - only no-ACK
-> > > 
-> > > How to export this information is to be determined and would most likely
-> > > be platform dependent though.
-> > 
-> > Some standardization may be possible.  For example, Linux, *BSD, et
-> > cetera, may be able to share a getsockopt(2) interface for querying
-> > the capabilities on a socket.  Platforms with BPF could share an
-> > ioctl(2) interface for the same.
-> 
-> Indeed, that would be doable. Any suggestions?
-> 
-> > > Thoughts?
-> > 
-> > Suppose that we let the OS pass back one or more "capability headers."
-> > Each capability header consists of two radiotap headers.  The first
-> > header contains supported Tx parameters.  The second header must be as
-> > long as the first, and it is a bitmap that tells which bits are variable
-> > (0) and which are fixed (1).  In your example, the first header
-> > 
-> > > 	0x00, 0x00,		// <-- radiotap version
-> > > 	0x0b, 0x00,		// <- radiotap header length
-> > > 	0x04, 0x84, 0x00, 0x00,	// <-- bitmap
-> > > 	0x00,			// <-- rate
-> > > 	0x00,			// <-- tx power
-> > > 	0x08, 0x00		// <-- tx flags
-> > 
-> > may be followed by the bitmap
-> > 
-> > > 	0xff, 0xff,		// <-- radiotap version
-> > > 	0xf0, 0xff,		// <- radiotap header length
-> > > 	0xfb, 0x7b, 0xff, 0xff,	// <-- bitmap
-> > > 	0x00,			// <-- rate
-> > > 	0x00,			// <-- tx power
-> > > 	0xf7, 0xff		// <-- tx flags
-> > 
-> > meaning that only radiotap version 0 is supported, the header length is
-> > somewhat variable, only rate, tx power and flags may be set, and only
-> > the no-ACK Tx flag is allowed.
-> 
-> Hmm. That seems useful on first sight, but is it really? It seems to be
-> useful only for things like the tx flags.
+2009/4/16 Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>:
+> On Wed, 2009-04-15 at 02:33 +0200, G=E1bor Stefanik wrote:
+>
+>> =A0 =A0- Define bit 1 (mask 0x0002) as "CTS-to-self protection",
+>> =A0 =A0- Define bit 2 (mask 0x0004) as "RTS/CTS handshake",
+>
+> Since you're defining these for injection too I think it would be use=
+ful
+> to also define a way to _not_ use RTS or CTS, or define a way to use =
+the
+> default that the device would use from dot11RTSThreshold for example.
+>
+> Otherwise, when leaving out these bits, it wouldn't be clear whether
+> that means "do not use, overriding default" or "use default".
+>
+> johannes
+>
 
-I think that the usefulness comes down to either the interpretation
-(bad) or the rigor of the specification.
+Here is how I think this can be done:
+Because it's impossible to have a packet protected both by CTS-to-self
+and by RTS/CTS, we can define the case where both the CTS and RTS
+flags are set as "Automatically use RTS or CTS as needed". The same
+should be true when the TX flags field is missing entirely. When the
+TX flags field is present, and both flags are 0, that should be
+interpreted as "don't protect the packet".
 
-> Supporting multiple radiotap versions is still impossible, since the
-> bits would have entirely different meanings, or even the format changed,
-> otherwise we wouldn't have cycled the version number.
+So, in summary, this is how things should be interpreted:
 
-Sure.
+TX Flags absent: Use RTS & CTS as needed.
+TX Flags present: {
+RTS=3D0, CTS=3D0: Use neither RTS nor CTS.
+RTS=3D0, CTS=3D1: Use CTS-to-self.
+RTS=3D1, CTS=3D0: Use RTS/CTS-handshake.
+RTS=3D1, CTS=3D1: Use RTS & CTS as needed.
+}
 
-> For the bitmap we already know - I don't think any reasonable
-> implementation would _require_ some field to be present.
+Alternatively, the meanings of the {0,0} and {1,1} cases could be
+switched around (making the {0,0} case more logical, at the expense of
+the {1,1} one):
 
-Neither do I.  I marked the bits in the presence bitmap 
-as variable instead of fixed for that reason.  Do you think it
-is too confusing for the fields to still be present in the bitmask?
+TX Flags absent: Use RTS & CTS as needed.
+TX Flags present: {
+RTS=3D0, CTS=3D0: Use RTS & CTS as needed.
+RTS=3D0, CTS=3D1: Use CTS-to-self.
+RTS=3D1, CTS=3D0: Use RTS/CTS-handshake.
+RTS=3D1, CTS=3D1: Use neither RTS nor CTS.
+}
 
-> For rate/txpower there may be limits you cannot express with this, but
-> must discover in some other way, or the implementation just clamps or
-> something.
+(By reading the second proposal again, I find it more and more
+sympathetic... but let the discussion decide.)
 
-You're right, there needs to be more to the capabilities spec than that.
-We may need to indicate either a range or an enumeration of allowable
-values.
+--G=E1bor
 
-We may also need to indicate that a particular Tx flags setting is only
-permitted at a particular Tx rate setting, or vice versa.
-
-Dave
-
--- 
-David Young             OJC Technologies
-dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933
+--=20
+Vista: [V]iruses, [I]ntruders, [S]pyware, [T]rojans and [A]dware. :-)
+--
+To unsubscribe from this list: send the line "unsubscribe linux-wireles=
+s" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html
