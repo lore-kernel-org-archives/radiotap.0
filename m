@@ -1,41 +1,37 @@
-From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: Re: [Proposal]TX flags
-Date: Fri, 17 Apr 2009 11:50:59 +0200
-Message-ID: <1239961859.26575.44.camel@johannes.local>
-References: <69e28c910904141733m72ce521ap8f1865bec991fff7@mail.gmail.com>
-	 <69e28c910904161147h5a68d3b5nd054b043d6ad2719@mail.gmail.com>
-	 <1239908374.26575.20.camel@johannes.local>
-	 <200904162110.05150.mb@bu3sch.de>  <20090416204806.GD25412@ojctech.com>
-	 <69e28c910904161824t7af6860dxebf3a13069b924d5@mail.gmail.com>
-	 (sfid-20090417_032507_012632_CF7AA3F9)
+From: "iodavide-VGgt2q2+T+FeoWH0uzbU5w@public.gmane.org" <iodavide-VGgt2q2+T+FeoWH0uzbU5w@public.gmane.org>
+Subject: Received Signal Strength - iwl3945
+Date: Mon, 11 May 2009 15:26:05 +0200 (CEST)
+Message-ID: <31453639.998951242048365543.JavaMail.defaultUser@defaultHost>
+Reply-To: "iodavide-VGgt2q2+T+FeoWH0uzbU5w@public.gmane.org" <iodavide-VGgt2q2+T+FeoWH0uzbU5w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature"; boundary="=-UZ9g0TTlwNU2A7OJblho"
+Content-Type: text/plain;charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <69e28c910904161824t7af6860dxebf3a13069b924d5-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org> (sfid-20090417_032507_012632_CF7AA3F9)
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: =?ISO-8859-1?Q?G=E1bor?= Stefanik <netrolller.3d-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Michael Buesch <mb-fseUSCV1ubazQB+pC5nmwQ@public.gmane.org>, radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org, linux-wireless <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: radiotap-qavaossjCcEdnm+yROfE0A@public.gmane.org
 List-Id: radiotap@radiotap.org
 
+Hi
+I'm using mac80211 for Intel(R) Pro Wireless 3945 in order to capture 
+Received Signal Strength from Radiotap headers.
 
---=-UZ9g0TTlwNU2A7OJblho
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I've created two interface 
+(wlan0 and mon0) up to the same Intel card and configured mon0 in monitor-mode.
 
-On Fri, 2009-04-17 at 03:24 +0200, G=C3=A1bor Stefanik wrote:
+Radiotap shows SSI Signal (dB) and SSI Noise (dB) but I've some doubts about 
+their values.
 
-> > I see the point that Michael is making.  What do you think?  Shall
-> > we treat it as a 2-bit wide unsigned integer field in the Tx flags,
-> > instead?
-> >
->=20
-> IMO that is a good idea, if we accept having non-booleans in a flags
-> field. In that case, this proposal comes to my mind:
-> -Define the second and third bits (mask 0x0006) as a quad-state flag
-> indicating the use of RTS/CTS. So, we can have these values for the
-> flag (accessible as (TXFlags & 0x0006) >> 1):
-> 0: neither
-> 1: rts
-> 2: cts
-> 3: auto-select (only makes sense when sending & during feature discovery)=
---=-UZ9g0TTlwNU2A7OJblho--
+I read that SSI is related to a not specified dB value of the 
+card but I can't find more information about it and about relation between RSSI 
+and RSS.
+
+Noise is always 0dB and I read that signal-to-noise ratio (SNR) 
+cannot be computed by ``SSI Signal - SSI Noise'' because the noise in Radiotap 
+Header usually is captured as the background noise level when no packet is 
+transmitted. Thus, the SSI Noise can be interpreted as link quality but cannot 
+be used to properly compute the SNR.
+
+Some of you know if I can trust in 
+Radiotap SSI Signal dB value?
+I need very reliable Received Signal Strength 
+values! 
