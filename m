@@ -1,34 +1,14 @@
-From: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-Subject: BOUNCE radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org:    Message too long (>40000 chars)
-Date: Thu, 26 Nov 2009 22:38:07 -0600
-Message-ID: <20091127043806.GQ6179@ojctech.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-Content-Disposition: inline
-Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-List-Id: radiotap@radiotap.org
-
-Return-Path: <owner-radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org>
-Received: from sipsolutions.net (xc.sipsolutions.net [IPv6:2a02:790:1:6::1:2])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(Client did not present a certificate)
-	by mail.netbsd.org (Postfix) with ESMTPS id 56EEB63B116
-	for <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>; Thu, 26 Nov 2009 17:56:08 +0000 (UTC)
-Received: by sipsolutions.net with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-	(Exim 4.69)
-	(envelope-from <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>)
-	id 1NDiZP-0006qS-SK; Thu, 26 Nov 2009 18:56:05 +0100
-Subject: [RFA] namespaces and vendor extensions
 From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Subject: [RFA] namespaces and vendor extensions
+Date: Thu, 26 Nov 2009 18:55:52 +0100
+Message-ID: <1259258152.32372.90.camel@johannes.local>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature"; boundary="=-BoTShiWGOhneCqohXLBK"
+Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
+Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 To: Radiotap <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 Cc: Gerald Combs <gerald-IZ8446WsY0/dtAWm4Da02A@public.gmane.org>
-Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature"; boundary="=-BoTShiWGOhneCqohXLBK"
-Date: Thu, 26 Nov 2009 18:55:52 +0100
-Message-ID: <1259258152.32372.90.camel-YfaajirXv2244ywRPIzf9A@public.gmane.org>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
+List-Id: radiotap@radiotap.org
 
 
 --=-BoTShiWGOhneCqohXLBK
