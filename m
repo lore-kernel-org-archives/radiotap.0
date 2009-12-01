@@ -1,23 +1,18 @@
-From: "Joshua (Shiwei) Zhao" <swzhao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "Luis R. Rodriguez" <mcgrof-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [RFA] namespaces and vendor extensions
-Date: Tue, 1 Dec 2009 08:32:04 -0800
-Message-ID: <d521a2310912010832v37b8e970w588e3ace9f6fe97f@mail.gmail.com>
-References: <1259258152.32372.90.camel@johannes.local>
-	 <d521a2310911301441l3c5503b5hf43d31a47e83fe4b@mail.gmail.com>
-	 <1259659011.32171.45.camel@johannes.local>
+Date: Tue, 1 Dec 2009 08:43:12 -0800
+Message-ID: <43e72e890912010843y208201aawb2ad95cbec98c814@mail.gmail.com>
+References: <1259258152.32372.90.camel@johannes.local> <d521a2310911301441l3c5503b5hf43d31a47e83fe4b@mail.gmail.com>
+	<1259659011.32171.45.camel@johannes.local>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 In-Reply-To: <1259659011.32171.45.camel-YfaajirXv2244ywRPIzf9A@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Cc: Radiotap <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>, Gerald Combs <gerald-IZ8446WsY0/dtAWm4Da02A@public.gmane.org>
+Cc: "Joshua (Shiwei) Zhao" <swzhao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Radiotap <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>, Gerald Combs <gerald-IZ8446WsY0/dtAWm4Da02A@public.gmane.org>
 List-Id: radiotap@radiotap.org
-
-Sorry, Johannes, you're right. I was kinda lost :(
-
-Joshua
 
 On Tue, Dec 1, 2009 at 1:16 AM, Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org> w=
 rote:
@@ -26,7 +21,8 @@ rote:
 >> For the structure of the vendor space, you extend 'skip_length' from 8
 >> bits to 16 bits.
 >> > Structure
->> > =A0 =A0 =A0 =A0u8 OUI[3], u8 sub_namespace, __le16 skip_length
+>> > =C2=A0 =C2=A0 =C2=A0 =C2=A0u8 OUI[3], u8 sub_namespace, __le16 skip_le=
+ngth
 >> I'm neutral on that. My question is why not extend 'sub_namespace' to
 >> 16 bits too?
 >
@@ -42,6 +38,18 @@ rote:
 > bitmap. Therefore, you have an unlimited number of fields per vendor
 > sub-namespace, as such I see little reason to support more than 255
 > sub-namespaces.
->
-> johannes
->
+
+Wanted to clarify, on the vendor it_present bitmap, does it always
+have to also respect the bit for vendor extension bit 30? The current
+proposal seems to have language which would indicates so:
+
+"This field is reserved in all namespaces and every it_present word,
+the standard radiotap namespace as well as all vendor namespaces. "
+
+If so what is the point of the reset bit? What I mean is that if we
+give radiotap its own OUI technically we could just reset ourselves to
+the radiotap namespace by specifying the radiotap OUI with what I'd
+think would be optional radiotap subnamespace material (length could
+be 0 I take it).
+
+  Luis
