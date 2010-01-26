@@ -1,26 +1,30 @@
-From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: radiotap library
-Date: Sun, 10 Jan 2010 14:08:40 +0100
-Message-ID: <1263128920.7773.14.camel@johannes.local>
+From: Matteo Croce <technoboy85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: MCS field: RFA
+Date: Tue, 26 Jan 2010 15:26:07 +0100
+Message-ID: <40101cc31001260626g4a47b7c6gde6f99e477e69ac9@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 To: Radiotap <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-As part of my work on vendor extensions, I've pulled the code from
-Andy's parser into a library.
+Hi,
+the MCS filed is in the suggested fields since about a month, now I
+request its approval.
 
-I've copied it into wireshark for the patch there, but it could also
-link the library which has well-known advantages and disadvantages.
+Here is the draft of the field: http://www.radiotap.org/suggested-fields/MCS
 
-You can find the library here: http://git.sipsolutions.net/radiotap.git/
-(the web interface can also create tarballs if you click on "tree" and
-then "snapshot").
+and here there are patches for the radiotap parser, mac80211, tcpdump
+and wireshark:
 
-Would anyone be interested in this work for using it for other tools?
-And also, could somebody help me link wireshark with that library?
+http://teknoraver.net/software/radiotap_mcs/
 
-johannes
+Before it's approved I would ask the crew what is the best thing to do
+with the old rate field
+when the MCS one is set.
+We can leave it set with a value of 0 or just omitting it when the MCS is set.
+The latter makes more sense to me.
+
+Cheers,
+Matteo Croce
