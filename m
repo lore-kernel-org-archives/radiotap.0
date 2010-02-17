@@ -1,47 +1,53 @@
-From: Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
-Subject: Assigning a new DLT_ value for "standardized" radiotap?
-Date: Tue, 16 Feb 2010 18:08:15 -0800
-Message-ID: <5F21AFA5-4D4C-49A0-A228-A1177630E366@alum.mit.edu>
-Mime-Version: 1.0 (Apple Message framework v1078)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Subject: Re: Assigning a new DLT_ value for "standardized" radiotap?
+Date: Wed, 17 Feb 2010 09:27:52 +0100
+Message-ID: <1266395272.4006.0.camel@jlt3.sipsolutions.net>
+References: <5F21AFA5-4D4C-49A0-A228-A1177630E366@alum.mit.edu>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg="pgp-sha1"; protocol="application/pgp-signature"; boundary="=-W5cLYIuG+OO5khUWCzSZ"
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <5F21AFA5-4D4C-49A0-A228-A1177630E366-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
+To: Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
+Cc: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-The presence-bit-number collisions mentioned on the radiotap Web site =
-appear to be due to OpenBSD doing its own thing:
 
-	14: FCS in OpenBSD, RX Flags in the standard and assigned for =
-that in NetBSD and Linux
-	15: hardware queue in OpenBSD, proposed for TX flags in the =
-standard and assigned for that in NetBSD and Linux
-	16: RSSI in OpenBSD, proposed for RTS Retries in the standard =
-and assigned for that in NetBSD and Linux
+--=-W5cLYIuG+OO5khUWCzSZ
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-(There was also a brief period of time, between 2007-06-11 and =
-2007-07-01, where FreeBSD used 14 for the extended channel information, =
-but it got moved to 18; it appears that was done before FreeBSD 7.0 got =
-released, so it doesn't appear that any *released* version used 14 for =
-the extended channel information.)
+On Tue, 2010-02-16 at 18:08 -0800, Guy Harris wrote:
+> The presence-bit-number collisions mentioned on the radiotap Web site
+> appear to be due to OpenBSD doing its own thing:
+>=20
+> 	14: FCS in OpenBSD, RX Flags in the standard and assigned for that in
+> NetBSD and Linux
 
-I've filed an bug against this:
+Didn't I go and add a preferences setting to wireshark for this
+collision?
 
-	=
-http://cvs.openbsd.org/cgi-bin/query-pr-wrapper?full=3Dyes&numbers=3D5691
+johannes
 
-but nothing has been done for it; I've also asked Reyk Floeter about it, =
-and heard nothing.  I forget whether I've asked Damien Bergamini about =
-it or not.
+--=-W5cLYIuG+OO5khUWCzSZ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-Unfortunately, there are probably both OpenBSD and NetBSD/Linux captures =
-out there with a network type value of 127, so we can't easily make =
-tcpdump or Wireshark or... handle both automatically (a command-line =
-flag for tcpdump and a preference for Wireshark could be used).  If we =
-were to introduce a new DLT_ value for "standard radiotap", tcpdump and =
-Wireshark could unconditionally interpret those presence bit values as =
-having the NetBSD/Linux meaning, and use a flag/preference or whatever =
-for the existing value (or just blow off OpenBSD).
+-----BEGIN PGP SIGNATURE-----
 
-Would that be useful?=
+iQIcBAABAgAGBQJLe6iEAAoJEODzc/N7+Qma9dUP/RfHvgglt8iZ16ye0G0pFlVe
+TdM52LHktpTdi6DCWyXLupFHlitLikhC3Biit7YWVBv/ZBFkksml50xeXdEjhGZh
+4aGoiaXj71XIfIOXmYLVkIPXfrLTQNtfkUzNmjfVyvo3Fz0Ma4U7zbqjEuwLVLye
+EXaV0WeBpqOYbukX2Y7zegyQu4Y+oRamNiCFPTVVtAJAVdMe+ZdMEnJjfss0+b8N
+UF6z0VErgo5xmUjXSwQ2n2qEi+zv4yGF3l31gGcUJyMyam2nTDqQr272ZFfIqZJz
+iPHqJ6E/3Xk9YkpQh1+LKYtAE4WYYygSc8GGbzq7DcTEkUen8y27nUKTT49pUF1V
+n+3oKa0NpC070POz+83M44GYGcuy3MnwmRReJ85ewBqDZ+Xb+cWdbBpkUWXp9gKB
+DfOmZ+RHaCn8Oqc3Gf1NZ/O8iO+UuPG+cfbTkjAjNLUc2BblZFAgqUECdkZlKcW5
+/S0JY23MpEa2wThHKeNaBvBJOV5I/eIeaUHlPds4aOWvrik2iNndkn6XyEC/Jn9y
+RihfJ/Mn1I13jEAN0Y7W+dzTlhIn5icSF+IVvsOLFSFyNA58CCMnQ/U3tfVERB7L
+kekSOVfx74UOL3ArMzDEJXvO5z19lsWgUsY6ufcOUy74ZCWojKJtNb+hAzJgLaaG
+RYnBlH8oyqFYRW1lp7U8
+=ZkiU
+-----END PGP SIGNATURE-----
+
+--=-W5cLYIuG+OO5khUWCzSZ--
