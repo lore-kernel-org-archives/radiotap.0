@@ -1,118 +1,377 @@
 From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: Re: MCS field: RFA
-Date: Mon, 09 Aug 2010 14:10:58 +0200
-Message-ID: <1281355858.3845.42.camel@jlt3.sipsolutions.net>
-References: <40101cc31001260626g4a47b7c6gde6f99e477e69ac9@mail.gmail.com>
-	 <20100126174728.GV1060@ojctech.com>
-	 <1264584965.25642.15.camel@johannes.local>
-	 <20100127153002.GC1060@ojctech.com>
-	 <40101cc31001270732h3e27511bn9270e2a5a082735f@mail.gmail.com>
-	 <loom.20100201T230554-2@post.gmane.org> <20100202195424.GE1060@ojctech.com>
-	 <20100325235000.GX414@ojctech.com>
-	 <1269579436.4581.0.camel@jlt3.sipsolutions.net>
+Subject: [RFA] HT extensions
+Date: Thu, 16 Sep 2010 02:04:49 +0200
+Message-ID: <1284595489.3707.54.camel@jlt3.sipsolutions.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="=-NjqGm7IgAwqUof39WHTi"
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <1269579436.4581.0.camel-8upI4CBIZJIJvtFkdXX2HixXY32XiHfO@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
+To: Radiotap <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-On Thu, 2010-03-25 at 21:57 -0700, Johannes Berg wrote:
 
-> > > The problem of don't-know/don't-care flags has come up before.  It'd be
-> > > nice to have a general solution.
-> > 
-> > I've been thinking about this.  Instead of adding 2**n-byte aligned
-> > fields with don't-know/don't-care flags, what do people think about
-> > using the presence bits in the header to indicate the presence of
-> > 1-bit-wide fields?
-> 
-> Seems like a good idea, but I would suggest reserving a whole block of
-> them, or potentially an entire namespace, so we don't end up aligning
-> all the time?
+--=-NjqGm7IgAwqUof39WHTi
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
-I gave this a bit more thought, and I think I came to the conclusion
-that this isn't such a great idea after all. But let me elaborate.
+This is a request for adoption of the MCS/HT information we've talked
+about earlier, based on my second proposal that includes valid bits
+within the field.
 
-Adding single-bit fields has the advantage that they can be left out of
-the header when, e.g., you just know the MCS, but you don't know whether
-it was 20 or 40 MHz (which, incidentally, is quite useless).
+This proposal adds the following new field:
 
-However, you pay for it by alignment and waste presence bits in the
-header. If you have a single 1-bit field present, then you need at least
-7 more bits of padding. This can be mitigated by using 8 consecutive
-presence bits, so that you just pay the alignment penalty once. You
-could make a case for going to 16 then, but that wastes a lot of
-presence bits.
+Bit Number: 19
+Structure: u8 known, u8 flags, u8 mcs
+Required Alignment: 1
 
-But then assuming we use 8 presence bits/1-bit fields, as soon as any
-one of them gets used (which we have to assume if they get used for HT
-purposes) we use 2 bytes already. We still need the presence bit for the
-MCS index as well. On a non-HT packet, we've now used up 9 presence
-bits.
+The "mcs" field indicates the MCS rate index as in IEEE_802.11n-2009.
 
-I think this wastes too much bits and makes things too complex. We could
-reserve a namespace, but similar things happen.
+The "known" field indicates which flags are known:
 
-Also, another point I wanted to make is that this puts related
-information "far" from each other in terms of parsing the header.
-Currently, when you parse a header, you can almost interpret each field
-by itself. If we put HT flags and MCS information into separate
-(single-bit) fields, then the data is spread apart. The spread becomes
-if we'd reserve more bits and later use them.
+0x01: bandwidth
+0x02: MCS index known (in `mcs` part of the field)
+0x04: guard interval
+0x08: HT format
+0x10: FEC type
+0x20: a-MPDU status
+0x40: a-MPDU beginning/end
+0x80: reserved
 
-All told, I think I'd prefer an approach where we put related
-information into a single field. This leaves us two approaches (that I
-can think of right now):
+The `flags` is any combination of the following:
+0x03: bandwidth - 0: 20, 1: 40, 2: 20L, 3: 20U
+0x04: short GI
+0x08: 0: mixed, 1: greenfield
+0x10: 0: BCC, 1: LDPC
+0x20: a-MPDU status - 0: not part of an a-MPDU, 1: part of a-MPDU
+0x40: 0: first frame, 1: last frame
+0x80: reserved
 
-> So if it was in this longer format the flags might be something like
-> this:
-> 0x0001 20 MHz
-> 0x0002 40 MHz
-> 0x0004 20L (20 MHz in lower half of 40 MHz channel)
-> 0x0008 20U (20 MHz in upper half of 40 MHz channel)
-> 0x0010 Long GI
-> 0x0020 Short GI
-> 0x0040 HT Format - Mixed
-> 0x0080 HT Format - Greenfield
-> 0x0100 FEC type BCC
-> 0x0200 FEC type LDPC
 
-as proposed by Bill earlier in this thread, or a different approach I'd
-like to point out:
 
-known:
-0x01	bandwidth
-0x02	(reserved)
-0x04	GI
-0x08	format
-0x10	FEC mode
-flags:
-0x03	bandwidth - 0: 20, 1: 40, 2: 20L, 3: 20U
-0x04	GI
-0x08	format
-0x10	FEC mode
-
-This has two advantages:
- 1) there are no invalid combinations, because "0x00,0x04"
-    (unknown GI, long GI) just means "unknown GI", whereas
-    the other way could lead to short-GI|long-GI being set
- 2) it doesn't require a 16-bit field, so no extra padding
-    will be necessary
-
-If the information is present, the amount of data is the same, but if it
-is not present just a single presence bit is used. I think this is also
-an advantage.
-
-I've put a modified proposal here:
-http://www.radiotap.org/suggested-fields/MCS-proposal2
-
-I also added some a-MPDU status bits. They might not quite belong to
-HT/MCS only, but they will typically be used with that and everything
-else can indeed be masked out if really necessary.
-
-Thoughts?
+Attached is a patch to Linux to generate this information (partially)
+and a patch for wireshark to read it -- the wireshark patch is on top of
+the refactoring I did in
+https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=4421
 
 johannes
+
+--=-NjqGm7IgAwqUof39WHTi
+Content-Disposition: attachment; filename="016-mac80211-ht-rtap.patch"
+Content-Type: text/x-patch; name="016-mac80211-ht-rtap.patch"; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+
+---
+ include/net/ieee80211_radiotap.h |   24 ++++++++++++++++++++++++
+ net/mac80211/rx.c                |   17 +++++++++++++++++
+ 2 files changed, 41 insertions(+)
+
+--- wireless-testing.orig/net/mac80211/rx.c	2010-09-15 16:54:55.000000000 +0200
++++ wireless-testing/net/mac80211/rx.c	2010-09-16 01:31:12.000000000 +0200
+@@ -85,6 +85,9 @@ ieee80211_rx_radiotap_len(struct ieee802
+ 	if (len & 1) /* padding for RX_FLAGS if necessary */
+ 		len++;
+ 
++	if (status->flag & RX_FLAG_HT) /* HT info */
++		len += 3;
++
+ 	return len;
+ }
+ 
+@@ -193,6 +196,20 @@ ieee80211_add_rx_radiotap_header(struct
+ 		rx_flags |= IEEE80211_RADIOTAP_F_RX_BADPLCP;
+ 	put_unaligned_le16(rx_flags, pos);
+ 	pos += 2;
++
++	if (status->flag & RX_FLAG_HT) {
++		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_HT);
++		*pos++ = IEEE80211_RADIOTAP_HT_HAVE_MCS |
++			 IEEE80211_RADIOTAP_HT_HAVE_GI |
++			 IEEE80211_RADIOTAP_HT_HAVE_BW;
++		*pos = 0;
++		if (status->flag & RX_FLAG_SHORT_GI)
++			*pos |= IEEE80211_RADIOTAP_HT_SGI;
++		if (status->flag & RX_FLAG_40MHZ)
++			*pos |= IEEE80211_RADIOTAP_HT_BW_40;
++		pos++;
++		*pos++ = status->rate_idx;
++	}
+ }
+ 
+ /*
+--- wireless-testing.orig/include/net/ieee80211_radiotap.h	2010-09-14 07:22:01.000000000 +0200
++++ wireless-testing/include/net/ieee80211_radiotap.h	2010-09-16 01:30:42.000000000 +0200
+@@ -199,6 +199,8 @@ enum ieee80211_radiotap_type {
+ 	IEEE80211_RADIOTAP_RTS_RETRIES = 16,
+ 	IEEE80211_RADIOTAP_DATA_RETRIES = 17,
+ 
++	IEEE80211_RADIOTAP_HT = 19,
++
+ 	/* valid in every it_present bitmap, even vendor namespaces */
+ 	IEEE80211_RADIOTAP_RADIOTAP_NAMESPACE = 29,
+ 	IEEE80211_RADIOTAP_VENDOR_NAMESPACE = 30,
+@@ -245,6 +247,28 @@ enum ieee80211_radiotap_type {
+ #define IEEE80211_RADIOTAP_F_TX_CTS	0x0002	/* used cts 'protection' */
+ #define IEEE80211_RADIOTAP_F_TX_RTS	0x0004	/* used rts/cts handshake */
+ 
++
++/* For IEEE80211_RADIOTAP_HT */
++#define IEEE80211_RADIOTAP_HT_HAVE_BW		0x01
++#define IEEE80211_RADIOTAP_HT_HAVE_MCS		0x02
++#define IEEE80211_RADIOTAP_HT_HAVE_GI		0x04
++#define IEEE80211_RADIOTAP_HT_HAVE_FMT		0x08
++#define IEEE80211_RADIOTAP_HT_HAVE_FEC		0x10
++#define IEEE80211_RADIOTAP_HT_HAVE_AMPDU_STAT	0x20
++#define IEEE80211_RADIOTAP_HT_HAVE_AMPDU_POS	0x40
++
++#define IEEE80211_RADIOTAP_HT_BW_MASK		0x03
++#define		IEEE80211_RADIOTAP_HT_BW_20	0
++#define		IEEE80211_RADIOTAP_HT_BW_40	1
++#define		IEEE80211_RADIOTAP_HT_BW_20L	2
++#define		IEEE80211_RADIOTAP_HT_BW_20U	3
++#define IEEE80211_RADIOTAP_HT_SGI		0x04
++#define IEEE80211_RADIOTAP_HT_FMT_GF		0x08
++#define IEEE80211_RADIOTAP_HT_FEC_LDPC		0x10
++#define IEEE80211_RADIOTAP_HT_AMPDU_PART	0x20
++#define IEEE80211_RADIOTAP_HT_AMPDU_END		0x40
++
++
+ /* Ugly macro to convert literal channel numbers into their mhz equivalents
+  * There are certianly some conditions that will break this (like feeding it '30')
+  * but they shouldn't arise since nothing talks on channel 30. */
+
+--=-NjqGm7IgAwqUof39WHTi
+Content-Disposition: attachment; filename="003-radiotap-ht.patch"
+Content-Type: text/x-patch; name="003-radiotap-ht.patch"; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+
+---
+ epan/dissectors/packet-radiotap-defs.h |   23 ++++++
+ epan/dissectors/packet-radiotap-iter.c |    1 
+ epan/dissectors/packet-radiotap.c      |  118 +++++++++++++++++++++++++++++++++
+ 3 files changed, 142 insertions(+)
+
+--- trunk.orig/epan/dissectors/packet-radiotap-defs.h	2010-09-16 01:34:01.000000000 +0200
++++ trunk/epan/dissectors/packet-radiotap-defs.h	2010-09-16 01:34:06.000000000 +0200
+@@ -196,6 +196,8 @@ enum ieee80211_radiotap_type {
+ 	IEEE80211_RADIOTAP_RTS_RETRIES = 16,
+ 	IEEE80211_RADIOTAP_DATA_RETRIES = 17,
+ 
++	IEEE80211_RADIOTAP_HT = 19,
++
+ 	/* valid in every it_present bitmap, even vendor namespaces */
+ 	IEEE80211_RADIOTAP_RADIOTAP_NAMESPACE = 29,
+ 	IEEE80211_RADIOTAP_VENDOR_NAMESPACE = 30,
+@@ -242,4 +244,25 @@ enum ieee80211_radiotap_type {
+ #define IEEE80211_RADIOTAP_F_TX_CTS	0x0002	/* used cts 'protection' */
+ #define IEEE80211_RADIOTAP_F_TX_RTS	0x0004	/* used rts/cts handshake */
+ 
++
++/* For IEEE80211_RADIOTAP_HT */
++#define IEEE80211_RADIOTAP_HT_HAVE_BW		0x01
++#define IEEE80211_RADIOTAP_HT_HAVE_MCS		0x02
++#define IEEE80211_RADIOTAP_HT_HAVE_GI		0x04
++#define IEEE80211_RADIOTAP_HT_HAVE_FMT		0x08
++#define IEEE80211_RADIOTAP_HT_HAVE_FEC		0x10
++#define IEEE80211_RADIOTAP_HT_HAVE_AMPDU_STAT	0x20
++#define IEEE80211_RADIOTAP_HT_HAVE_AMPDU_POS	0x40
++
++#define IEEE80211_RADIOTAP_HT_BW_MASK		0x03
++#define		IEEE80211_RADIOTAP_HT_BW_20	0
++#define		IEEE80211_RADIOTAP_HT_BW_40	1
++#define		IEEE80211_RADIOTAP_HT_BW_20L	2
++#define		IEEE80211_RADIOTAP_HT_BW_20U	3
++#define IEEE80211_RADIOTAP_HT_SGI		0x04
++#define IEEE80211_RADIOTAP_HT_FMT_GF		0x08
++#define IEEE80211_RADIOTAP_HT_FEC_LDPC		0x10
++#define IEEE80211_RADIOTAP_HT_AMPDU_PART	0x20
++#define IEEE80211_RADIOTAP_HT_AMPDU_END		0x40
++
+ #endif				/* IEEE80211_RADIOTAP_H */
+--- trunk.orig/epan/dissectors/packet-radiotap-iter.c	2010-09-16 01:34:01.000000000 +0200
++++ trunk/epan/dissectors/packet-radiotap-iter.c	2010-09-16 01:34:06.000000000 +0200
+@@ -37,6 +37,7 @@ static const struct radiotap_align_size
+ 	[IEEE80211_RADIOTAP_TX_FLAGS] = { .align = 2, .size = 2, },
+ 	[IEEE80211_RADIOTAP_RTS_RETRIES] = { .align = 1, .size = 1, },
+ 	[IEEE80211_RADIOTAP_DATA_RETRIES] = { .align = 1, .size = 1, },
++	[IEEE80211_RADIOTAP_HT] = { .align = 1, .size = 3, },
+ 	/*
+ 	 * add more here as they are defined in
+ 	 * include/net/ieee80211_radiotap.h
+--- trunk.orig/epan/dissectors/packet-radiotap.c	2010-09-16 01:34:01.000000000 +0200
++++ trunk/epan/dissectors/packet-radiotap.c	2010-09-16 02:03:00.000000000 +0200
+@@ -161,6 +161,14 @@ static int hf_radiotap_ven_oui = -1;
+ static int hf_radiotap_ven_subns = -1;
+ static int hf_radiotap_ven_skip = -1;
+ static int hf_radiotap_ven_data = -1;
++static int hf_radiotap_ht = -1;
++static int hf_radiotap_ht_bw = -1;
++static int hf_radiotap_ht_mcs = -1;
++static int hf_radiotap_ht_gi = -1;
++static int hf_radiotap_ht_format = -1;
++static int hf_radiotap_ht_fec = -1;
++static int hf_radiotap_ampdu_status = -1;
++static int hf_radiotap_ampdu_position = -1;
+ 
+ /* "Present" flags */
+ static int hf_radiotap_present_tsft = -1;
+@@ -180,6 +188,7 @@ static int hf_radiotap_present_db_antnoi
+ static int hf_radiotap_present_hdrfcs = -1;
+ static int hf_radiotap_present_rxflags = -1;
+ static int hf_radiotap_present_xchannel = -1;
++static int hf_radiotap_present_ht = -1;
+ static int hf_radiotap_present_rtap_ns = -1;
+ static int hf_radiotap_present_vendor_ns = -1;
+ static int hf_radiotap_present_ext = -1;
+@@ -206,6 +215,7 @@ static gint ett_radiotap_rxflags = -1;
+ static gint ett_radiotap_channel_flags = -1;
+ static gint ett_radiotap_xchannel_flags = -1;
+ static gint ett_radiotap_vendor = -1;
++static gint ett_radiotap_ht = -1;
+ 
+ static dissector_handle_t ieee80211_handle;
+ static dissector_handle_t ieee80211_datapad_handle;
+@@ -355,6 +365,38 @@ void proto_register_radiotap(void)
+ 		{0, NULL},
+ 	};
+ 
++	static const value_string ht_bandwidth[] = {
++		{ IEEE80211_RADIOTAP_HT_BW_20, "20 MHz" },
++		{ IEEE80211_RADIOTAP_HT_BW_40, "40 MHz" },
++		{ IEEE80211_RADIOTAP_HT_BW_20L, "20 MHz lower" },
++		{ IEEE80211_RADIOTAP_HT_BW_20U, "20 MHz upper" },
++	};
++
++	static const value_string ht_format[] = {
++		{ 0, "mixed" },
++		{ 1, "greenfield" },
++	};
++
++	static const value_string ht_fec[] = {
++		{ 0, "BCC" },
++		{ 1, "LDPC" },
++	};
++
++	static const value_string ampdu_status[] = {
++		{ 0, "not aggregated" },
++		{ 1, "aggregated" },
++	};
++
++	static const value_string ampdu_position[] = {
++		{ 0, "beginning" },
++		{ 1, "end" },
++	};
++
++	static const value_string ht_gi[] = {
++		{ 0, "long" },
++		{ 1, "short" },
++	};
++
+ 	static const true_false_string preamble_type = {
+ 		"Short",
+ 		"Long",
+@@ -479,6 +521,11 @@ void proto_register_radiotap(void)
+ 		  "Specifies if the extended channel info field is present",
+ 		  HFILL}},
+ 
++		{&hf_radiotap_present_ht,
++		 {"HT information", "radiotap.present.ht",
++		  FT_BOOLEAN, 32, NULL, RADIOTAP_MASK(HT),
++		  "Specifies if the HT field is present", HFILL}},
++
+ 		{&hf_radiotap_present_rtap_ns,
+ 		 {"Radiotap NS next", "radiotap.present.rtap_ns",
+ 		  FT_BOOLEAN, 32, NULL, RADIOTAP_MASK(RADIOTAP_NAMESPACE),
+@@ -779,6 +826,37 @@ void proto_register_radiotap(void)
+ 		  FT_INT32, BASE_DEC, NULL, 0x0,
+ 		  "Transmit power in decibels per one milliwatt (dBm)", HFILL}},
+ 
++		{&hf_radiotap_ht,
++		 {"HT information", "radiotap.ht",
++		  FT_NONE, BASE_NONE, NULL, 0x0, NULL, HFILL}},
++		{&hf_radiotap_ht_bw,
++		 {"HT bandwidth", "radiotap.ht.bw",
++		  FT_UINT8, BASE_DEC, VALS(ht_bandwidth),
++		  IEEE80211_RADIOTAP_HT_BW_MASK, NULL, HFILL}},
++		{&hf_radiotap_ht_gi,
++		 {"HT guard interval", "radiotap.ht.gi",
++		  FT_UINT8, BASE_DEC, VALS(ht_gi), IEEE80211_RADIOTAP_HT_SGI,
++		  "Sent/Received guard interval", HFILL}},
++		{&hf_radiotap_ht_format,
++		 {"HT format", "radiotap.ht.format",
++		  FT_UINT8, BASE_DEC, VALS(ht_format), IEEE80211_RADIOTAP_HT_FMT_GF,
++		  "HT format", HFILL}},
++		{&hf_radiotap_ht_fec,
++		 {"HT FEC", "radiotap.ht.fec",
++		  FT_UINT8, BASE_DEC, VALS(ht_fec), IEEE80211_RADIOTAP_HT_FEC_LDPC,
++		  "HT forward error correction", HFILL}},
++		{&hf_radiotap_ampdu_status,
++		 {"a-MPDU status", "radiotap.ampdu.status",
++		  FT_UINT8, BASE_DEC, VALS(ampdu_status), IEEE80211_RADIOTAP_HT_AMPDU_PART,
++		  "a-MPDU status", HFILL}},
++		{&hf_radiotap_ampdu_position,
++		 {"a-MPDU position", "radiotap.ampdu.position",
++		  FT_UINT8, BASE_DEC, VALS(ampdu_position), IEEE80211_RADIOTAP_HT_AMPDU_END,
++		  "a-MPDU position", HFILL}},
++		{&hf_radiotap_ht_mcs,
++		 {"HT MCS index", "radiotap.ht.mcs",
++		  FT_UINT8, BASE_DEC, NULL, 0x0, NULL, HFILL}},
++
+ 		{&hf_radiotap_vendor_ns,
+ 		 {"Vendor namespace", "radiotap.vendor_namespace",
+ 		  FT_BYTES, BASE_NONE, NULL, 0x0,
+@@ -820,6 +898,7 @@ void proto_register_radiotap(void)
+ 		&ett_radiotap_channel_flags,
+ 		&ett_radiotap_xchannel_flags,
+ 		&ett_radiotap_vendor,
++		&ett_radiotap_ht,
+ 	};
+ 	module_t *radiotap_module;
+ 
+@@ -1405,6 +1484,45 @@ dissect_radiotap(tvbuff_t * tvb, packet_
+ 			}
+ 			break;
+ 		}
++		case IEEE80211_RADIOTAP_HT: {
++			proto_item *it;
++			proto_tree *ht_tree;
++			guint8 ht_known, ht_flags;
++			guint8 mcs;
++
++			if (!tree)
++				break;
++
++			ht_known = tvb_get_guint8(tvb, offset);
++			ht_flags = tvb_get_guint8(tvb, offset + 1);
++			mcs = tvb_get_guint8(tvb, offset + 2);
++
++			it = proto_tree_add_item(radiotap_tree, hf_radiotap_ht,
++						 tvb, offset, 3, FALSE);
++			ht_tree = proto_item_add_subtree(it, ett_radiotap_ht);
++			if (ht_known & IEEE80211_RADIOTAP_HT_HAVE_BW)
++				proto_tree_add_uint(ht_tree, hf_radiotap_ht_bw,
++						    tvb, offset + 1, 1, ht_flags);
++			if (ht_known & IEEE80211_RADIOTAP_HT_HAVE_GI)
++				proto_tree_add_uint(ht_tree, hf_radiotap_ht_gi,
++						    tvb, offset + 1, 1, ht_flags);
++			if (ht_known & IEEE80211_RADIOTAP_HT_HAVE_FMT)
++				proto_tree_add_uint(ht_tree, hf_radiotap_ht_format,
++						    tvb, offset + 1, 1, ht_flags);
++			if (ht_known & IEEE80211_RADIOTAP_HT_HAVE_FEC)
++				proto_tree_add_uint(ht_tree, hf_radiotap_ht_fec,
++						    tvb, offset + 1, 1, ht_flags);
++			if (ht_known & IEEE80211_RADIOTAP_HT_HAVE_AMPDU_STAT)
++				proto_tree_add_uint(ht_tree, hf_radiotap_ampdu_status,
++						    tvb, offset + 1, 1, mcs);
++			if (ht_known & IEEE80211_RADIOTAP_HT_HAVE_AMPDU_POS)
++				proto_tree_add_uint(ht_tree, hf_radiotap_ampdu_position,
++						    tvb, offset + 1, 1, mcs);
++			if (ht_known & IEEE80211_RADIOTAP_HT_HAVE_MCS)
++				proto_tree_add_uint(ht_tree, hf_radiotap_ht_mcs,
++						    tvb, offset + 2, 1, mcs);
++			break;
++		}
+ 		}
+ 	}
+ 
+
+--=-NjqGm7IgAwqUof39WHTi--
