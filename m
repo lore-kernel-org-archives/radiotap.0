@@ -1,82 +1,81 @@
-From: Bill Stafford <bill.stafford-BUHhN+a2lJ4@public.gmane.org>
-Subject: Re: MCS field: RFA
-Date: Mon, 30 Aug 2010 21:21:10 +0000 (GMT)
-Message-ID: <1c63b9f9-42f3-e339-f4d2-c00968261f5b@me.com>
+From: Matteo Croce <technoboy85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [RFA] HT extensions
+Date: Tue, 21 Sep 2010 17:46:40 +0200
+Message-ID: <AANLkTiknr0QOwAd8ayKkk=yJ3_q+GfC_unGucMDEjzP=@mail.gmail.com>
+References: <1284595489.3707.54.camel@jlt3.sipsolutions.net>
 Mime-Version: 1.0
-Content-Type: multipart/alternative;
- boundary="Boundary_(ID_JJGk99A0wz8+gZdSQCKa7A)"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <1284595489.3707.54.camel-8upI4CBIZJIJvtFkdXX2HixXY32XiHfO@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Cc: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
+Cc: Radiotap <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
+On Thu, Sep 16, 2010 at 2:04 AM, Johannes Berg
+<johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org> wrote:
+> This is a request for adoption of the MCS/HT information we've talked
+> about earlier, based on my second proposal that includes valid bits
+> within the field.
+>
+> This proposal adds the following new field:
+>
+> Bit Number: 19
+> Structure: u8 known, u8 flags, u8 mcs
+> Required Alignment: 1
+>
+> The "mcs" field indicates the MCS rate index as in IEEE_802.11n-2009.
+>
+> The "known" field indicates which flags are known:
+>
+> 0x01: bandwidth
+> 0x02: MCS index known (in `mcs` part of the field)
+> 0x04: guard interval
+> 0x08: HT format
+> 0x10: FEC type
+> 0x20: a-MPDU status
+> 0x40: a-MPDU beginning/end
+> 0x80: reserved
+>
+> The `flags` is any combination of the following:
+> 0x03: bandwidth - 0: 20, 1: 40, 2: 20L, 3: 20U
+> 0x04: short GI
+> 0x08: 0: mixed, 1: greenfield
+> 0x10: 0: BCC, 1: LDPC
+> 0x20: a-MPDU status - 0: not part of an a-MPDU, 1: part of a-MPDU
+> 0x40: 0: first frame, 1: last frame
+> 0x80: reserved
+>
+>
+>
+> Attached is a patch to Linux to generate this information (partially)
+> and a patch for wireshark to read it -- the wireshark patch is on top of
+> the refactoring I did in
+> https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=3D4421
+>
+> johannes
+>
 
---Boundary_(ID_JJGk99A0wz8+gZdSQCKa7A)
-Content-type: text/plain; charset=ISO-8859-1; format=flowed
-Content-transfer-encoding: quoted-printable
+Even if I'm the author of the original proposal I agree with the new format=
+,
+as many chipset can't report all the informations correctly.
 
-On Aug 09, 2010, at 05:10 AM, Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org> wr=
-ote:=0AI've put a modified proposal here:=0Ahttp://www.radiotap.org/sugges=
-ted-fields/MCS-proposal2=0A=0AI also added some a-MPDU status bits. They m=
-ight not quite belong to=0AHT/MCS only, but they will typically be used wi=
-th that and everything=0Aelse can indeed be masked out if really necessary=
-=0A=0AThoughts?=0A=A0=0AI think the proposal2 looks great. The info mask =
-is great for both tx specification and rx capture.=0A=0AAdding single-bit =
-fields has the advantage that they can be left out of=0Athe header when, e=
-g., you just know the MCS, but you don't know whether=0Ait was 20 or 40 M=
-Hz (which, incidentally, is quite useless).=0A=A0=0AI think the mask for 2=
-0/40 is useful when using radiotap headers to do packet transmit. Some tes=
-t setups only need the raw 802.11 format and possibly some HT modulation i=
-nformation, but may not care about 20/40. For instance, some test script m=
-ay inject a packet for a STA to send to its associated AP and specify MCS =
-0 (for robustness) but leave the 20/40 info out so that the driver just se=
-nds at whatever the association has set up. Likewise, the test script may =
-leave the shortGI/LDCP info unspecified.=0A=0A-Bill=0A=0A=
-
---Boundary_(ID_JJGk99A0wz8+gZdSQCKa7A)
-Content-type: multipart/related;
- boundary="Boundary_(ID_+EeeMbUKcd7IaThjLmBcfw)"; type="text/html"
-
-
---Boundary_(ID_+EeeMbUKcd7IaThjLmBcfw)
-Content-type: text/html; charset=ISO-8859-1
-Content-transfer-encoding: quoted-printable
-
-<html><body><div>On Aug 09, 2010, at 05:10 AM, Johannes Berg &lt;johannes@sipsolutions=
-net&gt; wrote:</div><div><blockquote type=3D"cite"><div><div class=3D"_st=
-retch">=0AI've put a modified proposal here:<br>=0A<a href=3D"http://www.r=
-adiotap.org/suggested-fields/MCS-proposal2" _mce_href=3D"http://www.radiot=
-ap.org/suggested-fields/MCS-proposal2">http://www.radiotap.org/suggested-f=
-ields/MCS-proposal2</a><br>=0A<br>=0AI also added some a-MPDU status bits.=
- They might not quite belong to<br>=0AHT/MCS only, but they will typically=
- be used with that and everything<br>=0Aelse can indeed be masked out if r=
-eally necessary.<br>=0A<br>=0AThoughts?</div></div></blockquote><span>&nbs=
-p;</span></div><div><span>I think the proposal2 looks great. The info mask=
- is great for both tx specification and rx capture.</span></div><div><span=
-><br></span></div><div><span><blockquote type=3D"cite" style=3D"padding-to=
-p: 0px; border-left-width: 2px; border-left-style: solid; border-left-colo=
-r: rgb(0, 51, 153); margin-top: 0px; margin-right: 0px; margin-bottom: 0px=
-; margin-left: 0px; padding-right: 12px; padding-bottom: 0px; padding-left=
-: 12px; color: rgb(0, 51, 153); " _mce_style=3D"padding-top: 0px; border-l=
-eft-width: 2px; border-left-style: solid; border-left-color: #003399; padd=
-ing-right: 12px; padding-bottom: 0px; padding-left: 12px; color: #003399; =
-margin: 0px;"><div><div class=3D"_stretch" style=3D"font-family: Helvetica=
-, Arial, Verdana, sans-serif; font-size: 13px; max-width: 100%; " _mce_sty=
-le=3D"font-family: Helvetica, Arial, Verdana, sans-serif; font-size: 13px;=
- max-width: 100%;">Adding single-bit fields has the advantage that they ca=
-n be left out of<br>the header when, e.g., you just know the MCS, but you =
-don't know whether<br>it was 20 or 40 MHz (which, incidentally, is quite u=
-seless).</div></div></blockquote><span>&nbsp;</span></span></div><div>I th=
-ink the mask for 20/40 is useful when using radiotap headers to do packet =
-transmit. Some test setups only need the raw 802.11 format and possibly so=
-me HT modulation information, but may not care about 20/40. For instance, =
-some test script may inject a packet for a STA to send to its associated A=
-P and specify MCS 0 (for robustness) but leave the 20/40 info out so that =
-the driver just sends at whatever the association has set up. Likewise, th=
-e test script may leave the shortGI/LDCP info unspecified.</div><div><br><=
-/div><div>-Bill</div><div><br></div></body></html>=
-
---Boundary_(ID_+EeeMbUKcd7IaThjLmBcfw)--
-
---Boundary_(ID_JJGk99A0wz8+gZdSQCKa7A)--
+--=20
+Matteo Croce
+OpenWrt developer
+=C2=A0 _______=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0=C2=A0 ________=C2=A0 =C2=A0 =C2=A0 =C2=A0 __
+=C2=A0|=C2=A0 =C2=A0 =C2=A0=C2=A0 |.-----.-----.-----.|=C2=A0 |=C2=A0 |=C2=
+=A0 |.----.|=C2=A0 |_
+=C2=A0|=C2=A0=C2=A0 -=C2=A0=C2=A0 ||=C2=A0 _=C2=A0 |=C2=A0 -__|=C2=A0 =C2=
+=A0=C2=A0 ||=C2=A0 |=C2=A0 |=C2=A0 ||=C2=A0=C2=A0 _||=C2=A0=C2=A0 _|
+=C2=A0|_______||=C2=A0=C2=A0 __|_____|__|__||________||__|=C2=A0 |____|
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |__| W I R E L E S S=C2=A0=C2=A0 F R E E=
+ D O M
+=C2=A0KAMIKAZE (bleeding edge) ------------------
+=C2=A0 * 10 oz Vodka=C2=A0 =C2=A0 =C2=A0=C2=A0 Shake well with ice and stra=
+in
+=C2=A0 * 10 oz Triple sec=C2=A0 mixture into 10 shot glasses.
+=C2=A0 * 10 oz lime juice=C2=A0 Salute!
+=C2=A0---------------------------------------------------
