@@ -1,47 +1,49 @@
-From: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Subject: Re: [RFA] HT extensions
-Date: Tue, 5 Oct 2010 13:56:36 -0500
-Message-ID: <20101005185636.GJ14183@ojctech.com>
+Date: Wed, 06 Oct 2010 11:23:36 +0200
+Message-ID: <1286357016.3655.33.camel@jlt3.sipsolutions.net>
 References: <1284595489.3707.54.camel@jlt3.sipsolutions.net>
- <20101005182108.GH14183@ojctech.com>
- <1286303263.3641.23.camel@jlt3.sipsolutions.net>
- <20101005184252.GI14183@ojctech.com>
- <1286304616.3641.25.camel@jlt3.sipsolutions.net>
+	 <20101005182108.GH14183@ojctech.com>
+	 <1286303263.3641.23.camel@jlt3.sipsolutions.net>
+	 <20101005184252.GI14183@ojctech.com>
+	 <1286304616.3641.25.camel@jlt3.sipsolutions.net>
+	 <20101005185636.GJ14183@ojctech.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1286304616.3641.25.camel-8upI4CBIZJIJvtFkdXX2HixXY32XiHfO@public.gmane.org>
+In-Reply-To: <20101005185636.GJ14183-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 To: Radiotap <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-On Tue, Oct 05, 2010 at 08:50:16PM +0200, Johannes Berg wrote:
-> On Tue, 2010-10-05 at 13:42 -0500, David Young wrote:
-> > On Tue, Oct 05, 2010 at 08:27:43PM +0200, Johannes Berg wrote:
-> > > On Tue, 2010-10-05 at 13:21 -0500, David Young wrote:
-> > > > How can an application use the first/last-frame information?
-> > > 
-> > > Well, right now my wireshark patch is simply displaying it, but it could
-> > > also link up frames of an a-MPDU so you can jump between them, and with
-> > > this it can know what the framing was. If you just know a frame was part
-> > > of an aMPDU you won't know which one, this should help.
-> > 
-> > I have my doubts about that.  How do you distinguish the case where the
-> > NIC gives you the first MPDU of A-MPDU 1 and the last MPDU of A-MPDU 2
-> > from the case where the NIC gives you the first and last MPDU of the
-> > same A-MPDU?
-> 
-> You mean with imperfect capturing? Otherwise you should've seen the last
-> of A-MPDU 1 inbetween that, I'd think. But you're right, doing this
-> perfectly is quite hard, and I don't really have a good use case in mind
-> either. I'm happy to leave it off, at least for now, until somebody can
-> demonstrate a working way to convey this information.
+On Tue, 2010-10-05 at 13:56 -0500, David Young wrote:
 
-I favor leaving it off for now.
+> I favor leaving it off for now.
 
-Dave
+I was just editing my proposal for that, and it occurred to me that now
+we have only one a-MPDU bit here in the MCS field, and technically
+non-MCS frames can also be aggregated, so it never really belonged here
+anyway.
 
--- 
-David Young             OJC Technologies
-dyoung-eZodSLrBbDpBDgjK7y7TUQ@public.gmane.org      Urbana, IL * (217) 278-3933
+Therefore, what do you think of these changes:
+
+1) remove the a-MPDU bit from the MCS field completely
+
+2) add a new a-MPDU field with the following definition:
+
+bit number: 20
+structure: u8 flags_idx
+required alignment: 1
+
+The presence of this field indicates that the frame was received as part
+of an a-MPDU. The format of the flags_idx field is as follows:
+
+bit 7:     index field valid, otherwise the index isn't known
+bits 6-0:  index field -- zero-based index of
+           this MPDU within the a-MPDU
+
+(technically, only bits 5-0 are required for the index, because it can
+only go up to 63)
+
+johannes
