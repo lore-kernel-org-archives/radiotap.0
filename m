@@ -1,92 +1,116 @@
-From: Wojciech Dubowik <Wojciech.Dubowik-ASv44eHyqLVBDgjK7y7TUQ@public.gmane.org>
-Subject: [RFC] MCS Field: STBC flag
-Date: Tue, 1 Nov 2011 09:34:10 +0000 (UTC)
-Message-ID: <loom.20111101T094927-66@post.gmane.org>
+From: "Rao, Krishna" <kcrao-A+ZNKFmMK5xy9aJCnZT0Uw@public.gmane.org>
+Subject: Regarding A-MPDU status field
+Date: Mon, 31 Oct 2011 09:13:24 +0000
+Message-ID: <21E1C3B49A18BA428D58607D5EEA5398BB2E90@nasanexd02b.na.qualcomm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+	boundary="_000_21E1C3B49A18BA428D58607D5EEA5398BB2E90nasanexd02bnaqual_"
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
+Content-Language: en-US
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
+To: "radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org" <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-Hello,
-  I have been doing some testing with STBC and I have noticed that it's not
-available in radiotap fields.
-We could add new flag to MCS field to support it:
+--_000_21E1C3B49A18BA428D58607D5EEA5398BB2E90nasanexd02bnaqual_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-...
-0x08 | HT format
-0x10 | FEC type 
-0x20 | STBC
+Hi everyone,
 
-...
-0x08 | HT format - 0: mixed, 1: greenfield
-0x10 | FEC type - 0: BCC, 1: LDPC 
-0x20 | STBC - 0: OFF, 1: ON
+I noticed that the A-MPDU status field has been listed under 'Suggested Fie=
+lds' (http://www.radiotap.org/suggested-fields). I feel having this field w=
+ill make things easier in some scenarios, especially when carrying out perf=
+ormance related analysis.
 
-I have done already implementation for wireshark, mac80211 and ath9k. I haven't
-tested it for other cards since I don't have one which supports STBC.
+I would like to request for this field to be made official.
 
-Here is proposed patch for radiotap in mac80211. I could send the rest if this
-new flag definition is ok.
+(In case I am missing any context, do let me know. I did briefly check the =
+mailing list, but something might have slipped by).
 
-Wojtek
+Regards,
+Krishna Rao,
+Sr. Lead Engineer,
+Qualcomm Atheros Inc.
 
----
-diff --git a/include/net/ieee80211_radiotap.h b/include/net/ieee80211_radiotap.h
-index 7e2c4d4..31837d7 100644
---- a/include/net/ieee80211_radiotap.h
-+++ b/include/net/ieee80211_radiotap.h
-@@ -260,6 +260,7 @@ enum ieee80211_radiotap_type {
- #define IEEE80211_RADIOTAP_MCS_HAVE_GI		0x04
- #define IEEE80211_RADIOTAP_MCS_HAVE_FMT		0x08
- #define IEEE80211_RADIOTAP_MCS_HAVE_FEC		0x10
-+#define IEEE80211_RADIOTAP_MCS_HAVE_STBC	0x20
- 
- #define IEEE80211_RADIOTAP_MCS_BW_MASK		0x03
- #define		IEEE80211_RADIOTAP_MCS_BW_20	0
-@@ -269,7 +270,7 @@ enum ieee80211_radiotap_type {
- #define IEEE80211_RADIOTAP_MCS_SGI		0x04
- #define IEEE80211_RADIOTAP_MCS_FMT_GF		0x08
- #define IEEE80211_RADIOTAP_MCS_FEC_LDPC		0x10
--
-+#define IEEE80211_RADIOTAP_MCS_STBC		0x20
- 
- /* Ugly macro to convert literal channel numbers into their mhz equivalents
-  * There are certianly some conditions that will break this (like feeding it '30')
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index dc1123a..0207210 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -671,6 +671,7 @@ enum mac80211_rx_flags {
- 	RX_FLAG_HT		= 1<<9,
- 	RX_FLAG_40MHZ		= 1<<10,
- 	RX_FLAG_SHORT_GI	= 1<<11,
-+	RX_FLAG_STBC		= 1<<12,
- };
- 
- /**
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index b867bd5..358dbfe 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -199,12 +199,15 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local
-*local,
- 		rthdr->it_present |= cpu_to_le32(1 << IEEE80211_RADIOTAP_MCS);
- 		*pos++ = IEEE80211_RADIOTAP_MCS_HAVE_MCS |
- 			 IEEE80211_RADIOTAP_MCS_HAVE_GI |
--			 IEEE80211_RADIOTAP_MCS_HAVE_BW;
-+			 IEEE80211_RADIOTAP_MCS_HAVE_BW |
-+			 IEEE80211_RADIOTAP_MCS_HAVE_STBC;
- 		*pos = 0;
- 		if (status->flag & RX_FLAG_SHORT_GI)
- 			*pos |= IEEE80211_RADIOTAP_MCS_SGI;
- 		if (status->flag & RX_FLAG_40MHZ)
- 			*pos |= IEEE80211_RADIOTAP_MCS_BW_40;
-+		if (status->flag & RX_FLAG_STBC)
-+			*pos |= IEEE80211_RADIOTAP_MCS_STBC;
- 		pos++;
- 		*pos++ = status->rate_idx;
- 	}
----
+
+
+--_000_21E1C3B49A18BA428D58607D5EEA5398BB2E90nasanexd02bnaqual_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+<meta name=3D"Generator" content=3D"Microsoft Word 14 (filtered medium)">
+<style><!--
+/* Font Definitions */
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:"Calibri","sans-serif";
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-family:"Calibri","sans-serif";}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"EN-US" link=3D"blue" vlink=3D"purple">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal">Hi everyone,<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">I noticed that the A-MPDU status field has been list=
+ed under &#8216;Suggested Fields&#8217; (<a href=3D"http://www.radiotap.org=
+/suggested-fields">http://www.radiotap.org/suggested-fields</a>). I feel ha=
+ving this field will make things easier in some
+ scenarios, especially when carrying out performance related analysis.<o:p>=
+</o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">I would like to request for this field to be made of=
+ficial. <o:p>
+</o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">(In case I am missing any context, do let me know. I=
+ did briefly check the mailing list, but something might have slipped by).<=
+o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Regards,<o:p></o:p></p>
+<p class=3D"MsoNormal">Krishna Rao,<o:p></o:p></p>
+<p class=3D"MsoNormal">Sr. Lead Engineer,<o:p></o:p></p>
+<p class=3D"MsoNormal">Qualcomm Atheros Inc.<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</div>
+</body>
+</html>
+
+--_000_21E1C3B49A18BA428D58607D5EEA5398BB2E90nasanexd02bnaqual_--
