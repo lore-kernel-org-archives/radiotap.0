@@ -1,7 +1,7 @@
-From: "Rao, Krishna" <kcrao-A+ZNKFmMK5xy9aJCnZT0Uw@public.gmane.org>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Subject: RE: Regarding A-MPDU status field
-Date: Tue, 3 Jan 2012 17:25:40 +0000
-Message-ID: <21E1C3B49A18BA428D58607D5EEA5398C1F289@nasanexd02b.na.qualcomm.com>
+Date: Wed, 04 Jan 2012 11:42:16 +0100
+Message-ID: <1325673736.3339.27.camel@jlt3.sipsolutions.net>
 References: <21E1C3B49A18BA428D58607D5EEA5398BB2E90@nasanexd02b.na.qualcomm.com>
 	 <1320223343.3950.29.camel@jlt3.sipsolutions.net>
 	 <21E1C3B49A18BA428D58607D5EEA5398BB67FA@nasanexd02b.na.qualcomm.com>
@@ -9,113 +9,148 @@ References: <21E1C3B49A18BA428D58607D5EEA5398BB2E90@nasanexd02b.na.qualcomm.com>
 	 <21E1C3B49A18BA428D58607D5EEA5398BBBD18@nasanexd02b.na.qualcomm.com>
 	 ,<1321259214.4472.16.camel@jlt3.sipsolutions.net>
 	 <21E1C3B49A18BA428D58607D5EEA5398BC8C00@nasanexd02b.na.qualcomm.com>
- <1321867620.3999.7.camel@jlt3.sipsolutions.net>
+	 <1321867620.3999.7.camel@jlt3.sipsolutions.net>
+	 <21E1C3B49A18BA428D58607D5EEA5398C1F289@nasanexd02b.na.qualcomm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <21E1C3B49A18BA428D58607D5EEA5398C1F289-RqevaKtL5OWBP98+muIrrKRtKmQZhJ7pQQ4Iyu8u01E@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+To: "Rao, Krishna" <kcrao-A+ZNKFmMK5xy9aJCnZT0Uw@public.gmane.org>
 Cc: "radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org" <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-SGksDQoNCj4gRGlkIHlvdSBrZWVwIHRyYWNrIGFuZCB3YW50IHRvIHdyaXRlIHVwIGEgbmV3IHBy
-b3Bvc2FsPw0KDQpIZXJlIGlzIHRoZSBuZXcgcHJvcG9zYWwgYmFzZWQgb24gZWFybGllciBkaXNj
-dXNzaW9ucy4gVGhpcyBpcyBub3QgeWV0IGluIHN0YW5kYXJkIFJhZGlvdGFwIGZpZWxkIGRlZmlu
-aXRpb24gZm9ybWF0LiBUaGlzIGlzIGJlY2F1c2UgdGhlcmUgYXJlIHNvbWUgc3ViZmllbGRzIHdo
-aWNoIGhhdmUgbm90IGJlZW4gZGlzY3Vzc2VkIGJlZm9yZSAob3IgaGF2ZSBiZWVuIHVwZGF0ZWQp
-LCBhbmQgdGhlIGdyb3VwIG1heSBoYXZlIGNvbW1lbnRzIG9uIHRoZXNlLiBDb21tZW50cyBvbiBw
-cmV2aW91c2x5IHNldHRsZWQgc3ViZmllbGRzIHRvbyBhcmUgd2VsY29tZS4NCg0KR3VpZGluZyBw
-cmluY2lwbGU6IFdlIGF0dGVtcHQgdG8gYXJyaXZlIGF0IGEgZmllbGQgZGVmaW5pdGlvbiB3aGlj
-aCBhbGxvd3MgZHJpdmVycy9oYXJkd2FyZSBjYXBhYmxlIG9mIHByb3ZpZGluZyBhZHZhbmNlZCBp
-bmZvcm1hdGlvbiB0byBkbyBzbywgaW4gdGhlIGludGVyZXN0IG9mIGJlaW5nIGFibGUgdG8gcmVj
-b25zdHJ1Y3Qgd2hhdGV2ZXIgaGFwcGVuZWQgb24gdGhlIGFpciBhcyBwcmVjaXNlbHkgYXMgcG9z
-c2libGUuIFRoaXMgYWR2YW5jZWQgaW5mb3JtYXRpb24gY292ZXJzIGJvdGggc3VjY2VzcyBhbmQg
-ZmFpbHVyZSBjb25kaXRpb25zLiBUaGlzIGNvdWxkIGFpZCBpbiBlbmhhbmNlZCBhbmFseXNpcy4g
-RHJpdmVyL2hhcmR3YXJlIGNvbWJpbmF0aW9ucyB3aXRoIGxlc3NlciBjYXBhYmlsaXR5IG1heSBz
-a2lwIHNvbWUgb2YgdGhlIHN1Yi1maWVsZHMgLSBXaXJlc2hhcmsgd2lsbCB3b3JrIHdpdGggd2hh
-dGV2ZXIgaXMgYXZhaWxhYmxlIGFuZCBwcm92aWRlIGNvcnJlc3BvbmRpbmdseSByZWR1Y2VkIGlu
-Zm9ybWF0aW9uLiANCg0KMSkgKE5ldykgRHJpdmVyIGdlbmVyYXRlZCBBLU1QRFUgcmVmZXJlbmNl
-IG51bWJlciAodTE2KS4gQWxsIHN1YmZyYW1lcyBiZWxvbmdpbmcgdG8gdGhlIHNhbWUgQS1NUERV
-IHdpbGwgaGF2ZSB0aGUgc2FtZSByZWZlcmVuY2UgbnVtYmVyIChidXQgc2VlIHJvbGxvdmVyIGNv
-bmRpdGlvbiBkaXNjdXNzZWQgc2hvcnRseSkuIFRoaXMgcmVmZXJlbmNlIG51bWJlciBhbGxvd3Mg
-dGhlIGRyaXZlciB0byByZWxpYWJseSBjb252ZXkgdG8gc25pZmZlciBhcHBsaWNhdGlvbiB3aGlj
-aCBzdWJmcmFtZXMgaXQgZm91bmQgdW5kZXIgdGhlIHNhbWUgQS1NUERVLCBpbmRlcGVuZGVudCBv
-ZiBkcml2ZXIgZGF0YSBwYXRoIGNoYXJhY3RlcmlzdGljcywgemVybyBNUERVIGxlbmd0aCBzdWJm
-cmFtZXMsIG1peCBvZiB0cmFmZmljIG9uIHRoZSBhaXIsIGFuZCB2YXJpb3VzIGVycm9yIGNvbmRp
-dGlvbnMuIFRoZSByZWZlcmVuY2UgbnVtYmVyIGlzIGNvbW1vbiBhY3Jvc3MgYWxsIHRyYWZmaWMg
-YW5kIG5vdCBtYWludGFpbmVkIHNlcGFyYXRlbHkgZm9yIHNlcGFyYXRlIERBLVNBIHBhaXJzIG9y
-IGFueSBzdWNoIHR1cGxlcy4NClJvbGxvdmVyIGlzIGVhc2lseSBoYW5kbGVkIGJ5IHNuaWZmZXIg
-YXBwbGljYXRpb24gdXNpbmcgdGltZXN0YW1wIGxvY2FsaXR5LiBTdWJmcmFtZXMgd2l0aCB0aGUg
-c2FtZSByZWZlcmVuY2UgbnVtYmVyIHdoaWNoIGRvbid0IGFjdHVhbGx5IGJlbG9uZyB0byB0aGUg
-c2FtZSBBLU1QRFUgKG93aW5nIHRvIHJvbGxvdmVyKSB3aWxsIGhhdmUgdGltZXN0YW1wcyBzZXZl
-cmFsIHNlY29uZHMgYXBhcnQuDQoyKSAoTmV3KSBBIGJpdCB0byBpbmRpY2F0ZSBpZiB0aGUgZHJp
-dmVyIGlzIGNhcGFibGUgb2YgcmV0dXJuaW5nIGluZm9ybWF0aW9uIGFib3V0IGluZGl2aWR1YWwg
-emVybyBNUERVIGxlbmd0aCBzdWJmcmFtZXMuDQozKSAoTmV3KSBBIGJpdCB0byBpbmRpY2F0ZSBp
-ZiB0aGUgY3VycmVudCBzdWJmcmFtZSBpcyBhIHplcm8gTVBEVSBsZW5ndGggc3ViZnJhbWUuIFZh
-bGlkIGlmIGJpdCDigJgy4oCZIGFib3ZlIGlzIHNldC4NCjQpIChVcGRhdGVkKSBJbmRleCBmaWVs
-ZDogWmVyby1iYXNlZCBpbmRleCBvZiB0aGUgc3ViZnJhbWUsIHdpdGhpbiB0aGUgQS1NUERVICh1
-MTYpLiBUaGlzIGlzIGFwcGxpY2FibGUgdG8gemVybyBNUERVIGxlbmd0aCBzdWJmcmFtZXMgYXMg
-d2VsbCwgaWYgYml0IOKAmDLigJkgYWJvdmUgaXMgc2V0Lg0KNSkgQSBiaXQgdG8gaW5kaWNhdGUg
-aWYg4oCYNuKAmSBiZWxvdyBpcyB2YWxpZC4NCjYpIEEgYml0IHRvIGluZGljYXRlIGlmIHRoaXMg
-aXMgdGhlIGxhc3Qgc3ViZnJhbWUgaW4gdGhlIEEtTVBEVS4gVGhpcyBkb2VzIG5vdCBhcHBseSB0
-byB6ZXJvIE1QRFUgbGVuZ3RoIHN1YmZyYW1lcy4NCjcpIChVcGRhdGVkKSBBIGJpdCB0byBpbmRp
-Y2F0ZSBpZiB0aGUgRGVsaW1pdGVyIENSQyBpcyBpbiBlcnJvci4gVGhpcyBpcyBhcHBsaWNhYmxl
-IHRvIHplcm8gTVBEVSBsZW5ndGggc3ViZnJhbWVzIGFzIHdlbGwsIGlmIGJpdCDigJgy4oCZIGFi
-b3ZlIGlzIHNldC4gSWYgdGhlIGRyaXZlci9oYXJkd2FyZSBkb2VzbuKAmXQgcGFzcyB1cHdhcmRz
-IHN1YmZyYW1lcyBmb3Igd2hpY2ggRGVsaW1pdGVyIENSQyBpcyBpbiBlcnJvciwgdGhlbiB0aGlz
-IGJpdCBzaG91bGQgYmUgY2xlYXJlZCAoaS5lLiAwKSBhbGwgdGhlIHRpbWUgLSBvbmx5IHN1Y2Nl
-c3NmdWxseSBwYXJzZWQgc3ViZnJhbWVzIHdpbGwgYmUgcGFzc2VkIHRvIHRoZSBzbmlmZmVyIGFw
-cGxpY2F0aW9uIChub3RlIHRoYXQgaGVyZSwgc3VjY2Vzc2Z1bGx5IHBhcnNlZCBkb2VzIG5vdCBu
-ZWNlc3NhcmlseSBtZWFuIHRoYXQgdGhlIDgwMi4xMSBGQ1MgdG9vIHdpbGwgYmUgdmFsaWQg4oCT
-IHRoZSB0d28gYXJlIGRpZmZlcmVudCkuDQpXZSBkb27igJl0IHByb3ZpZGUgYSBtZWFucyB0byBp
-bmRpY2F0ZSBpZiB0aGlzIGJpdCBpcyDigJhpbnZhbGlk4oCZLiBJZiBhIGRyaXZlciBkb2VzbuKA
-mXQga25vdyB3aGV0aGVyIHdoYXQgaXQgaXMgcGFzc2luZyB1cHdhcmRzIGhhcyBiZWVuIHN1Y2Nl
-c3NmdWxseSBwYXJzZWQgb3Igbm90LCBJTUhPIHRoZXJlIGNvdWxkIGJlIHNlcmlvdXMgaW1wbGVt
-ZW50YXRpb24gbWlzdGFrZXMgYXQgc29tZSBsZXZlbC4NCjgpIEEgYml0IHRvIGluZGljYXRlIGlm
-IOKAmDnigJkgYmVsb3cgaXMgdmFsaWQuDQo5KSBEZWxpbWl0ZXIgQ1JDIHZhbHVlIGl0c2VsZiAo
-OCBiaXRzKS4gQXBwbGljYWJsZSBvbmx5IGlmIHRoZSBEZWxpbWl0ZXIgQ1JDIGlzIGluIGVycm9y
-LCBpLmUuIGJpdCA3IGlzIHNldC4NCg0KKFRvIGFjY29tbW9kYXRlIHRoZSBjYXNlIHdoZXJlIGEg
-ZHJpdmVyL2hhcmR3YXJlIGNvbWJpbmF0aW9uIG1heSBiZSBjYXBhYmxlIG9mIHByb3ZpZGluZyB0
-b3RhbCB6ZXJvIE1QRFUgYmFzZWQgcGFkZGluZyBsZW5ndGggYmVmb3JlIGEgZ2l2ZW4gc3ViZnJh
-bWUsIGJ1dCBub3QgaW5mbyBvbiBpbmRpdmlkdWFsIHplcm8gTVBEVSBzdWJmcmFtZXMgdGhlbXNl
-bHZlcywgc2hvdWxkIHdlIGFkZCBvbmUgbW9yZSBmaWVsZCB3aGljaCBkaXJlY3RseSBnaXZlcyB0
-aGUgdG90YWwgcGFkZGluZyBsZW5ndGg/IEJpdCAyIHdpbGwgYmUgemVybyBpbiB0aGlzIGNhc2Uu
-IERpc2N1c3Npb24gMSB1bmRlciAnIFdpcmVzaGFyayBJbXBsZW1lbnRhdGlvbiBTdWdnZXN0aW9u
-cycgd2lsbCBnZXQgbW9kaWZpZWQpLiANCg0KV2lyZXNoYXJrIEltcGxlbWVudGF0aW9uIFN1Z2dl
-c3Rpb25zOg0KDQoxKSBJZiBiaXQgMiBpcyBzZXQgYnkgZHJpdmVyOiBUb3RhbCB2YWx1ZSBvZiB6
-ZXJvIE1QRFUgbGVuZ3RoIHBhZGRpbmcgYmVmb3JlIGEgZ2l2ZW4gbm9uLXplcm8gbGVuZ3RoIE1Q
-RFUgY29udGFpbmluZyBzdWJmcmFtZSBzaG91bGQgYmUgY2FsY3VsYXRlZCBieSBXaXJlc2hhcmsu
-IElmIHRoZSBEZWxpbWl0ZXIgQ1JDIGlzIGluIGVycm9yIGZvciBhbnkgb2YgdGhlIHplcm8tbGVu
-Z3RoIE1QRFUgc3ViZnJhbWVzIGludm9sdmVkLCB0aGVuIHRoZSBwYWRkaW5nIHZhbHVlIHNob3Vs
-ZCBiZSBzZXQgdG8gaW52YWxpZCAoUXVlc3Rpb246IENhbiB3ZSBzZXQgdGhpcyB0byBzb21ldGhp
-bmcgbGlrZSDigJhpbmRldGVybWluYXRl4oCZIHRvIGRpZmZlcmVudGlhdGUgaXQgZnJvbSB0aGUg
-Y2FzZSB3aGVyZSBiaXQgMiBpcyAwLCBkZXNjcmliZWQgYmVsb3c/KQ0KSWYgYml0IDIgaXMgMCwg
-dGhlbiBXaXJlc2hhcmsgc2hvdWxkIHNldCB0aGUgcGFkZGluZyB2YWx1ZSB0byBpbnZhbGlkLg0K
-DQoyKSBJZiBEZWxpbWl0ZXIgQ1JDIGlzIGluIGVycm9yLCB0aGVuIHRoZSBoYXJkd2FyZSBtYXkg
-b3IgbWF5IG5vdCByZXR1cm4gdGhlIHN1c3BlY3QgTVBEVSBieXRlcy4NCiAgICBhKSBJZiBoL3cg
-ZG9lcyBub3QgcmV0dXJuIE1QRFUgYnl0ZXMsIHRoZW4gV2lyZXNoYXJrIGNhbiBkaXNwbGF5IGp1
-c3QgdGhlIFJhZGlvdGFwIGhlYWRlciB3aXRob3V0IHRoZSBNUERVIGNvbnRlbnRzDQogICAgYikg
-SWYgaC93IGRvZXMgcmV0dXJuIHRoZSBzdXNwZWN0IE1QRFUgYnl0ZXMsIFdpcmVzaGFyayBtYXkg
-Y2Fycnkgb3V0IG9uZSBvZiB0aGUgZm9sbG93aW5nIGJhc2VkIG9uIGNvbmZpZ3VyYXRpb24gc2V0
-dGluZ3M6DQogICAgICAgIGkpIERpc3BsYXkgdGhlIHN1c3BlY3QgTVBEVSBhcyBhIGJ1bmNoIG9m
-IHVuLWRpc3NlY3RlZCBieXRlcy4NCiAgICAgICAgaWkpIEF0dGVtcHQgYSBoZXVyaXN0aWMgZGlz
-c2VjdGlvbiBvZiB0aGUgTVBEVSBieXRlcy4gQnV0IG5vdGUgdGhhdCB0aGlzIGNhbiBnbyBxdWl0
-ZSB3cm9uZyBkdWUgdG8gdW5jZXJ0YWludHkgYWJvdXQgdmFsaWRpdHkgb2YgTVBEVSBib3VuZGFy
-aWVzLg0KIA0KMykgSWYgRGVsaW1pdGVyIENSQyBpcyBub3QgaW4gZXJyb3IsIHRoZSBkcml2ZXIg
-d2lsbCBub3QgY29weSB0aGUgQ1JDIHZhbHVlIGZyb20gaGFyZHdhcmUuIFdpcmVzaGFyayBzaG91
-bGQgY2FsY3VsYXRlIHRoZSB2YWx1ZSBpdHNlbGYuDQoNCjQpIChPcHRpb25hbCkgVmFsdWUgb2Yg
-c3ViZnJhbWUgcGFkZGluZyBsZW5ndGggYWZ0ZXIgdGhlIE1QRFUgY291bGQgYmUgY2FsY3VsYXRl
-ZCBhbmQgZGlzcGxheWVkIGJ5IFdpcmVzaGFyay4gVGhvdWdoIHRoaXMgY2FuIGJlIGVhc2lseSBj
-YWxjdWxhdGVkIGZyb20gTVBEVSBsZW5ndGgsIGl0IGlzIGdvb2QgdG8gaGVscCB1c2VycyBlYXNp
-bHkgb2JzZXJ2ZSBhbmQgZmlsdGVyIG9uIHRoaXMgdmFsdWUgd2l0aG91dCBoYXZpbmcgdG8gcmVz
-b3J0IHRvIGFueSBwb3N0IHByb2Nlc3Npbmcgc2NyaXB0cy4gSWYgdGhlIHZhbHVlIGlzIHJlYWRp
-bHkgb2JzZXJ2YWJsZSwgaXQgbWlnaHQgaGVscCBmb3IgZXhhbXBsZSwgYSBtb2JpbGUgYXBwIGRl
-dmVsb3BlciB3aXRoIG9ubHkgY3Vyc29yeSBrbm93bGVkZ2Ugb2YgODAyLjExbiB0byBjaGFuY2Ug
-dXBvbiBhbmQgaW5xdWlyZSBpbnRvIHRoZSByZWFzb24gZm9yIHRoZSBwYWRkaW5nLiBGb3IgcmVh
-bC10aW1lIGFwcHMgb3BlcmF0aW5nIGluIG5vaXN5IFJGIGVudmlyb25tZW50cywgYWRqdXN0aW5n
-IHRoZSBwYXlsb2FkIGJ5dGVzIHRvIG1pbmltaXplIHN1YmZyYW1lIHBhZGRpbmcgbWF5IGZvcm0g
-b25lIG9mIG1hbnkgbGl0dGxlIG9wdGltaXphdGlvbnMgIHRvIGV4dHJhY3QgYmV0dGVyIHBlcmZv
-cm1hbmNlIChkZXBlbmRpbmcgb24gdHJhZmZpYyBjaGFyYWN0ZXJpc3RpY3MpLg0KDQpSZWdhcmRz
-LA0KS3Jpc2huYQ0KDQo=
+Hi Rao,
+
+> Here is the new proposal based on earlier discussions. This is not yet
+> in standard Radiotap field definition format. This is because there
+> are some subfields which have not been discussed before (or have been
+> updated), and the group may have comments on these. Comments on
+> previously settled subfields too are welcome.
+
+Cool, thanks.
+
+> 1) (New) Driver generated A-MPDU reference number (u16). All subframes
+> belonging to the same A-MPDU will have the same reference number (but
+> see rollover condition discussed shortly). This reference number
+> allows the driver to reliably convey to sniffer application which
+> subframes it found under the same A-MPDU, independent of driver data
+> path characteristics, zero MPDU length subframes, mix of traffic on
+> the air, and various error conditions. The reference number is common
+> across all traffic and not maintained separately for separate DA-SA
+> pairs or any such tuples.
+> Rollover is easily handled by sniffer application using timestamp
+> locality. Subframes with the same reference number which don't
+> actually belong to the same A-MPDU (owing to rollover) will have
+> timestamps several seconds apart.
+
+I like this. Maybe we should extend it to u32 though? Space probably
+isn't at a premium, and VHT might make the timing deduction harder in
+the future?
+
+If I understand correctly, this would be generated by the driver anyway
+(and I see easily how I could generate it in our drivers)
+
+> 2) (New) A bit to indicate if the driver is capable of returning
+> information about individual zero MPDU length subframes.
+
+Is that required/useful? It doesn't seem like per-frame information, and
+global things are hard to deduct out of per-frame information?
+
+> 3) (New) A bit to indicate if the current subframe is a zero MPDU
+> length subframe. Valid if bit =E2=80=982=E2=80=99 above is set.
+
+This seems good, but the if the driver isn't capable this bit would
+always be 0 obviously, so I'm not sure I see the need for '2'.
+
+> 4) (Updated) Index field: Zero-based index of the subframe, within the
+> A-MPDU (u16). This is applicable to zero MPDU length subframes as
+> well, if bit =E2=80=982=E2=80=99 above is set.
+
+I guess a u16 will be sufficient even for VHT, right?
+The note about 0-length subframes seems pointless since they otherwise
+don't exist?
+
+> 5) A bit to indicate if =E2=80=986=E2=80=99 below is valid.
+> 6) A bit to indicate if this is the last subframe in the A-MPDU. This
+> does not apply to zero MPDU length subframes.
+
+Right, they can't be last.
+
+> 7) (Updated) A bit to indicate if the Delimiter CRC is in error. This
+> is applicable to zero MPDU length subframes as well, if bit =E2=80=982=E2=
+=80=99 above
+> is set. If the driver/hardware doesn=E2=80=99t pass upwards subframes f=
+or
+> which Delimiter CRC is in error, then this bit should be cleared (i.e.
+> 0) all the time - only successfully parsed subframes will be passed to
+> the sniffer application (note that here, successfully parsed does not
+> necessarily mean that the 802.11 FCS too will be valid =E2=80=93 the tw=
+o are
+> different).
+> We don=E2=80=99t provide a means to indicate if this bit is =E2=80=98in=
+valid=E2=80=99. If a
+> driver doesn=E2=80=99t know whether what it is passing upwards has been
+> successfully parsed or not, IMHO there could be serious implementation
+> mistakes at some level.
+> 8) A bit to indicate if =E2=80=989=E2=80=99 below is valid.
+> 9) Delimiter CRC value itself (8 bits). Applicable only if the
+> Delimiter CRC is in error, i.e. bit 7 is set.
+
+Makes sense.
+
+> (To accommodate the case where a driver/hardware combination may be
+> capable of providing total zero MPDU based padding length before a
+> given subframe, but not info on individual zero MPDU subframes
+> themselves, should we add one more field which directly gives the
+> total padding length? Bit 2 will be zero in this case. Discussion 1
+> under ' Wireshark Implementation Suggestions' will get modified).=20
+
+Not sure -- it could generate one (or more?) padding frame(s) in that
+case, no?
+
+> Wireshark Implementation Suggestions:
+>=20
+> 1) If bit 2 is set by driver: Total value of zero MPDU length padding
+> before a given non-zero length MPDU containing subframe should be
+> calculated by Wireshark. If the Delimiter CRC is in error for any of
+> the zero-length MPDU subframes involved, then the padding value should
+> be set to invalid (Question: Can we set this to something like
+> =E2=80=98indeterminate=E2=80=99 to differentiate it from the case where=
+ bit 2 is 0,
+> described below?)
+
+"indeterminate" would be not adding the field to the parse tree at all
+
+> 2) If Delimiter CRC is in error, then the hardware may or may not
+> return the suspect MPDU bytes.
+>     a) If h/w does not return MPDU bytes, then Wireshark can display
+> just the Radiotap header without the MPDU contents
+>     b) If h/w does return the suspect MPDU bytes, Wireshark may carry
+> out one of the following based on configuration settings:
+>         i) Display the suspect MPDU as a bunch of un-dissected bytes.
+>         ii) Attempt a heuristic dissection of the MPDU bytes. But note
+> that this can go quite wrong due to uncertainty about validity of MPDU
+> boundaries.
+> =20
+> 3) If Delimiter CRC is not in error, the driver will not copy the CRC
+> value from hardware. Wireshark should calculate the value itself.
+
+Or simply not display it I guess.
+
+> 4) (Optional) Value of subframe padding length after the MPDU could be
+> calculated and displayed by Wireshark. Though this can be easily
+> calculated from MPDU length, it is good to help users easily observe
+> and filter on this value without having to resort to any post
+> processing scripts. If the value is readily observable, it might help
+> for example, a mobile app developer with only cursory knowledge of
+> 802.11n to chance upon and inquire into the reason for the padding.
+> For real-time apps operating in noisy RF environments, adjusting the
+> payload bytes to minimize subframe padding may form one of many little
+> optimizations  to extract better performance (depending on traffic
+> characteristics).
+
+What would it calculate, based on the data provided?
+
+johannes
