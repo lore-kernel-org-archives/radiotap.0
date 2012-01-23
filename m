@@ -1,40 +1,78 @@
-From: "Alwin Beukers" <alwin-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Subject: RE: [RFC] VHT fields
-Date: Tue, 19 Jun 2012 11:37:09 +0000
-Message-ID: <C6E8EE2D6B3ACB4582C1249E834B3065061857@SJEXCHMB13.corp.ad.broadcom.com>
-References: <C6E8EE2D6B3ACB4582C1249E834B306505FEEE@SJEXCHMB13.corp.ad.broadcom.com>,<4FDF7426.2050202@superduper.net>
+From: "Rao, Krishna" <kcrao-A+ZNKFmMK5xy9aJCnZT0Uw@public.gmane.org>
+Subject: RE: Regarding A-MPDU status field
+Date: Mon, 23 Jan 2012 16:16:14 +0000
+Message-ID: <21E1C3B49A18BA428D58607D5EEA5398C3D354@nasanexd02b.na.qualcomm.com>
+References: <21E1C3B49A18BA428D58607D5EEA5398BB2E90@nasanexd02b.na.qualcomm.com>
+	 <1320223343.3950.29.camel@jlt3.sipsolutions.net>
+	 <21E1C3B49A18BA428D58607D5EEA5398BB67FA@nasanexd02b.na.qualcomm.com>
+	 ,<1320847366.3845.72.camel@jlt3.sipsolutions.net>
+	 <21E1C3B49A18BA428D58607D5EEA5398BBBD18@nasanexd02b.na.qualcomm.com>
+	 ,<1321259214.4472.16.camel@jlt3.sipsolutions.net>
+	 <21E1C3B49A18BA428D58607D5EEA5398BC8C00@nasanexd02b.na.qualcomm.com>
+	 <1321867620.3999.7.camel@jlt3.sipsolutions.net>
+	 <21E1C3B49A18BA428D58607D5EEA5398C1F289@nasanexd02b.na.qualcomm.com>
+	 ,<1325673736.3339.27.camel@jlt3.sipsolutions.net>
+	 <21E1C3B49A18BA428D58607D5EEA5398C20149@nasanexd02b.na.qualcomm.com>
+	 ,<1326104166.3451.21.camel@jlt3.sipsolutions.net>
+	 <21E1C3B49A18BA428D58607D5EEA5398C36652@nasanexd02b.na.qualcomm.com>
+ <1326721599.3510.18.camel@jlt3.sipsolutions.net>
 Mime-Version: 1.0
-Content-Type: text/plain;
- charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <4FDF7426.2050202-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>
+In-Reply-To: <1326721599.3510.18.camel-8upI4CBIZJIJvtFkdXX2HixXY32XiHfO@public.gmane.org>
 Content-Language: en-US
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: Simon Barber <simon-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>
+To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Cc: "radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org" <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-Hi Simon,=0A=
-=0A=
-> I'm not very familar with 11ac - but does this information together=0A=
-> with the packet data give you enough to calculate precisely the=0A=
-> packet's duration in time? Are there any duration fields, as there are=0A=
-> in 11n that might be useful?=0A=
-=0A=
-Haven't tried it, but I think you would have all the required info.=0A=
-=0A=
-Section 22.3.2 of the 11ac draft has the durations of the training and=0A=
-signal fields. The duration of VHT-LTF depends on the total number=0A=
-of space-time streams (NSTS), which you can get from the SU_VHT=0A=
-and MU_VHT fields.=0A=
-=0A=
-The radiotap header doesn't contain the data length from the =0A=
-VHT-SIG-B field, but I guess you can get that from the packet data=0A=
-itself. There is a datarate calculation in the Wireshark patch I sent=0A=
-with the proposal.=0A=
-=0A=
-Alwin=0A=
-=0A=
-> =0A=
-> Simon=0A=
+SGksDQoNCj4+IEl0IHdvdWxkIHByb3ZpZGUgdGhlIHBvc2l0aW9uIG9mIHRoZSBjdXJyZW50IHN1
+YmZyYW1lLCBpbiB3aXRoaW4gdGhlIA0KPj4gQS1NUERVIChpcnJlc3BlY3RpdmUgb2Ygd2hldGhl
+ciB0aGUgc3ViZnJhbWUgaXMgemVybyBvciBub24temVybyBNUERVIA0KPj4gbGVuZ3RoKS4gVGhl
+IGluZGV4IHZhbHVlIGl0c2VsZiBpcyB6ZXJvLWJhc2VkIChpLmUuLCBpdCBzdGFydHMgZnJvbSAw
+IA0KPj4gYW5kIGluY3JlbWVudHMgb253YXJkcykuDQo+PiANCj4+IGEpIElmIDB4MDEgaXMgc2V0
+LCB0aGVuIHRoZSBpbmRleCBmb3IgdGhlIGN1cnJlbnQgc3ViZnJhbWUgdGFrZXMgaW50byANCj4+
+IGFjY291bnQgcHJldmlvdXMgemVybyBNUERVIGxlbmd0aCBzdWJmcmFtZXMgKGJlY2F1c2UgdGhl
+c2UgcHJldmlvdXMgDQo+PiB6ZXJvIHN1YmZyYW1lcyBoYXZlIGJlZW4gcmVwb3J0ZWQgaW5kaXZp
+ZHVhbGx5IGFuZCB0aGUgaW5kZXggDQo+PiBpbmNyZW1lbnRlZCBmb3IgZWFjaCBvZiB0aGVtKS4N
+Cj4+IGIpIElmIDB4MDEgaXMgY2xlYXIsIHRoZW4gdGhlIGluZGV4IGZvciB0aGUgY3VycmVudCBz
+dWJmcmFtZSBkb2VzIG5vdCANCj4+IGFjY291bnQgZm9yIHByZXZpb3VzIHplcm8gTVBEVSBsZW5n
+dGggc3ViZnJhbWVzIHRoYXQgbWlnaHQgaGF2ZSBiZWVuIA0KPj4gdHJhbnNtaXR0ZWQgb3ZlciB0
+aGUgYWlyLg0KPj4gDQo+PiBUaHVzIGlmIHR3byBkaWZmZXJlbnQgZHJpdmVycyBhcmUgb2JzZXJ2
+aW5nIHRoZSBzYW1lIHRyYWZmaWM6DQo+PiBUaGUgZHJpdmVyIHRoYXQgc2V0cyAweDAxIHdpbGwg
+cmVwb3J0IGEgbGFyZ2VyIGluZGV4IHZhbHVlIGZvciBhIGdpdmVuIA0KPj4gbm9uLXplcm8gc3Vi
+ZnJhbWUsIHRoYW4gdGhlIGRyaXZlciB0aGF0IGNsZWFycyAweDAxIChpZiB6ZXJvIHBhZGRpbmcg
+DQo+PiBvY2N1cnMgYmVmb3JlIHRoYXQgc3ViZnJhbWUpLg0KPj4gDQo+PiBJZiAweDAxIGlzIHNl
+dCwgdGhlbiB0aGUgc25pZmZlciBhcHAgY2FuIGNhbGN1bGF0ZSB6ZXJvIHBhZGRpbmcgYnkgDQo+
+PiBwcm9jZXNzaW5nIGluZGV4IGluZm9ybWF0aW9uIGFuZCBNUERVIGxlbmd0aCBmaWVsZCB2YWx1
+ZXMgYWNyb3NzIA0KPj4gc3ViZnJhbWVzLg0KPk9rLCBidXQgSSB0aGluayB0aGF0IHRoZW4gd2Ug
+c3RpbGwgbmVlZCB0byByZXNvbHZlIGEgc21hbGwgYW1iaWd1aXR5IGhlcmUuIEltYWdpbmUgdGhp
+czoNCj4NCj4gICBbbXBkdV1bcGFkXVtwYWRdW21wZHVdW3BhZF1bbXBkdV0NCj5hKSAwICAgICAx
+ICAgIDIgICAgMyAgICAgNCAgICA1DQo+YikgMCAgICAgICAgICAgICAgIDEgICAgICAgICAgMg0K
+Pg0KPlJpZ2h0Pw0KQ29ycmVjdC4NCg0KPg0KPkJ1dCBub3cgaW1hZ2luZSBhIGRldmljZSBtaXNz
+ZXMgYSBmcmFtZSBkdWUgdG8gZGVjb2RlIHByb2JsZW0gb3Igc28gLi4uDQo+dGhlbiB3aGljaCBv
+bmUgd291bGQgeW91IHdhbnQ6DQo+MSkgc3ViZnJhbWUgaW5kZXggc2tpcHMgdGhhdCBvbmUNCj4y
+KSBzdWJmcmFtZSBpbmRleCBqdXN0IGluY3JlYXNlcw0KPg0KPlNheQ0KPiAgIFttcGR1XVtwYWRd
+W3BhZF1bLS0tLV1bcGFkXVttcGR1XQ0KPjEpIDAgICAgIDEgICAgMiAgICAoMykgICA0ICAgIDUN
+Cj4yKSAwICAgICAxICAgIDIgICAgICAgICAgMyAgICA0DQo+DQo+YnV0IHRoZW4gdGhlIGRyaXZl
+ciB3b3VsZCBoYXZlIHRvIGd1ZXNzIGF0IHRoZSBwYWRkaW5nPyBOb3Qgc3VyZS4gSW4gYW55IGNh
+c2UsIHdlIG5lZWQgdG8gbmFpbA0KPnRoaXMgZG93biwgYmVjYXVzZSBpbiB0aGUgY2FzZSAyKSB0
+aGUgZHJpdmVyIGNhbiBudW1iZXIgdGhlIHN1YmZyYW1lcyAoYnV0IGl0J3MgbGVzcyB1c2VmdWwp
+LA0KPmFuZCBpbiB0aGUgY2FzZSAxKSB0aGUgZGV2aWNlIGhhcyB0byBwcm92aWRlIGl0IChhbmQg
+bm90IGFsbCBkbyAtLSBzbyB3ZSBuZWVkIGEgc2VwYXJhdGUgdmFsaWQgYml0KS4NCj5JbiB0aGUg
+Y2FzZSAxKSwgZXZlbiB0aGUgYXBwbGljYXRpb24gKHdpcmVzaGFyaykgY291bGQgcHJvdmlkZSB0
+aGUgc3ViZnJhbWUgaW5kZXg/DQoNCkdvb2QgeW91IGJyb3VnaHQgdGhpcyB1cC4NCg0KSSBoYWQg
+YmFzaWNhbGx5IGNhc2UgMikgaW4gbWluZC4gRXZlbiB0aGUgZGV2aWNlIGl0c2VsZiBtYXkgbm90
+IGFsd2F5cyBiZSBhYmxlIHRvIHByb3ZpZGUgdGhlIGluZGV4IGZvciBzdWJmcmFtZXMgdG90YWxs
+eSBza2lwcGVkIGR1ZSB0byBkZWNvZGUgcHJvYmxlbXMuIEl0IG1heSBzb21ldGltZXMgYmUgYWJs
+ZSB0byBwYXNzIHRvIHRoZSBkcml2ZXIgc3ViZnJhbWVzIHdpdGggYmFkIGRlbGltaXRlciBDUkMg
+YW5kIHRoZXNlIHdvdWxkIGdldCBpbmRleGVkIGJ5IHRoZSBkcml2ZXIgKHdpdGggZmxhZyAweDEw
+IHNldCkuIFNvIHRoZSBwcmluY2lwbGUgaXMgdGhhdCBvbmx5IHdoYXRldmVyIHN1YmZyYW1lcyB0
+aGUgZGV2aWNlIGNhbiBwYXNzIHRvIHRoZSBkcml2ZXIsIGdvb2Qgb3IgYmFkLCBnZXQgaW5kZXhl
+ZC4NCg0KQnV0IEkgbm93IGZlZWwgdGhlIGFwcGxpY2F0aW9uIGl0c2VsZiBjYW4gcHJvdmlkZSB0
+aGUgc3ViZnJhbWUgaW5kZXhpbmcgKGFzIGluIGNhc2UgMikuIEl0IGNhbiB1c2UgdGhlIHN1YmZy
+YW1lIHJlZmVyZW5jZSBudW1iZXIgYW5kIHRpbWVzdGFtcCBmb3IgdGhpcy4gVGhlIGJ1cmRlbiBv
+biB0aGUgZHJpdmVyIHdvdWxkIGJlIGRlY3JlYXNlZCwgYW5kIHdlIGFsc28gc2F2ZSBzcGFjZSBp
+biB0aGUgUmFkaW90YXAgaGVhZGVyIGJ5IHJlbW92aW5nIHRoaXMgZmllbGQuDQoNClJlZ2RzLA0K
+S3Jpc2huYQ0KDQo=
