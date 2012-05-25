@@ -1,53 +1,32 @@
-From: "Rao, Krishna" <kcrao-A+ZNKFmMK5xy9aJCnZT0Uw@public.gmane.org>
-Subject: RE: Regarding A-MPDU status field
-Date: Wed, 22 Feb 2012 01:14:19 +0000
-Message-ID: <21E1C3B49A18BA428D58607D5EEA5398C55E21@nasanexd02b.na.qualcomm.com>
-References: <21E1C3B49A18BA428D58607D5EEA5398BB2E90@nasanexd02b.na.qualcomm.com>
-	 <1320223343.3950.29.camel@jlt3.sipsolutions.net>
-	 <21E1C3B49A18BA428D58607D5EEA5398BB67FA@nasanexd02b.na.qualcomm.com>
-	 ,<1320847366.3845.72.camel@jlt3.sipsolutions.net>
-	 <21E1C3B49A18BA428D58607D5EEA5398BBBD18@nasanexd02b.na.qualcomm.com>
-	 ,<1321259214.4472.16.camel@jlt3.sipsolutions.net>
-	 <21E1C3B49A18BA428D58607D5EEA5398BC8C00@nasanexd02b.na.qualcomm.com>
-	 <1321867620.3999.7.camel@jlt3.sipsolutions.net>
-	 <21E1C3B49A18BA428D58607D5EEA5398C1F289@nasanexd02b.na.qualcomm.com>
-	 ,<1325673736.3339.27.camel@jlt3.sipsolutions.net>
-	 <21E1C3B49A18BA428D58607D5EEA5398C20149@nasanexd02b.na.qualcomm.com>
-	 ,<1326104166.3451.21.camel@jlt3.sipsolutions.net>
-	 <21E1C3B49A18BA428D58607D5EEA5398C36652@nasanexd02b.na.qualcomm.com>
-	 <1326721599.3510.18.camel@jlt3.sipsolutions.net>
-	 <21E1C3B49A18BA428D58607D5EEA5398C3D354@nasanexd02b.na.qualcomm.com>
- <1329735809.3458.14.camel@jlt3.sipsolutions.net>
+From: "Alwin Beukers" <alwin-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Subject: RE: Password to create radiotap.org user
+Date: Fri, 25 May 2012 07:37:44 +0000
+Message-ID: <C6E8EE2D6B3ACB4582C1249E834B3065051A07@SJEXCHMB13.corp.ad.broadcom.com>
+References: <4FB149C6.3060401@superduper.net>
+ <1337019225.4303.27.camel@jlt3.sipsolutions.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: base64
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <1329735809.3458.14.camel-8upI4CBIZJIJvtFkdXX2HixXY32XiHfO@public.gmane.org>
+In-Reply-To: <1337019225.4303.27.camel-8upI4CBIZJIJvtFkdXX2HixXY32XiHfO@public.gmane.org>
 Content-Language: en-US
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Cc: "radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org" <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
+To: 'Johannes Berg' <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Cc: "radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org" <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>, Pieter-Paul Giesberts <pieterpg-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-SGksDQoNCj5NYWtlcyBzZW5zZSB0byBtZS4gSSBndWVzcyB0aGF0IG1lYW5zIHdlIGp1c3QgcmVt
-b3ZlIHRoZSBhbXBkdSBzdWJmcmFtZSBpbmRleCBmcm9tIHRoZSBwcm9wb3NhbCwgc28gd2UgaGF2
-ZSB0aGlzPw0KVGhlIGJlbG93IGxvb2tzIGdvb2QuIFlvdSBjYW4gYWxzbyBhZGQgYW4gaW1wbGVt
-ZW50YXRpb24gbm90ZSB0aGF0IHRoZSBzbmlmZmVyIGFwcGxpY2F0aW9uIHNob3VsZCBvcmRlciB0
-aGUgc3ViZnJhbWVzIHVzaW5nIHRoZSBBLU1QRFUgcmVmZXJlbmNlIG51bWJlciBhbmQgdGltZXN0
-YW1wLg0KDQo+IEEtTVBEVSByYWRpb3RhcCBmaWVsZA0KPi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-DQo+Yml0IGluZGV4OiBUQkQNCj5hbGlnbm1lbnQ6IDQgYnl0ZXMgKHUzMikNCg0KPiogYW1wZHUg
-cmVmZXJlbmNlIG51bWJlciAodTMyKQ0KSSBhc3N1bWUgeW91IHdpbGwgYmUgYWRkaW5nIHRoZSBu
-b3RlIGFib3V0IHRoZSByZWZlcmVuY2UgbnVtYmVyIGJlaW5nIGRpZmZlcmVudCBmb3IgZXZlcnkg
-Y2hhbm5lbC4uLg0KDQo+KiBmbGFncyAodTE2KQ0KPiAgLSAweDAxOiBkcml2ZXIgcmVwb3J0cyAw
-LWxlbmd0aCBzdWJmcmFtZXMNCj4gIC0gMHgwMjogaXMgMC1sZW5ndGggc3ViZnJhbWUgKHZhbGlk
-IGlmIDB4MDEgc2V0KQ0KPiAgLSAweDA0OiBsYXN0IHN1YmZyYW1lIGtub3duDQo+ICAgICAgICAg
-IChzaG91bGQgYmUgc2V0IGZvciBhbGwgc3ViZnJhbWVzIGlmIGRyaXZlciBrbm93cykNCj4gIC0g
-MHgwODogaXMgbGFzdCBzdWJmcmFtZSBpbiBhbXBkdSAodmFsaWQgaWYgMHgwNCBzZXQpDQo+ICAg
-ICAgICAgICAoY2xlYXIgZm9yIGFsbCBidXQgbGFzdCBzdWJmcmFtZSkNCj4gICAtIDB4MTA6IGRl
-bGltaXRlciBDUkMgZXJyb3INCj4gICAtIDB4MjA6IGRlbGltaXRlciBDUkMgdmFsdWUga25vd24N
-Cj4gKiBkZWxpbWl0ZXIgQ1JDIHZhbHVlICh1OCkgKHZhbGlkIGlmIGZsYWcgMHgyMCBzZXQpDQo+
-ICogdTggKHJlc2VydmVkKQ0KDQo+KEkgYWRkZWQgdGhlIHJlc2VydmVkIGZpZWxkIGFuZCBjaGFu
-Z2VkIHRoZSBmbGFncyB0byB1MTYsIGl0IHNlZW1zIHJlbGF0aXZlbHkgbGlrZWx5IHRoYXQgb3Ro
-ZXIgZmllbGRzIHdpbGwgbmVlZCB1MzIgYWxpZ25tZW50IHNvIGl0IHNlZW1zIHJlYXNvbmFibGUg
-dG8gcmVzZXJ2ZSBhIGJ5dGUgaGVyZSwgbWF5YmUgZm9yIFZIVCBleHRlbnNpb25zPykNCk1ha2Vz
-IHNlbnNlLg0KDQpSZWdkcywNCktyaXNobmENCg==
+SGkgSm9oYW5uZXMsDQoNCkknbSB3b3JraW5nIG9uIGEgcHJvcG9zYWwgZm9yIFZIVC84MDIuMTFh
+YyBhbmQgd291bGQgbGlrZSB0byBjcmVhdGUgYW4gYWNjb3VudCBvbiB0aGUgcmFkaW90YXAgd2Vi
+c2l0ZS4gQ291bGQgeW91IHNlbmQgbWUgdGhlIHBhc3N3b3JkPw0KDQpBbHdpbg0KDQotLS0tLU9y
+aWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogcmFkaW90YXAtb3duZXJAcmFkaW90YXAub3JnIFtt
+YWlsdG86cmFkaW90YXAtb3duZXJAcmFkaW90YXAub3JnXSBPbiBCZWhhbGYgT2YgSm9oYW5uZXMg
+QmVyZw0KU2VudDogTW9uZGF5LCBNYXkgMTQsIDIwMTIgODoxNCBQTQ0KVG86IFNpbW9uIEJhcmJl
+cg0KQ2M6IHJhZGlvdGFwQHJhZGlvdGFwLm9yZw0KU3ViamVjdDogUmU6IFBhc3N3b3JkIHRvIGNy
+ZWF0ZSByYWRpb3RhcC5vcmcgdXNlcg0KDQpPbiBNb24sIDIwMTItMDUtMTQgYXQgMTE6MDcgLTA3
+MDAsIFNpbW9uIEJhcmJlciB3cm90ZToNCj4gSSdkIGxpa2UgdG8gc3RhcnQgdGhlIHByb2Nlc3Mg
+dG8gaGF2ZSB0aGUgU1RCQyBhbmQgTmVzcyBiaXRzIGFkZGVkIHRvIA0KPiB0aGUgTUNTIHJhZGlv
+dGFwIGhlYWRlci4gSSBuZWVkIHRvIGNyZWF0ZSBhIHVzZXIgb24gdGhlIHJhZGlvdGFwLm9yZyAN
+Cj4gd2Vic2l0ZSBpbiBvcmRlciB0byBkbyB0aGlzLiBDYW4gc29tZW9uZSBzZW5kIG1lIHRoZSBw
+YXNzd29yZD8NCg0KWW91IGNhbiBmaW5kIGl0IGhlcmU6IGh0dHA6Ly93d3cucmFkaW90YXAub3Jn
+L1RleHRjaGFQYXNzd29yZA0KDQpqb2hhbm5lcw0KDQoNCg==
