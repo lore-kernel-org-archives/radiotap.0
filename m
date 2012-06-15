@@ -1,52 +1,80 @@
-From: "Alwin Beukers" <alwin-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Subject: RE: [RFC] VHT fields
-Date: Thu, 14 Jun 2012 11:24:43 +0000
-Message-ID: <C6E8EE2D6B3ACB4582C1249E834B306505EE2A@SJEXCHMB13.corp.ad.broadcom.com>
+Date: Fri, 15 Jun 2012 10:29:51 +0200
+Message-ID: <1339748991.4512.12.camel@jlt3.sipsolutions.net>
+References: <C6E8EE2D6B3ACB4582C1249E834B306505FEEE@SJEXCHMB13.corp.ad.broadcom.com>
 Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <C6E8EE2D6B3ACB4582C1249E834B306505FEEE-HXj2mutaA2obnnZVN+9SiJr/X4hKkxxPpWgKQ6/u3Fg@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: "radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org" <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>, 'Johannes Berg' <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+To: Alwin Beukers <alwin-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Cc: "radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org" <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-PiBPbiBUdWUsIDIwMTItMDYtMTIgYXQgMTU6MDUgKzAwMDAsIEFsd2luIEJldWtlcnMgd3JvdGU6
-DQo+ID4gSGkgZXZlcnlvbmUsDQo+ID4NCj4gPiBUaGlzIGlzIGEgcHJvcG9zYWwgZm9yIGFkZGlu
-ZyBzdXBwb3J0IGZvciA4MDIuMTFhYy4gRm91ciBmaWVsZHMgd2VyZQ0KPiBhZGRlZCB0byB0aGUg
-c3VnZ2VzdGVkLWZpZWxkcyBzZWN0aW9uOg0KPiA+DQo+ID4gaHR0cDovL3d3dy5yYWRpb3RhcC5v
-cmcvc3VnZ2VzdGVkLWZpZWxkcy9TVV9WSFQNCj4gPiBodHRwOi8vd3d3LnJhZGlvdGFwLm9yZy9z
-dWdnZXN0ZWQtZmllbGRzL01VX1ZIVA0KPiA+IGh0dHA6Ly93d3cucmFkaW90YXAub3JnL3N1Z2dl
-c3RlZC1maWVsZHMvR1JPVVBfSUQNCj4gPiBodHRwOi8vd3d3LnJhZGlvdGFwLm9yZy9zdWdnZXN0
-ZWQtZmllbGRzL1BBUlRJQUxfQUlEDQo+ID4NCj4gPiBBIFdpcmVzaGFyayBwYXRjaCBmb3IgcGFy
-c2luZyBTVV9WSFQsIEdST1VQX0lEIGFuZCBQQVJUSUFMX0FJRCBpcw0KPiBhdHRhY2hlZC4NCj4g
-DQo+IFdoYXQncyB0aGUgcmVhc29uIGZvciBzcGxpdHRpbmcgaXQgdXA/DQoNCkpvaGFubmVzLA0K
-DQpUaGUgcmVhc29uIGZvciBzcGxpdHRpbmcgaXQgdXAgaXMgdG8gYXZvaWQgZXh0cmEgb3Zlcmhl
-YWQgcmVsYXRlZCB0byBNVS1NSU1PIHdoZW4gZGVzY3JpYmluZyBWSFQgU1UgUFBEVXMuIFRoZSBz
-ZXBhcmF0aW9uIGlzIGJhc2VkIG9uIHRoZSBkaWZmZXJlbnQgUExDUCBoZWFkZXIgZm9ybWF0cyAo
-VkhULVNJRy1BMS9BMi9CKSBmb3IgU1UgYW5kIE1VIFBQRFVzOg0KDQpTVSBQUERVczoNCi0gT25s
-eSBvbmUgTlNUUywgTUNTIGFuZCBDb2RpbmcgZmllbGQuDQotIFBhcnRpYWwgQUlEIGlkZW50aWZp
-ZXMgcmVjaXBpZW50DQotIEdyb3VwIElEIGlzIGFsd2F5cyAwIChhZGRyZXNzZWQgdG8gQVAvbWVz
-aCBTVEEpIG9yIDYzIChhZGRyZXNzZWQgdG8gU1RBKQ0KDQpNVSBQUERVczoNCi0gTlNUUywgTUNT
-IGFuZCBDb2RpbmcgZmllbGRzIGZvciB1cCB0byBmb3VyIHVzZXJzDQotIFBhcnRpYWwgQUlEIGlz
-IG5vdCBhcHBsaWNhYmxlDQotIEdyb3VwIElEIGlzIDEuLjYyDQoNCkFsbCBmaWVsZHMgY29tbW9u
-IHRvIGJvdGggU1UgYW5kIE1VIGFyZSBpbiB0aGUgU1VfVkhUIGZpZWxkLiBUaGUgTVVfVkhUIGZp
-ZWxkIGNvbnRhaW5zIGFkZGl0aW9uYWwgaW5mb3JtYXRpb24gZm9yIE1VIFBQRFVzLiBUaGUgR1JP
-VVBfSUQgYW5kIFBBUlRJQUxfQUlEIGZpZWxkcyBoYXZlIHZhcnlpbmcgdmFsdWUgb3IgYXBwbGlj
-YWJpbGl0eS4NCg0KU28gZm9yIFNVIFBQRFVzIHlvdSB3b3VsZCBsaWtlbHkgaGF2ZSBTVV9WSFQg
-YW5kIFBBUlRJQUxfQUlEIGZpZWxkcywgYW5kIG1heWJlIGEgR1JPVVBfSUQgZmllbGQgKGZvciBT
-VSB0aGUgR1JPVVBfSUQgZmllbGQgb25seSBwcm92aWRlcyBkaXJlY3Rpb24gaW5mbyB0aGF0IGNv
-dWxkIGFsc28gYmUgZGV0ZXJtaW5lZCBmcm9tIFBBUlRJQUxfQUlEIGFuZC9vciBNQUMgaGVhZGVy
-KS4NCkZvciBNVSBQUERVcyB5b3Ugd291bGQgaGF2ZSBTVV9WSFQgKGZvciB0aGUgY29tbW9uIGZp
-ZWxkcyBhcyB3ZWxsIGFzIE5TVFMvTUNTL0NvZGluZyBmb3IgdGhlIGZpcnN0IHVzZXIpLCBNVV9W
-SFQgKGZvciBOU1RTL01DUy9Db2RpbmcgZm9yIGFkZGl0aW9uYWwgdXNlcnMpLCBhbmQgR1JPVVBf
-SUQuDQoNCkJ5IGNvbWJpbmluZyBmaWVsZHMgd2UgY2FuIHJlZHVjZSBjb21wbGV4aXR5IGF0IHRo
-ZSBleHBlbnNlIG9mIHNvbWUgaW5jcmVhc2VkIG92ZXJoZWFkLCB3aGF0IGFyZSB5b3VyIHRob3Vn
-aHRzIG9uIGhpcz8gQWxzbywgSSB3YXMgd29uZGVyaW5nIGlmIHdlIG5lZWQgYWxsIG9mIHRoZSAn
-a25vd24nIGZsYWdzIGluIFNVX1ZIVC4gVGhlIE1DUyBmaWVsZCAoYWZ0ZXIgd2hpY2ggU1VfVkhU
-IHdhcyBtb2RlbGVkKSBhbHNvIGhhcyB0aGVzZSwgYnV0IEkgZG9u4oCZdCBrbm93IHRoZSByYXRp
-b25hbGUgYmVoaW5kIHRoZW0uIENhbiBvbmUgYXNzdW1lIGEgZHJpdmVyIGhhcyBmdWxsIGFjY2Vz
-cyB0byB0aGUgUExDUCBoZWFkZXIgYW5kIHRodXMgY2FuIGZpbGwgaW4gbW9zdCBvZiBmaWVsZHMg
-aW4gdGhlIFNVX1ZIVCBmaWVsZD8NCg0KVGhhbmtzLA0KQWx3aW4NCiANCj4gam9oYW5uZXMNCj4g
-DQoNCg0K
+On Fri, 2012-06-15 at 08:15 +0000, Alwin Beukers wrote:
+
+> The reason for splitting it up is to avoid extra overhead related to MU=
+-MIMO=20
+> when describing VHT SU PPDUs. The separation is based on the different =
+PLCP=20
+> header formats (VHT-SIG-A1/A2/B) for SU and MU PPDUs:
+>=20
+> SU PPDUs:
+> - Only one NSTS, MCS and Coding field.
+> - Partial AID identifies recipient
+> - Group ID is always 0 (addressed to AP/mesh STA) or 63 (addressed to S=
+TA)
+>=20
+> MU PPDUs:
+> - NSTS, MCS and Coding fields for up to four users
+> - Partial AID is not applicable
+> - Group ID is 1..62
+>=20
+> All fields common to both SU and MU are in the SU_VHT field. The MU_VHT=
+ field=20
+> contains additional information for MU PPDUs. The GROUP_ID and PARTIAL_=
+AID
+> fields have varying value or applicability.
+
+Ok, makes sense.
+
+> So for SU PPDUs you would likely have SU_VHT and PARTIAL_AID fields, an=
+d maybe
+> a GROUP_ID field (for SU the GROUP_ID field only provides direction inf=
+o that
+> could also be determined from PARTIAL_AID and/or MAC header).
+
+Right. I haven't looked into all these details of 11ac (yet)
+
+> For MU PPDUs you would have SU_VHT (for the common fields as well as=20
+> NSTS/MCS/Coding for the first user), MU_VHT (for NSTS/MCS/Coding for
+> additional users), and GROUP_ID.
+>=20
+> By combining fields we can reduce complexity at the expense of some inc=
+reased
+> overhead, what are your thoughts on his?=20
+
+I don't really care much either way -- was mostly curious why you were
+splitting it up so much.
+
+I have a feeling though that the group ID would be useful to always
+have, even if it's just 0/63 in the SU case, to make it easier on
+filtering?
+
+> Also, I was wondering if we need all
+> of the 'known' flags in SU_VHT. The MCS field (after which SU_VHT was m=
+odeled)
+> also has these, but I don=E2=80=99t know the rationale behind them. Can=
+ one assume a
+> driver has full access to the PLCP header and thus can fill in most of =
+fields
+> in the SU_VHT field?
+
+I know that's usually the case for your devices, but it isn't typically
+the case for all the random devices out there ... so I think we should
+have the known flags to not run into a situation later where a device
+has to lie.
+
+johannes
