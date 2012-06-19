@@ -1,92 +1,47 @@
-From: Simon Barber <simon-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>
-Subject: Re: [RFC] VHT fields
-Date: Mon, 18 Jun 2012 11:32:06 -0700
-Message-ID: <4FDF7426.2050202@superduper.net>
-References: <C6E8EE2D6B3ACB4582C1249E834B306505FEEE@SJEXCHMB13.corp.ad.broadcom.com>
+From: "Alwin Beukers" <alwin-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Subject: RE: [RFC] VHT fields
+Date: Tue, 19 Jun 2012 10:56:15 +0000
+Message-ID: <C6E8EE2D6B3ACB4582C1249E834B306506180A@SJEXCHMB13.corp.ad.broadcom.com>
+References: <C6E8EE2D6B3ACB4582C1249E834B306505FEEE@SJEXCHMB13.corp.ad.broadcom.com>,<1340020862.4615.8.camel@jlt3.sipsolutions.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain;
+ charset=windows-1252
 Content-Transfer-Encoding: quoted-printable
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <C6E8EE2D6B3ACB4582C1249E834B306505FEEE-HXj2mutaA2obnnZVN+9SiJr/X4hKkxxPpWgKQ6/u3Fg@public.gmane.org>
+In-Reply-To: <1340020862.4615.8.camel-8upI4CBIZJIJvtFkdXX2HixXY32XiHfO@public.gmane.org>
+Content-Language: en-US
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: Alwin Beukers <alwin-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Cc: "radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org" <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-I'm not very familar with 11ac - but does this information together=20
-with the packet data give you enough to calculate precisely the=20
-packet's duration in time? Are there any duration fields, as there are=20
-in 11n that might be useful?
-
-Simon
-
-On Fri 15 Jun 2012 01:15:26 AM PDT, Alwin Beukers wrote:
->> On Tue, 2012-06-12 at 15:05 +0000, Alwin Beukers wrote:
->>> Hi everyone,
->>>
->>> This is a proposal for adding support for 802.11ac. Four fields were
->> added to the suggested-fields section:
->>>
->>> http://www.radiotap.org/suggested-fields/SU_VHT
->>> http://www.radiotap.org/suggested-fields/MU_VHT
->>> http://www.radiotap.org/suggested-fields/GROUP_ID
->>> http://www.radiotap.org/suggested-fields/PARTIAL_AID
->>>
->>> A Wireshark patch for parsing SU_VHT, GROUP_ID and PARTIAL_AID is
->> attached.
->>
->> What's the reason for splitting it up?
->
-> Johannes,
->
-> The reason for splitting it up is to avoid extra overhead related to MU=
--MIMO
-> when describing VHT SU PPDUs. The separation is based on the different =
-PLCP
-> header formats (VHT-SIG-A1/A2/B) for SU and MU PPDUs:
->
-> SU PPDUs:
-> - Only one NSTS, MCS and Coding field.
-> - Partial AID identifies recipient
-> - Group ID is always 0 (addressed to AP/mesh STA) or 63 (addressed to S=
-TA)
->
-> MU PPDUs:
-> - NSTS, MCS and Coding fields for up to four users
-> - Partial AID is not applicable
-> - Group ID is 1..62
->
-> All fields common to both SU and MU are in the SU_VHT field. The MU_VHT=
- field
-> contains additional information for MU PPDUs. The GROUP_ID and PARTIAL_=
-AID
-> fields have varying value or applicability.
->
-> So for SU PPDUs you would likely have SU_VHT and PARTIAL_AID fields, an=
-d maybe
-> a GROUP_ID field (for SU the GROUP_ID field only provides direction inf=
-o that
-> could also be determined from PARTIAL_AID and/or MAC header).
-> For MU PPDUs you would have SU_VHT (for the common fields as well as
-> NSTS/MCS/Coding for the first user), MU_VHT (for NSTS/MCS/Coding for
-> additional users), and GROUP_ID.
->
-> By combining fields we can reduce complexity at the expense of some inc=
-reased
-> overhead, what are your thoughts on his? Also, I was wondering if we ne=
-ed all
-> of the 'known' flags in SU_VHT. The MCS field (after which SU_VHT was m=
-odeled)
-> also has these, but I don=E2=80=99t know the rationale behind them. Can=
- one assume a
-> driver has full access to the PLCP header and thus can fill in most of =
-fields
-> in the SU_VHT field?
->
-> Thanks,
-> Alwin
->
->> johannes
->>
->
->
+Hi Johannes,=0A=
+=0A=
+> I have a feeling though that the group ID would be useful to always=0A=
+> have, even if it's just 0/63 in the SU case, to make it easier on=0A=
+> filtering?=0A=
+=0A=
+Good point, putting this into the SU_VHT field and dropping VHT_GROUP=0A=
+will make things easier.=0A=
+ =0A=
+> > Also, I was wondering if we need all=0A=
+> > of the 'known' flags in SU_VHT. The MCS field (after which SU_VHT was=
+=0A=
+> > modeled)=0A=
+> > also has these, but I don=92t know the rationale behind them. Can one=
+=0A=
+> > assume a=0A=
+> > driver has full access to the PLCP header and thus can fill in most=0A=
+> > of fields=0A=
+> > in the SU_VHT field?=0A=
+> =0A=
+> I know that's usually the case for your devices, but it isn't typically=
+=0A=
+> the case for all the random devices out there ... so I think we should=0A=
+> have the known flags to not run into a situation later where a device=0A=
+> has to lie.=0A=
+=0A=
+Makes sense, I'll keep these in then.=0A=
+=0A=
+Thanks,=0A=
+Alwin=0A=
