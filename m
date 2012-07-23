@@ -1,91 +1,65 @@
-From: "Alwin Beukers" <alwin-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Subject: RE: [RFC] VHT fields
-Date: Mon, 23 Jul 2012 14:47:49 +0000
-Message-ID: <C6E8EE2D6B3ACB4582C1249E834B306508054B@SJEXCHMB13.corp.ad.broadcom.com>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Subject: Re: [RFC] VHT fields
+Date: Mon, 23 Jul 2012 17:25:11 +0200
+Message-ID: <1343057111.4584.22.camel@jlt3.sipsolutions.net>
 References: <C6E8EE2D6B3ACB4582C1249E834B306505D68C@SJEXCHMB13.corp.ad.broadcom.com>
- <1341479327.4455.35.camel@jlt3.sipsolutions.net>
+	 <1341479327.4455.35.camel@jlt3.sipsolutions.net>
+	 <C6E8EE2D6B3ACB4582C1249E834B306508054B@SJEXCHMB13.corp.ad.broadcom.com>
 Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <1341479327.4455.35.camel-8upI4CBIZJIJvtFkdXX2HixXY32XiHfO@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <C6E8EE2D6B3ACB4582C1249E834B306508054B-HXj2mutaA2obnnZVN+9SiJr/X4hKkxxPpWgKQ6/u3Fg@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+To: Alwin Beukers <alwin-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 Cc: "radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org" <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>, Arend Van Spriel <arend-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>, Pieter-Paul Giesberts <pieterpg-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>, Bill Stafford <stafford-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-PiBPbiBUdWUsIDIwMTItMDYtMTIgYXQgMTU6MDUgKzAwMDAsIEFsd2luIEJldWtlcnMgd3JvdGU6
-DQo+IA0KPiA+IGh0dHA6Ly93d3cucmFkaW90YXAub3JnL3N1Z2dlc3RlZC1maWVsZHMvR1JPVVBf
-SUQNCj4gDQo+IChJIGp1c3QgZGVsZXRlZCB0aGF0KQ0KPiANCj4gPiBodHRwOi8vd3d3LnJhZGlv
-dGFwLm9yZy9zdWdnZXN0ZWQtZmllbGRzL1NVX1ZIVA0KPiA+IGh0dHA6Ly93d3cucmFkaW90YXAu
-b3JnL3N1Z2dlc3RlZC1maWVsZHMvTVVfVkhUDQo+ID4gaHR0cDovL3d3dy5yYWRpb3RhcC5vcmcv
-c3VnZ2VzdGVkLWZpZWxkcy9QQVJUSUFMX0FJRA0KPiANCj4gU28gb25lIHRoaW5nIHRoYXQgc3Ry
-aWtlcyBtZSBpcyB0aGF0IHRoaXMgaXMgbm90IGV4dGVuc2libGUgYXQgYWxsIGFueQ0KPiBtb3Jl
-IG5vdyBpbnNpZGUgdGhlIFZIVCBmaWVsZHMsIGFsbCB0aGUga25vd24gZmxhZ3MgYXJlIGFscmVh
-ZHkgdXNlZCB1cC4NCj4gSSBkb24ndCBrbm93IGlmIHRoZXJlJ3MgYW55dGhpbmcgZWxzZSBpbiBW
-SFQgdGhhdCBjb3VsZCBwb3NzaWJseSBiZSBvZg0KPiByZWxldmFuY2UgaW4gdGhlIGZ1dHVyZSB0
-aG91Z2g/IEFsc28sIGhvdyBzdGFibGUgaXMgdGhlIFZIVCBhbWVuZG1lbnQ/IEkNCj4gaGF2ZW4n
-dCBmb2xsb3dlZCBpdCBjbG9zZWx5Lg0KDQpJIGFncmVlLCBpdCdzIGEgdGlnaHQgZml0LiBJIGNh
-bid0IGNvbW1lbnQgb24gdGhlIHN0YWJpbGl0eSBvZiB0aGUgVkhUIGFtZW5kbWVudCwNCmJ1dCBp
-dCB3b3VsZCBiZSBnb29kIHRvIGhhdmUgc29tZSByb29tIGxlZnQgYW55d2F5LiBXZSBtaWdodCBl
-dmVuIHdhbnQgDQp0byBhZGQgc29tZSBpbmZvIGZvciA4MDIuMTFhZCBhdCBzb21lIHBvaW50IGlu
-IHRoZSBmdXR1cmUsIGFzIGl0J3MgYWxzbyBWSFQuDQoNCj4gV2l0aCB0aGUgU1VfVkhUIGZpZWxk
-IGJlaW5nIDUgYnl0ZXMgYW5kIHRoZSBQQVJUSUFMX0FJRCByZXF1aXJpbmcgMiBieXRlDQo+IGFs
-aWdubWVudCwgaGF2aW5nIHRoZW0gZm9sbG93IGVhY2ggb3RoZXIgd2FzdGVzIGEgYnl0ZS4gSSdt
-IG5vdCB3b3JyaWVkDQo+IGFib3V0IHRoYXQgYXQgYWxsLCBidXQgSSB3b25kZXIgaWYgc3BsaXR0
-aW5nIHRoaXMgaW50byB0aHJlZSBmaWVsZHMgaXMNCj4gcmVhbGx5IHdvcnRoIGl0PyBHaXZlbiB0
-aGUgbWFueSBkZXBlbmRlbmNpZXMgb24gU1UvTVUgaW4gYWxsIGZpZWxkcywgaXQNCj4gYWxtb3N0
-IHNlZW1zIHRoYXQgbWFraW5nIHRoZW0gYWxsIG9uZSAoc2xpZ2h0bHkgYmlnZ2VyKSBWSFQgZmll
-bGQgd291bGQNCj4gYmUgZWFzaWVyIHRvIHVzZT8NCj4gDQo+IElmIHdlIHdhbnRlZCB0byBnbyB0
-aGVyZSwgd2UgY291bGQgZXZlbiB1c2UgYSB1bmlvbjoNCj4gDQo+IHJlcXVpcmUgMiBieXRlIGFs
-aWdubWVudCBvZiB0aGUgVkhUIGZpZWxkLCBhbmQgdGhlbiBoYXZlDQo+IHU4IGtub3duDQo+IHU4
-IGZsYWdzDQo+IHU4IGJ3DQo+IHU4IG1jcw0KPiB1OCBnaWQNCj4gdW5pb24gew0KPiAJc3RydWN0
-IHsNCj4gCQl1OCBwYWQNCj4gCQl1MTYgcGFydGlhbF9haWQNCj4gCX0gc3UNCj4gCXN0cnVjdCB7
-DQo+IAkJdTggdXNlcjEsIHVzZXIyLCB1c2VyMw0KPiAJfSBtdQ0KPiB9DQo+IA0KPiANCj4gDQo+
-IEFsc28sIGxvb2tpbmcgYXQgdGhlIGZpZWxkcyBpbiBtb3JlIGRldGFpbCwgZG9lcyBpdCByZWFs
-bHkgbWFrZSBzZW5zZSB0bw0KPiBoYXZlIHRoZSBiaXRzIHBhY2tlZCBzbyB0aWdodGx5PyBOU1RT
-IGFuZCBiYW5kd2lkdGggZm9yIGV4YW1wbGUsIGRvIHRoZXkNCj4gcmVhbGx5IGJlbG9uZyBpbnRv
-IHRoZSBzYW1lIGZpZWxkPw0KPiANCj4gQWxzbyBJIHRoaW5rIHRoZSBjb2RpbmcvTlNUUyBmb3Ig
-dGhlIGZpcnN0IGFuZCB0aHJlZSBvdGhlciB1c2VycyBzaG91bGQNCj4gYmUgbW9yZSByZWd1bGFy
-PyBJdCBzZWVtcyB0aGVuIGl0IHdvdWxkbid0IGJlIHBvc3NpYmxlIHRvIHNxdWVlemUgaXQgYWxs
-DQo+IGludG8gb25lIGJ5dGUgcGVyIHVzZXIsIGJ1dCAuLi4gZG9lcyB0aGF0IHJlYWxseSBtYXR0
-ZXIgc28gbXVjaD8gVGhpcw0KPiBpc24ndCBhIGh1Z2UgYW1vdW50IG9mIGRhdGEuDQo+IA0KPiBP
-ayB3YWl0LCBJIGRvbid0IGV2ZW4gc2VlIG5vdyBob3cgdG8gZGlzdGluZ3Vpc2ggYmV0d2VlbiBT
-VSBhbmQgTVUNCj4gZnJhbWVzLCBleGNlcHQgYnkgdGhlIHByZXNlbmNlIG9mIHRoZSBvdGhlciBm
-aWVsZHM/IFRoYXQncyBhIGJpdA0KPiBhd2t3YXJkLCBkb24ndCB5b3UgdGhpbms/DQo+IA0KPiBJ
-IHRoaW5rIG92ZXJhbGwgSSdkIHByb2JhYmx5IGp1c3QgdXNlIGEgYml0IG1vcmUgc3BhY2UgYW5k
-IG1ha2UgdGhlDQo+IGZvcm1hdCBtb3JlIHJlZ3VsYXIgaW5zdGVhZCBvZiBwYWNraW5nIE1VL1NV
-IGZpZWxkcyBsaWtlIE1DUyBpbiB3aXRoDQo+IGNvbW1vbiBmaWVsZHMgbGlrZSBOU1MuDQoNClRo
-ZXNlIGFyZSBhbGwgdmFsaWQgcG9pbnRzLiBJZiB1c2luZyBhIGJpdCBtb3JlIHNwYWNlIGlzIG5v
-dCBhbiBpc3N1ZSwNCmNvbWJpbmluZyB0aGVzZSB0aHJlZSBmaWVsZHMgd291bGQgc2ltcGxpZnkg
-dGhpbmdzIHNpZ25pZmljYW50bHkuDQogDQo+IEhvdyBhYm91dCB0aGlzOg0KPiANCj4gdTgga25v
-d24gICAgICAgICAtIG1heWJlIHNwbGl0IHRoaXMgdXAgZnVydGhlciwgb3IgYXJlIHRoZXJlIHRl
-Y2huaWNhbA0KPiAgICAgICAgICAgICAgICAgICAgcmVhc29ucyB0aGF0IGUuZy4gaWYgdGhlIGNv
-ZGluZyBpcyBrbm93biB0aGUgTERQQw0KPiAgICAgICAgICAgICAgICAgICAgZXh0cmEgc3ltYm9s
-IG11c3QgYWxzbyBiZSBrbm93bj8NCj4gdTggZmxhZ3MgICAgICAgICAtIGFkZCBhIE1VL1NVIGZs
-YWcgKGFuZCBob3BlIHRoYXQgYWxsIHJlY2VpdmVycyBrbm93DQo+ICAgICAgICAgICAgICAgICAg
-ICB0aGlzLCBvciBhZGQgYSBrbm93biBmbGFnPykNCj4gdTggYncgICAgICAgICAgICAtIG9ubHkg
-dGhlIGJhbmR3aWR0aCwgbm90IE5TVFMNCj4gdTggbnNzICAgICAgICAgICAtIG9yIG1heWJlIHRo
-aXMgY291bGQgYmUgcGFja2VkIHdpdGggdGhlIGJhbmR3aWR0aA0KPiB1MTYgUF9BSUQgICAgICAg
-IC0gcGFydGlhbCBBSUQsIHZhbGlkIG9ubHkgaWYgU1UNCj4gdTggTlNUU1s0XSAgICAgICAtIE5T
-VFMgZm9yIHVwIHRvIDQgdXNlcnMNCj4gdTggbWNzX2NvZGluZ1s0XSAtIE1DUy9jb2RpbmcvY29k
-aW5nX2tub3duKD8pIGZvciB1cCB0byA0IHVzZXJzDQoNCkkgaGF2ZSBwdXQgYSBuZXcgcHJvcG9z
-YWwgYXQgaHR0cDovL3d3dy5yYWRpb3RhcC5vcmcvc3VnZ2VzdGVkLWZpZWxkcy9WSFQNCndoaWNo
-IGlzIGJhc2ljYWxseSB0aGUgZm9ybWF0IHlvdSBhcmUgcHJvcG9zaW5nIGJ1dCB3aXRoIGEgZmV3
-IHR3ZWFrcy4NCg0KQXMgdGhlcmUgaXMgYSBmaXhlZCByZWxhdGlvbiBiZXR3ZWVuIE5TUyBhbmQg
-TlNUUywgd2UgY2FuIGdldCBieSB3aXRoIG9ubHkNCmhhdmluZyBmb3VyIHBlci11c2VyIE5TUyB2
-YWx1ZXMgaW4gdGhlIGZpZWxkIGFuZCBkcm9wIE5TVFNbNF0sIHdoaWNoIHNhdmVzDQpvbmUgYnl0
-ZS4gVGhlIHBlci11c2VyIE1DUyBhbmQgTlNTIHZhbHVlcyBhcmUgY29tYmluZWQgYXMgdGhleSBn
-bw0KbmF0dXJhbGx5IHRvZ2V0aGVyLg0KDQpUaGVyZSBpcyBubyBleHBsaWNpdCBkaWZmZXJlbmNl
-IGJldHdlZW4gTVUgYW5kIFNVIGZyYW1lcywgYWxsIHRoZSBpbmZvDQppcyBhdmFpbGFibGUgaW4g
-dGhlIFZIVCBmaWVsZC4gSWYgcmVxdWlyZWQsIG9uZSBjYW4gc3RpbGwgZGV0ZXJtaW5lIE1VIG9y
-IFNVIA0KZnJvbSB0aGUgZ3JvdXAgSUQgYW5kIGhpZGUgaW5mb3JtYXRpb24gdGhhdCBpcyBub3Qg
-YXBwbGljYWJsZS4NCiANCj4gT3ZlcmFsbCwgdGhpcyBpcyBqdXN0IDYgYnl0ZXMgbG9uZ2VyIHRo
-YW4geW91ciBwcmV2aW91cyBlbmNvZGluZyAob3INCj4gbWF5YmUgNyBvciA4IGlmIGZsYWdzL2tu
-b3duIG5vdyBuZWVkIHRvIGJlIGV4dGVuZGVkKSwgYnV0IEkgdGhpbmsgaXQncw0KPiBtdWNoIG1v
-cmUgcmVndWxhcj8NCg0KVGhlIGNvbWJpbmVkIGZpZWxkIGlzIG5vdyAxMiBieXRlcyBhbmQgaGFz
-IHNvbWUgcm9vbSB0byBzcGFyZS4gSSB0aGluaw0KaXQncyBhIG5pY2UgaW1wcm92ZW1lbnQgb3Zl
-ciB0aGUgcHJldmlvdXMgcHJvcG9zYWwsIHdvdWxkIHlvdSBhZ3JlZT8NCg0KQWx3aW4NCiANCj4g
-am9oYW5uZXMNCj4gDQoNCg==
+On Mon, 2012-07-23 at 14:47 +0000, Alwin Beukers wrote:
+
+> > So one thing that strikes me is that this is not extensible at all any
+> > more now inside the VHT fields, all the known flags are already used up.
+> > I don't know if there's anything else in VHT that could possibly be of
+> > relevance in the future though? Also, how stable is the VHT amendment? I
+> > haven't followed it closely.
+> 
+> I agree, it's a tight fit. I can't comment on the stability of the VHT amendment,
+> but it would be good to have some room left anyway. We might even want 
+> to add some info for 802.11ad at some point in the future, as it's also VHT.
+
+Yeah, though that could be done as a separate field too.
+
+> I have put a new proposal at http://www.radiotap.org/suggested-fields/VHT
+> which is basically the format you are proposing but with a few tweaks.
+> 
+> As there is a fixed relation between NSS and NSTS, we can get by with only
+> having four per-user NSS values in the field and drop NSTS[4], which saves
+> one byte. The per-user MCS and NSS values are combined as they go
+> naturally together.
+
+Makes sense.
+
+> There is no explicit difference between MU and SU frames, all the info
+> is available in the VHT field. If required, one can still determine MU or SU 
+> from the group ID and hide information that is not applicable.
+
+Right, that also makes sense.
+ 
+> The combined field is now 12 bytes and has some room to spare. I think
+> it's a nice improvement over the previous proposal, would you agree?
+
+Yes, I like it.
+
+One question on this:
+
+"Note: for receive capture, the total bandwidth of the transmitter is
+not generally known, so the bandwidth will only be recorded as 20, 40,
+80, or 160, with the Channel field indicating the transmission center
+frequency."
+
+I'm not sure that's generally true, though it points out something that
+we may need to define in more detail: we have (in Linux at least) always
+had the Channel field indicate the control channel, not the transmission
+center frequency.
+
+johannes
