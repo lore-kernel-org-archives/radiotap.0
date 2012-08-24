@@ -1,46 +1,41 @@
-From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: multi-antenna handling
-Date: Mon, 20 Aug 2012 18:50:25 +0200
-Message-ID: <1345481425.4459.46.camel@jlt3.sipsolutions.net>
+From: "Alwin Beukers" <alwin-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Subject: RE: [RFC] VHT fields
+Date: Fri, 24 Aug 2012 07:46:26 +0000
+Message-ID: <C6E8EE2D6B3ACB4582C1249E834B30650B4151@SJEXCHMB13.corp.ad.broadcom.com>
+References: <C6E8EE2D6B3ACB4582C1249E834B306505D68C@SJEXCHMB13.corp.ad.broadcom.com>
+ <1341479327.4455.35.camel@jlt3.sipsolutions.net>
+ <C6E8EE2D6B3ACB4582C1249E834B306508054B@SJEXCHMB13.corp.ad.broadcom.com>
+ <1343057111.4584.22.camel@jlt3.sipsolutions.net>
+ <C6E8EE2D6B3ACB4582C1249E834B306508499C@SJEXCHMB13.corp.ad.broadcom.com>
+ <1345480938.4459.40.camel@jlt3.sipsolutions.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: base64
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <1345480938.4459.40.camel-8upI4CBIZJIJvtFkdXX2HixXY32XiHfO@public.gmane.org>
+Content-Language: en-US
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: "radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org" <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
+To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Cc: "radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org" <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>, Arend Van Spriel <arend-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>, Pieter-Paul Giesberts <pieterpg-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>, Bill Stafford <stafford-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-Hi,
-
-This isn't really a proposal for a field definition, but more a usage
-clarification that I'm seeking.
-
-When we have multiple RX chains, it is often useful to know how much
-power was received by each chain, and which chain(s) a frame was
-received on.
-
-Today, many drivers give the maximum power over all chains as a single
-value, and some drivers give no antenna information while other drivers
-(ab)use the (unitless) antenna index field (bit 11) as an antenna
-bitmap.
-
-
-I'm planning to modify this (in Linux) to include, where available,
-antenna index & per-antenna signal information by duplicating the
-radiotap namespace for each antenna, so that the header would, for
-example, read as follows for a 3x3 devices:
-
- * ... TSF, Flags, Rate, Channel, ...
- * antenna signal: -40 dBm
- * antenna: 0
- * ... MCS, A-MPDU status, ...
- * antenna signal: -45 dBm
- * antenna: 1
- * antenna signal: -43 dBm
- * antenna: 2
-
-
-Does this seem like sane behaviour? If so, do you think it would be
-worthwhile describing it somewhere on the wiki?
-
-johannes
+PiBXZSdyZSBqdXN0IGRpc2N1c3NpbmcgZm9yIExpbnV4IGhvdyB0byBzcGVjaWZ5IHRoZSBjaGFu
+bmVsIHBhcmFtZXRlcnMNCj4gYW5kIHdlIG5lZWQgdG8gY29uc2lkZXIgODArODAgYXMgd2VsbC4g
+TWF5YmUgdGhlc2UgZGlzY3Vzc2lvbnMgc2hvdWxkDQo+IGNyb3NzLXBvbGxpbmF0ZS4NCg0KWWVz
+LiBIb3dldmVyLCB0aGlzIGlzc3VlIGlzbid0IGRpcmVjdGx5IHJlbGF0ZWQgdG8gb3IgYmxvY2tp
+bmcgdGhlIFZIVCBmaWVsZCANCnByb3Bvc2FsLCBpcyBpdD8gQ2FuIEkgZ28gYWhlYWQgYW5kIHBv
+c3QgYW4gYWRhcHRhdGlvbiByZXF1ZXN0IGZvciB0aGF0Pw0KDQo+IEkgc2VlIHR3byBiYXNpYyBv
+cHRpb25zOg0KPiAgKiBjb250aW51ZSB3aGF0IHdlIGRvIG5vdywgYW5kIHNwZWNpZnkgdGhlIGNv
+bnRyb2wgY2hhbm5lbCAmIHR5cGUNCj4gICAgYXJvdW5kIGl0ICg0MCsvNDArLC4uLikNCj4gICAg
+KyB0aGlzIGlzIGhvdyBsaW51eCB3b3JrcyBub3cNCj4gICAgLSBtYW55IG1hbnkgY2hhbm5lbCB0
+eXBlcyAoNCBmb3IgODAgTUh6LCA4IGZvciAxNjAgTUh6KQ0KPiAgICAtIGRvZXNuJ3QgaGFuZGxl
+IDgwKzgwDQoNCldoZW4gaXQgY29tZXMgdG8gcmFkaW90YXAsIHRoaXMgbWlnaHQgZG8gYXMgYW4g
+aW50ZXJpbSBzb2x1dGlvbiBmb3IgY2hpcHMNCnRoYXQgZG9uJ3Qgc3VwcG9ydCA4MCs4MCB5ZXQu
+IFRoZSBuZXcgY2hhbm5lbCB0eXBlcyB3b3VsZCBmaXQgaW4gdGhlDQpYQ2hhbm5lbCBmaWVsZC4N
+Cg0KPiAgKiBzcGVjaWZ5IHRoZSBjZW50ZXIgZnJlcXVlbmN5LCB3aWR0aCAmIGNvbnRyb2wgY2hh
+bm5lbCBvZmZzZXQNCj4gICAgKyBtb3JlIGFsaWduZWQgd2l0aCB0aGUgc3BlYyAoPykNCj4gICAg
+LSByZXF1aXJlcyBiYWNrd2FyZCBjb21wYXQgaGFuZGxpbmcNCj4gICAgLSBkb2Vzbid0IGhhbmRs
+ZSA4MCs4MA0KDQpJIGZlZWwgdGhpcyBpcyB0aGUgYmVzdCBsb25nLXRlcm0gc29sdXRpb24uIFRo
+ZSA4MCs4MCBjYXNlIGNvdWxkIGJlIGhhbmRsZWQgDQpCeSBhZGRpbmcgYSBzZWNvbmRhcnkgY2Vu
+dGVyIGZyZXF1ZW5jeS4NCg0KUmVnYXJkcywNCkFsd2luDQoNCg==
