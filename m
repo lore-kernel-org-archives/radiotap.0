@@ -1,54 +1,48 @@
-From: Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
+From: Thomas Pedersen <thomas-W/OLz77bvjtBDgjK7y7TUQ@public.gmane.org>
 Subject: Re: TSFT
-Date: Sat, 17 Nov 2012 10:56:24 -0800
-Message-ID: <CB0A688B-46CF-4AB5-8E29-23B5F3022DD9@alum.mit.edu>
-References: <50A72E17.6070207@superduper.net> <20121117064848.GO21779@pixotech.com> <1353141950.9543.3.camel@jlt4.sipsolutions.net> <20121117174600.GQ21779@pixotech.com>
-Mime-Version: 1.0 (Mac OS X Mail 6.2 \(1499\))
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+Date: Sat, 17 Nov 2012 15:26:05 -0800
+Message-ID: <CAG6hwVNzGV1oSQqXKEvho_n8Tf2pmO3FcakKA9-53Zm2c1fB=Q@mail.gmail.com>
+References: <50A72E17.6070207@superduper.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <20121117174600.GQ21779-Gq8g4XVd89tWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <50A72E17.6070207-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
+To: Simon Barber <simon-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>
+Cc: "radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org" <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
+Hi Simon,
 
-On Nov 17, 2012, at 9:46 AM, David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org> wrote:
+On Fri, Nov 16, 2012 at 10:26 PM, Simon Barber <simon-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org> wrote:
+> This is the current definition of TSFT:
+>
+> "Value in microseconds of the MAC's 64-bit 802.11 Time Synchronization
+> Function timer when the first bit of the MPDU arrived at the MAC. For
+> received frames only."
+>
+> My experience with TSFT is with Atheros cards, which record the timestamp at
+> the end of the frame, not the start.
 
-> Wireshark doesn't already have more than two "interpretation modes" =
-for
-> radiotap headers, does it?  That would be too bad.  I realize that =
-there
-> may be already be a mode for a particular OS....
+There is already a patch in mac80211-next which accounts for this and
+normalizes frame TSFT to beginning of frame.
 
-That's the only preference setting Wireshark's radiotap dissection code =
-has.
+> Do you know the behaivour of any particular capture systems re: TSFT - where
+> do they timestamp the frame?
+>
+> Furthermore for DSSS/CCK the definition above is reasonable, but for OFDM
+> and HT (802.11n) the SIGNAL field (part of the PLCP header, not part of the
+> MPDU) is part of the first data symbol. It would be much clearer to change
+> the definition to state that the timestamp is at the start of this first
+> SIGNAL/data symbol. Any objections to doing this, or preference to change
+> the reference point to a different part of the frame?
 
-The OS in question is OpenBSD, as per
+Keeping the TSFT at start of MPDU is cleaner from the user's point of view.
 
-	http://www.radiotap.org/rejected-fields/FCS%20in%20header
+> In my wireshark patch I've added options to interpret TSFT as the start of
+> end of the frame.
 
-OpenBSD's other collisions are 15 for hardware queue:
+I'm not sure which patch you're referring to, but it seems cleaner to
+handle normalizing TSFT to a single reference in the kernel.
 
-	http://www.radiotap.org/suggested-fields/hardware%20queue
-
-rather than TX flags:
-
-	http://www.radiotap.org/suggested-fields/TX%20flags
-
-and RSSI:
-
-	http://www.radiotap.org/suggested-fields/RSSI
-
-rather than RTS retries:
-
-	http://www.radiotap.org/suggested-fields/RTS%20retries
-
-but the latter two are suggested fields rather than defined fields.
-
-We could, I guess, define a "standard radiotap" link-layer type header =
-value, and have dissectors that look at flags above 13 always handle =
-those in the standard fashion and have programs that process radiotap =
-headers in files either have a preference to control how to interpret =
-the existing radiotap link-layer header type or just wire in one of the =
-choices.  I don't know whether that's worth the effort.=
+Thomas
