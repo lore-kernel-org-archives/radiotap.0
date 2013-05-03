@@ -1,51 +1,78 @@
-From: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
-Subject: [PATCH 3/3] ath9k: check for Rx-STBC flag and pass it to ieee80211
-Date: Fri,  3 May 2013 21:53:55 +0200
-Message-ID: <1367610836-3303-4-git-send-email-linux__20272.8971526541$1367614853$gmane$org@rempel-privat.de>
-References: <1367527479.11375.19.camel@jlt4.sipsolutions.net>
- <1367610836-3303-1-git-send-email-linux@rempel-privat.de>
+From: Simon Barber <simon-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>
+Subject: Re: Standardisation - adding 2 bit STBC and Ness to MCS
+Date: Fri, 03 May 2013 14:12:22 -0700
+Message-ID: <51842836.8090601@superduper.net>
+References: <518127ED.9060900@rempel-privat.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <1367610836-3303-1-git-send-email-linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
+In-Reply-To: <518127ED.9060900-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: ath9k-devel-xDcbHBWguxHbcTqmT+pZeQ@public.gmane.org, linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, radiotap-qavaossjCcEdnm+yROfE0A@public.gmane.org
-Cc: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
+To: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
+Cc: radiotap-qavaossjCcEdnm+yROfE0A@public.gmane.org, johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org, Adrian Chadd <adrian-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, "ath9k-devel-xDcbHBWguxHbcTqmT+pZeQ@public.gmane.org" <ath9k-devel-xDcbHBWguxHbcTqmT+pZeQ@public.gmane.org>, linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-Signed-off-by: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
----
- drivers/net/wireless/ath/ath9k/mac.c | 5 +++++
- drivers/net/wireless/ath/ath9k/mac.h | 3 ++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+I did post example code as attachments to the suggested-fields page a=20
+few months ago. Click on 'attachments' to view them. There are 3:
 
-diff --git a/drivers/net/wireless/ath/ath9k/mac.c b/drivers/net/wireless/ath/ath9k/mac.c
-index a52081d..d055e38 100644
---- a/drivers/net/wireless/ath/ath9k/mac.c
-+++ b/drivers/net/wireless/ath/ath9k/mac.c
-@@ -593,6 +593,11 @@ int ath9k_hw_rxprocdesc(struct ath_hw *ah, struct ath_desc *ds,
- 		(ads.ds_rxstatus3 & AR_GI) ? RX_FLAG_SHORT_GI : 0;
- 	rs->flag |=
- 		(ads.ds_rxstatus3 & AR_2040) ? RX_FLAG_40MHZ : 0;
-+	if (AR_SREV_9280_20_OR_LATER(ah))
-+		rs->flag |=
-+			(ads.ds_rxstatus3 & AR_STBC) ?
-+				/* we can only Nss=1 STBC */
-+				(1 << RX_FLAG_STBC_SHIFT) : 0;
- 
- 	if (ads.ds_rxstatus8 & AR_PreDelimCRCErr)
- 		rs->rs_flags |= ATH9K_RX_DELIM_CRC_PRE;
-diff --git a/drivers/net/wireless/ath/ath9k/mac.h b/drivers/net/wireless/ath/ath9k/mac.h
-index 3f1e775..b02dfce 100644
---- a/drivers/net/wireless/ath/ath9k/mac.h
-+++ b/drivers/net/wireless/ath/ath9k/mac.h
-@@ -534,7 +534,8 @@ struct ar5416_desc {
- #define AR_2040             0x00000002
- #define AR_Parallel40       0x00000004
- #define AR_Parallel40_S     2
--#define AR_RxStatusRsvd30   0x000000f8
-+#define AR_STBC             0x00000008 /* on ar9280 and later */
-+#define AR_RxStatusRsvd30   0x000000f0
- #define AR_RxAntenna	    0xffffff00
- #define AR_RxAntenna_S	    8
- 
--- 
-1.8.1.2
+1. Intel wlan driver patch
+2. Kernel patch
+3. Wireshark patch.
+
+Simon
+
+
+On 05/01/2013 07:34 AM, Oleksij Rempel wrote:
+> Hallo all,
+>
+>
+>> http://www.radiotap.org/suggested-fields/MCS%20extension%20for%20STBC%=
+20and%20Ness
+>>
+>>
+>> I have posted 3 patches on the proposal page (see Attachments):
+>>
+>> 1. A patch that applies to the Linux kernel v3.7-rc1 to collect the ne=
+w
+>> STBC and Ness parameters from a wireless driver, and add them into the
+>> MCS radiotap field.
+>> 2. A patch to the Intel wireless driver in the kernel to collect STBC
+>> and Ness information.
+>> 3. A patch to wireshark to display STBC and Ness information.
+>>
+>> With this I believe we have everything needed to start the 3 week
+>> comment period.
+>
+> There is a bit more then 3 week now. I would like to have this approved=
+ :)
+> Are there any thing needed to finish this?
+>
+> Beside, i have one question about how STBC work. According to differnet
+> docs, i assume that:
+> - STBC is done by sending, at least, two stream with same data in
+> different order.
+> - It means for me, that real use of STBC can be made only on MIMO hardw=
+are.
+> - If 1x1 receiver indicates that it got STBC encoded frame, it dos not
+> meant, it would be able to use redundant data from second stream.
+> - There are fallowing STBC schemes: Alamouti=E2=80=99s
+> STBC for 2 transmit antennas and orthogonal STBC for 3 and 4 transmit
+> antennas.
+>
+> According to this information, what do we call 1,2 or 3 stream STBC?
+> Since STBC should have minimal 2 stream, but in same time we have 1x1
+> and 2x2 hardware which able to receive and decode STBC stream i assume:
+>      - RX-STBC1 is for compatibility only. No data redundancy.
+>      - RX-STBC12 - can be used Alamouti=E2=80=99s schema with 2 streams=
+. Mostly
+> used method.
+>      - RX-STBC123 - is orthogonal schema and not widely used method.
+> Since last method use wide spectrum to transmit data comparable to SISO
+> stream, it makes almost no sense. But 3-stream method get optimal error
+> corect in compare with 2 and 4 strea schemas.
+>
+> Do this assumptions correct?
+>
+> PS: My assumptions based on "MIMO Space-Time Block Coding (STBC):
+> Simulations and Results"
