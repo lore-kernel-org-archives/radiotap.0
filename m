@@ -1,31 +1,28 @@
-From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: Re: Standardisation - adding 2 bit STBC and Ness to MCS
-Date: Thu, 02 May 2013 22:44:39 +0200
-Message-ID: <1367527479.11375.19.camel__5049.46307414702$1367531992$gmane$org@jlt4.sipsolutions.net>
-References: <518127ED.9060900@rempel-privat.de>
-	 (sfid-20130501_163425_421280_1DE3F635)
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+From: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
+Subject: Patches for STBC Standartisation
+Date: Fri,  3 May 2013 21:53:52 +0200
+Message-ID: <1367610836-3303-1-git-send-email-linux__13539.4548452043$1367610864$gmane$org@rempel-privat.de>
+References: <1367527479.11375.19.camel@jlt4.sipsolutions.net>
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <518127ED.9060900-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org> (sfid-20130501_163425_421280_1DE3F635)
+In-Reply-To: <1367527479.11375.19.camel-8Nb76shvtaUJvtFkdXX2HixXY32XiHfO@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
-Cc: radiotap-qavaossjCcEdnm+yROfE0A@public.gmane.org, simon-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org, Adrian Chadd <adrian-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, "ath9k-devel-xDcbHBWguxHbcTqmT+pZeQ@public.gmane.org" <ath9k-devel-xDcbHBWguxHbcTqmT+pZeQ@public.gmane.org>, linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: ath9k-devel-xDcbHBWguxHbcTqmT+pZeQ@public.gmane.org, linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, radiotap-qavaossjCcEdnm+yROfE0A@public.gmane.org
+Cc: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-On Wed, 2013-05-01 at 16:34 +0200, Oleksij Rempel wrote:
+Here are two series of patches. First are kernel patches
+and ath9k driver patch.
+Second, is patch for tcpdump.
 
-> > With this I believe we have everything needed to start the 3 week
-> > comment period.
+All of them was tested for 1,2 and 3 stream scenarious.
+Sinse i do not have hardware which can recive more than 1 STBC
+stream, i did some hacks to to produce this kind of captures.
 
-Yeah, I guess there was plenty of time. I would have preferred a
-separate thread, but I guess there's little enough traffic on this list
-so it doesn't really matter.
+Oleksij Rempel (3):
+  mac80211: add STBC flag for radiotap
+  ath9k: remove useless flag conversation.
+  ath9k: check for Rx-STBC flag and pass it to ieee80211
 
-> There is a bit more then 3 week now. I would like to have this approved :)
-> Are there any thing needed to finish this?
 
-http://www.radiotap.org/Standardisation
-
-johannes
+-- 
+1.8.1.2
