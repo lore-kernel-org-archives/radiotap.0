@@ -1,78 +1,84 @@
-From: Simon Barber <simon-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>
-Subject: Re: Standardisation - adding 2 bit STBC and Ness to MCS
-Date: Fri, 03 May 2013 14:12:22 -0700
-Message-ID: <51842836.8090601@superduper.net>
-References: <518127ED.9060900@rempel-privat.de>
+From: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
+Subject: Patch for radiotap library
+Date: Sat, 04 May 2013 08:22:05 +0200
+Message-ID: <5184A90D.4080205@rempel-privat.de>
+References: <1367527479.11375.19.camel@jlt4.sipsolutions.net> <1367610836-3303-1-git-send-email-linux@rempel-privat.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed;
+ boundary="------------040800000308070105090202"
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <518127ED.9060900-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
+In-Reply-To: <1367610836-3303-1-git-send-email-linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
-Cc: radiotap-qavaossjCcEdnm+yROfE0A@public.gmane.org, johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org, Adrian Chadd <adrian-h+KGxgPPiopAfugRpC6u6w@public.gmane.org>, "ath9k-devel-xDcbHBWguxHbcTqmT+pZeQ@public.gmane.org" <ath9k-devel-xDcbHBWguxHbcTqmT+pZeQ@public.gmane.org>, linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: ath9k-devel-xDcbHBWguxHbcTqmT+pZeQ@public.gmane.org, linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, radiotap-qavaossjCcEdnm+yROfE0A@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-I did post example code as attachments to the suggested-fields page a=20
-few months ago. Click on 'attachments' to view them. There are 3:
+This is a multi-part message in MIME format.
+--------------040800000308070105090202
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-1. Intel wlan driver patch
-2. Kernel patch
-3. Wireshark patch.
+Am 03.05.2013 21:53, schrieb Oleksij Rempel:
+> Here are two series of patches. First are kernel patches
+> and ath9k driver patch.
+> Second, is patch for tcpdump.
+>
+> All of them was tested for 1,2 and 3 stream scenarious.
+> Sinse i do not have hardware which can recive more than 1 STBC
+> stream, i did some hacks to to produce this kind of captures.
+>
+> Oleksij Rempel (3):
+>    mac80211: add STBC flag for radiotap
+>    ath9k: remove useless flag conversation.
+>    ath9k: check for Rx-STBC flag and pass it to ieee80211
 
-Simon
+One more patch for radiotap lib.
+
+-- 
+Regards,
+Oleksij
+
+--------------040800000308070105090202
+Content-Type: text/x-patch;
+ name="0001-radiotap-add-STBC-Rx-fields.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="0001-radiotap-add-STBC-Rx-fields.patch"
+
+>From cf3cea707b5766d822ae595cc75849efa78cdb1e Mon Sep 17 00:00:00 2001
+From: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
+Date: Sat, 4 May 2013 08:19:07 +0200
+Subject: [PATCH] radiotap: add STBC Rx fields.
+
+Signed-off-by: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
+---
+ radiotap.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/radiotap.h b/radiotap.h
+index a566024..2538433 100644
+--- a/radiotap.h
++++ b/radiotap.h
+@@ -267,6 +267,7 @@ enum ieee80211_radiotap_type {
+ #define IEEE80211_RADIOTAP_MCS_HAVE_GI		0x04
+ #define IEEE80211_RADIOTAP_MCS_HAVE_FMT		0x08
+ #define IEEE80211_RADIOTAP_MCS_HAVE_FEC		0x10
++#define IEEE80211_RADIOTAP_MCS_HAVE_STBC	0x20
+ 
+ #define IEEE80211_RADIOTAP_MCS_BW_MASK		0x03
+ #define		IEEE80211_RADIOTAP_MCS_BW_20	0
+@@ -276,5 +277,10 @@ enum ieee80211_radiotap_type {
+ #define IEEE80211_RADIOTAP_MCS_SGI		0x04
+ #define IEEE80211_RADIOTAP_MCS_FMT_GF		0x08
+ #define IEEE80211_RADIOTAP_MCS_FEC_LDPC		0x10
++#define IEEE80211_RADIOTAP_MCS_STBC_MASK	0x60
++#define		IEEE80211_RADIOTAP_MCS_STBC_1	1
++#define		IEEE80211_RADIOTAP_MCS_STBC_2	2
++#define		IEEE80211_RADIOTAP_MCS_STBC_3	3
++#define IEEE80211_RADIOTAP_MCS_STBC_SHIFT	5
+ 
+ #endif				/* IEEE80211_RADIOTAP_H */
+-- 
+1.8.1.2
 
 
-On 05/01/2013 07:34 AM, Oleksij Rempel wrote:
-> Hallo all,
->
->
->> http://www.radiotap.org/suggested-fields/MCS%20extension%20for%20STBC%=
-20and%20Ness
->>
->>
->> I have posted 3 patches on the proposal page (see Attachments):
->>
->> 1. A patch that applies to the Linux kernel v3.7-rc1 to collect the ne=
-w
->> STBC and Ness parameters from a wireless driver, and add them into the
->> MCS radiotap field.
->> 2. A patch to the Intel wireless driver in the kernel to collect STBC
->> and Ness information.
->> 3. A patch to wireshark to display STBC and Ness information.
->>
->> With this I believe we have everything needed to start the 3 week
->> comment period.
->
-> There is a bit more then 3 week now. I would like to have this approved=
- :)
-> Are there any thing needed to finish this?
->
-> Beside, i have one question about how STBC work. According to differnet
-> docs, i assume that:
-> - STBC is done by sending, at least, two stream with same data in
-> different order.
-> - It means for me, that real use of STBC can be made only on MIMO hardw=
-are.
-> - If 1x1 receiver indicates that it got STBC encoded frame, it dos not
-> meant, it would be able to use redundant data from second stream.
-> - There are fallowing STBC schemes: Alamouti=E2=80=99s
-> STBC for 2 transmit antennas and orthogonal STBC for 3 and 4 transmit
-> antennas.
->
-> According to this information, what do we call 1,2 or 3 stream STBC?
-> Since STBC should have minimal 2 stream, but in same time we have 1x1
-> and 2x2 hardware which able to receive and decode STBC stream i assume:
->      - RX-STBC1 is for compatibility only. No data redundancy.
->      - RX-STBC12 - can be used Alamouti=E2=80=99s schema with 2 streams=
-. Mostly
-> used method.
->      - RX-STBC123 - is orthogonal schema and not widely used method.
-> Since last method use wide spectrum to transmit data comparable to SISO
-> stream, it makes almost no sense. But 3-stream method get optimal error
-> corect in compare with 2 and 4 strea schemas.
->
-> Do this assumptions correct?
->
-> PS: My assumptions based on "MIMO Space-Time Block Coding (STBC):
-> Simulations and Results"
+--------------040800000308070105090202--
