@@ -1,44 +1,35 @@
-From: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
-Subject: [PATCH] add MCS_STBC and MCS_NESS fields
-Date: Fri, 17 May 2013 09:00:10 +0200
-Message-ID: <1368774010-5864-1-git-send-email-linux@rempel-privat.de>
+From: Simon Wunderlich <simon.wunderlich-Y4E02TeZ33kaBlGTGt4zH4SGEyLTKazZ@public.gmane.org>
+Subject: [PATCH] add channel fields for GSM, turbo, half and quarter rates
+Date: Thu, 20 Jun 2013 11:58:15 +0200
+Message-ID: <1371722295-4769-1-git-send-email-siwu@hrz.tu-chemnitz.de>
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org, radiotap-qavaossjCcEdnm+yROfE0A@public.gmane.org
-Cc: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
+To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Cc: radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org, Simon Wunderlich <siwu-MaAgPAbsBIVS8oHt8HbXEIQuADTiUCJX@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-Signed-off-by: Oleksij Rempel <linux-YEK0n+YFykbzxQdaRaTXBw@public.gmane.org>
+Wireshark already implements these fields. As they are not yet taken
+according to the official list, add them.
+
+Signed-off-by: Simon Wunderlich <siwu-MaAgPAbsBIVS8oHt8HbXEIQuADTiUCJX@public.gmane.org>
 ---
- radiotap.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ radiotap.h |    4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/radiotap.h b/radiotap.h
-index a566024..37d7630 100644
+index 37d7630..1daa257 100644
 --- a/radiotap.h
 +++ b/radiotap.h
-@@ -267,6 +267,10 @@ enum ieee80211_radiotap_type {
- #define IEEE80211_RADIOTAP_MCS_HAVE_GI		0x04
- #define IEEE80211_RADIOTAP_MCS_HAVE_FMT		0x08
- #define IEEE80211_RADIOTAP_MCS_HAVE_FEC		0x10
-+#define IEEE80211_RADIOTAP_MCS_HAVE_STBC	0x20
-+#define IEEE80211_RADIOTAP_MCS_HAVE_NESS	0x40
-+#define IEEE80211_RADIOTAP_MCS_NESS_BIT1	0x80
-+
+@@ -222,6 +222,10 @@ enum ieee80211_radiotap_type {
+ #define	IEEE80211_CHAN_PASSIVE	0x0200	/* Only passive scan allowed */
+ #define	IEEE80211_CHAN_DYN	0x0400	/* Dynamic CCK-OFDM channel */
+ #define	IEEE80211_CHAN_GFSK	0x0800	/* GFSK channel (FHSS PHY) */
++#define	IEEE80211_CHAN_GSM	0x1000	/* GSM (900 MHz) */
++#define	IEEE80211_CHAN_STURBO	0x2000	/* Static Turbo */
++#define	IEEE80211_CHAN_HALF	0x4000	/* Half channel (10 MHz wide) */
++#define	IEEE80211_CHAN_QUARTER	0x8000	/* Quarter channel (5 MHz wide) */
  
- #define IEEE80211_RADIOTAP_MCS_BW_MASK		0x03
- #define		IEEE80211_RADIOTAP_MCS_BW_20	0
-@@ -276,5 +280,11 @@ enum ieee80211_radiotap_type {
- #define IEEE80211_RADIOTAP_MCS_SGI		0x04
- #define IEEE80211_RADIOTAP_MCS_FMT_GF		0x08
- #define IEEE80211_RADIOTAP_MCS_FEC_LDPC		0x10
-+#define IEEE80211_RADIOTAP_MCS_STBC_MASK	0x60
-+#define IEEE80211_RADIOTAP_MCS_STBC_SHIFT	5
-+#define		IEEE80211_RADIOTAP_MCS_STBC_1	1
-+#define		IEEE80211_RADIOTAP_MCS_STBC_2	2
-+#define		IEEE80211_RADIOTAP_MCS_STBC_3	3
-+#define IEEE80211_RADIOTAP_MCS_NESS_BIT0	0x80
- 
- #endif				/* IEEE80211_RADIOTAP_H */
+ /* For IEEE80211_RADIOTAP_FLAGS */
+ #define	IEEE80211_RADIOTAP_F_CFP	0x01	/* sent/received
 -- 
-1.8.1.2
+1.7.10.4
