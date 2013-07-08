@@ -1,35 +1,44 @@
-From: Simon Wunderlich <simon.wunderlich-Y4E02TeZ33kaBlGTGt4zH4SGEyLTKazZ@public.gmane.org>
-Subject: [PATCH] add channel fields for GSM, turbo, half and quarter rates
-Date: Thu, 20 Jun 2013 11:58:15 +0200
-Message-ID: <1371722295-4769-1-git-send-email-siwu@hrz.tu-chemnitz.de>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Subject: Re: multi-antenna handling
+Date: Mon, 08 Jul 2013 10:59:12 +0200
+Message-ID: <1373273952.8312.7.camel@jlt4.sipsolutions.net>
+References: <1345481425.4459.46.camel@jlt3.sipsolutions.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <1345481425.4459.46.camel-8upI4CBIZJIJvtFkdXX2HixXY32XiHfO@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Cc: radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org, Simon Wunderlich <siwu-MaAgPAbsBIVS8oHt8HbXEIQuADTiUCJX@public.gmane.org>
+To: "radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org" <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-Wireshark already implements these fields. As they are not yet taken
-according to the official list, add them.
+On Mon, 2012-08-20 at 18:50 +0200, Johannes Berg wrote:
 
-Signed-off-by: Simon Wunderlich <siwu-MaAgPAbsBIVS8oHt8HbXEIQuADTiUCJX@public.gmane.org>
----
- radiotap.h |    4 ++++
- 1 file changed, 4 insertions(+)
+> I'm planning to modify this (in Linux) to include, where available,
+> antenna index & per-antenna signal information by duplicating the
+> radiotap namespace for each antenna, so that the header would, for
+> example, read as follows for a 3x3 devices:
+> 
+>  * ... TSF, Flags, Rate, Channel, ...
+>  * antenna signal: -40 dBm
+>  * antenna: 0
+>  * ... MCS, A-MPDU status, ...
+>  * antenna signal: -45 dBm
+>  * antenna: 1
+>  * antenna signal: -43 dBm
+>  * antenna: 2
 
-diff --git a/radiotap.h b/radiotap.h
-index 37d7630..1daa257 100644
---- a/radiotap.h
-+++ b/radiotap.h
-@@ -222,6 +222,10 @@ enum ieee80211_radiotap_type {
- #define	IEEE80211_CHAN_PASSIVE	0x0200	/* Only passive scan allowed */
- #define	IEEE80211_CHAN_DYN	0x0400	/* Dynamic CCK-OFDM channel */
- #define	IEEE80211_CHAN_GFSK	0x0800	/* GFSK channel (FHSS PHY) */
-+#define	IEEE80211_CHAN_GSM	0x1000	/* GSM (900 MHz) */
-+#define	IEEE80211_CHAN_STURBO	0x2000	/* Static Turbo */
-+#define	IEEE80211_CHAN_HALF	0x4000	/* Half channel (10 MHz wide) */
-+#define	IEEE80211_CHAN_QUARTER	0x8000	/* Quarter channel (5 MHz wide) */
- 
- /* For IEEE80211_RADIOTAP_FLAGS */
- #define	IEEE80211_RADIOTAP_F_CFP	0x01	/* sent/received
--- 
-1.7.10.4
+FWIW, I've now implemented this in Linux (in mac80211), although I start
+a new radiotap namespace for each antenna, separate from the first one,
+so you'll see
+
+ * any of: TSF, flags, rate, channel, MCS, a-mpdu, VHT, ...
+(new radiotap namespace)
+ * ant signal: -40 dBm
+ * anntenna: 0
+(new radiotap namespace)
+ * ant signal: -45 dBm
+ * anntenna: 1
+... for however many antennas/chains there are.
+
+johannes
