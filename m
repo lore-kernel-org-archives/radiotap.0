@@ -1,36 +1,25 @@
-From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: Re: Missing Rate information
-Date: Fri, 16 Aug 2013 14:22:50 +0200
-Message-ID: <1376655770.15299.25.camel@jlt4.sipsolutions.net>
-References: <CADVNyRYzrnBLAsnvGsGhX3iTu4884JwAvRE1mAKj3h0Vt_a9yw@mail.gmail.com>
+From: "C. McPherson" <ccmcphe-H+0wwilmMs3R7s880joybQ@public.gmane.org>
+Subject: Channel Flags question
+Date: Sun, 18 Aug 2013 14:01:45 -0400
+Message-ID: <52110C09.5040306@verizon.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <CADVNyRYzrnBLAsnvGsGhX3iTu4884JwAvRE1mAKj3h0Vt_a9yw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: Doug Clements <dclements-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
+To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-On Fri, 2013-08-16 at 08:10 -0400, Doug Clements wrote:
-> Hi,
-> 
->    I'm trying to hunt down why some wifi frames captured by tshark are
-> missing Rate information. Rate: False is set in the header for a
-> portion of frames that I'm getting, but not all. Furthermore, it's
-> only on one channel on my network, so I'm sure it's some specific
-> device or packet type that isn't getting processed correctly. At first
-> I thought maybe they were MCS frames so the Rate would show up in
-> those fields, but that does not appear to be the case.
+Hi:
 
-It might have been useful to say what is *generating* those frames,
-but ...
+in the Lab I have a Ubiquity bullet that I have configured for Turbo and 
+10/5Mhz bandwidth which is using the Atheros 9280.  I have modified the 
+Atheros ath9k driver to go into all three bandwidths (Turbo, 10/5Mhz), 
+but I am having a problem trying to have to display the correct bit 
+settings when I monitor my 2 Ubiquity's that are in these modes. 
+According to ieee80211_radiotap.h there is a setting for Turbo, but 
+there is no channel flag for either the 10Mhz or 5Mhz bandwidth. What 
+channel flags should I use for the 10 and 5Mhz bandwidth?
 
-
->     Present flags: 0x0008482b
-
-This indicates there's MCS information, so you just need to upgrade
-wireshark.
-
-johannes
+Thanks
+Clyde
