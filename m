@@ -1,25 +1,19 @@
-From: "C. McPherson" <ccmcphe-H+0wwilmMs3R7s880joybQ@public.gmane.org>
-Subject: Channel Flags question
-Date: Sun, 18 Aug 2013 14:01:45 -0400
-Message-ID: <52110C09.5040306@verizon.net>
+From: Krishna Chaitanya <chaitanya.mgit-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Request for TextCha
+Date: Tue, 5 Nov 2013 04:04:08 +0530
+Message-ID: <CABPxzY+mikr5uSrXvQQr7st06poN_HdFhNQWOAOY694j=x=abg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ISO-8859-1
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
+To: radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-Hi:
+Hi,
 
-in the Lab I have a Ubiquity bullet that I have configured for Turbo and 
-10/5Mhz bandwidth which is using the Atheros 9280.  I have modified the 
-Atheros ath9k driver to go into all three bandwidths (Turbo, 10/5Mhz), 
-but I am having a problem trying to have to display the correct bit 
-settings when I monitor my 2 Ubiquity's that are in these modes. 
-According to ieee80211_radiotap.h there is a setting for Turbo, but 
-there is no channel flag for either the 10Mhz or 5Mhz bandwidth. What 
-channel flags should I use for the 10 and 5Mhz bandwidth?
+Can you please let me know how to get the TextCha..for logging in?
 
-Thanks
-Clyde
+-- 
+Thanks,
+Regards,
+Chaitanya T K.
