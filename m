@@ -1,55 +1,45 @@
-From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+From: Simon Barber <simon-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>
 Subject: Re: [RFC] capture file timestamping
-Date: Tue, 25 Aug 2015 19:55:46 +0200
-Message-ID: <1440525346.2192.55.camel@sipsolutions.net>
-References: <1440497229.2192.28.camel@sipsolutions.net>
-	 <20150825162841.GR6823@pobox.com>
-	 <1440521168.2192.50.camel@sipsolutions.net>
-	 <4E4FE63E-B636-4808-BBFF-6D2CE4EAFB2F@alum.mit.edu>
+Date: Wed, 26 Aug 2015 15:48:36 -0700
+Message-ID: <55DE4244.9030407@superduper.net>
+References: <1440497229.2192.28.camel@sipsolutions.net>	 <20150825162841.GR6823@pobox.com> <1440521168.2192.50.camel@sipsolutions.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <4E4FE63E-B636-4808-BBFF-6D2CE4EAFB2F-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
+In-Reply-To: <1440521168.2192.50.camel-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
-Cc: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>, radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org, Simon Barber <simon-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>
+To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>, David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+Cc: radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-On Tue, 2015-08-25 at 10:47 -0700, Guy Harris wrote:
-> 
-> If you have tcpdump 4.6 or later, with libpcap 1.6 or later, on 
-> Linux, you should have the --time-stamp-type and --list-time-stamp
-> -types options.
-> 
-> If so, what does
-> 
-> 	> tcpdump --list-time-stamp-types
-> 
-> print?
-> 
-> If it prints "adapter" or "adapter_unsynced", you might want to try 
-> those with the --time-stamp-type option, as those time stamp types 
-> mean that the time stamp will come from the adapter rather than from 
-> Linux.  ("unsynced" means that the time stamps aren't synchronized 
-> with the host's clock.)
 
-It does have "adapter_unsynced", but wouldn't the adapter also have to
-support it? Ah, yes, if I do
-	tcpdump -i wlan0 --list-time-stamp-types
 
-it no longer shows it.
+On 8/25/2015 9:46 AM, Johannes Berg wrote:
+>
+>> II. Using the timestamps to place graphic representations of frames
+>>      on a timeline
+> This is one.
+>
+> One I ran into recently is that I needed to check the relative timings
+> of packets to verify the backoff function was working correctly, which
+> is really just very similar to your I-A case.
+>
+>
 
-Although perhaps I could possibly convince the driver to report this
-timestamp somehow, rather than changing radiotap.
+This is exactly what I was doing when I ran into the current TSFT field 
+limitations a few years ago. GPL code is here:
 
-> unless it's based on the TSF (which it probably won't be, as it 
-> should, at least in principle, be Epoch time, although I think Linux 
-> may have, at some point, changed adapter time stamps in a fashion 
-> making them not useful as libpcap time stamps).
+https://github.com/parc-wifi/wireshark
 
-That, however, I almost certainly cannot do - I don't see how I'd
-synchronize from the adapter time (a free-running 32-bit counter at
-microseconds resolution) to the host time.
+I'm working on getting this updated for 11ac now, so revisiting some of 
+the same issues.
 
-johannes
+The HT and VHT headers in radiotap are incomplete, and would be much 
+nicer if they could just include the signal field from the plcp (perhaps 
+with a mask to indicate parts that are missing). This would be a better 
+approach for 60GHz I think.
+
+I'd like to display the L-SIG txop protection on the timeline as well.
+
+Simon
