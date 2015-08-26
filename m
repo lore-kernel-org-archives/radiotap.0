@@ -1,58 +1,71 @@
 From: Simon Barber <simon-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>
 Subject: Re: Correct radiotap header for 802.11ad
-Date: Wed, 26 Aug 2015 15:56:07 -0700
-Message-ID: <55DE4407.806@superduper.net>
-References: <CACyXjPzq-ePB1ux6wi_Rv3onPKXomcJcm15XJwA51u0E4W2txw@mail.gmail.com> <38F46E1D-1C4A-48DC-A906-9522006E8474@alum.mit.edu>
+Date: Wed, 26 Aug 2015 15:59:55 -0700
+Message-ID: <55DE44EB.6080603@superduper.net>
+References: <CACyXjPzq-ePB1ux6wi_Rv3onPKXomcJcm15XJwA51u0E4W2txw@mail.gmail.com>	<38F46E1D-1C4A-48DC-A906-9522006E8474@alum.mit.edu>	<1606812C-649C-4C06-ABE0-AE2F4474BCD0@alum.mit.edu>	<1440402013.3735.1.camel@sipsolutions.net> <CACyXjPwSZPV+U_=zQpDBpeBnhMntzEFhyJnBOw3-N8qPfyHc1A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <38F46E1D-1C4A-48DC-A906-9522006E8474-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
+In-Reply-To: <CACyXjPwSZPV+U_=zQpDBpeBnhMntzEFhyJnBOw3-N8qPfyHc1A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>, Richard Sharpe <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
+To: Richard Sharpe <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Cc: Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>, radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-I've never seen a capture file with a correct or useful A-MPDU field! 
-I'd also like to know more information - such as what amount of padding 
-was there between MPDUs in the A-MPDU.
+The HT and VHT fields are missing various bits of phy layer info, and 
+are defined missing enough bits for other fields. I've always thought It 
+would be much simpler if these fields could convey the whole SIGNAL bits 
+from the PLCP header, along with a mask in case it's not all available. 
+The drivers I've seen have the whole PLCP SIGNAL field available.
 
 Simon
 
-On 8/22/2015 1:59 PM, Guy Harris wrote:
-> On Aug 22, 2015, at 12:41 PM, Richard Sharpe <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+On 8/24/2015 9:21 AM, Richard Sharpe wrote:
+> On Mon, Aug 24, 2015 at 12:40 AM, Johannes Berg
+> <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org> wrote:
+>> On Sat, 2015-08-22 at 16:34 -0700, Guy Harris wrote:
+>>> For what it's worth, it appears that the wil6210 driver:
+>>>
+>>>        https://wireless.wiki.kernel.org/en/users/drivers/wil6210
+>>>
+>>> uses the MCS field and its mcs value for 11ad.  It can also be
+>>> configured to supply raw "PHY data" with a vendor-namespace field.
+>>>
+>>> So code that processes radiotap headers, such as Wireshark's radiotap
+>>> -header dissector, will have to interpret packets with an MCS field
+>>> and a channel frequence in the 11ad range as being 11ad packets, and
+>>> treat the mcs value in the MCS field as an 11ad MCS, not an 11n MCS.
+>> That just seems really lazy though - I think we should rather fix that
+>> driver and define a proper 60G radiotap field.
+> Can I suggest something like the following, although we have defined
+> the presence flags as a UINT32 for the moment in Wireshark:
 >
->> I have some 802.11ad captures because of some fixes to the Wireshark
->> 802.11 dissector I am looking at doing.
->>
->> One thing I notice is that the radiotap header contains both a Channel field
->> and an MCS field.
-> That is to be expected for 11n packets.
+> --- ../linux-3.11-rc6/include/net/ieee80211_radiotap.h 2013-10-20
+> 13:34:23.633866699 -0700
+> +++ ./include/net/ieee80211_radiotap.h 2015-08-24 09:12:12.416137951 -0700
+> @@ -190,6 +190,11 @@
+>    * IEEE80211_RADIOTAP_VHT u16, u8, u8, u8[4], u8, u8, u16
+>    *
+>    * Contains VHT information about this frame.
+> + *
+> + * IEEE80211_RADIOTAP_DMG       u8, u8
+> + *
+> + *      Contains DMG information about the frame. Currently presence flags
+> + *      and the MCS index, if present.
+>    */
+>   enum ieee80211_radiotap_type {
+>    IEEE80211_RADIOTAP_TSFT = 0,
+> @@ -214,6 +219,7 @@
+>    IEEE80211_RADIOTAP_MCS = 19,
+>    IEEE80211_RADIOTAP_AMPDU_STATUS = 20,
+>    IEEE80211_RADIOTAP_VHT = 21,
+> + IEEE80211_RADIOTAP_DMG = 22,
 >
->> The Present flags say that Flags are present, Channel is present and
->> HT Information is present.
-> By "HT Information" do you mean "the MCS field"?
+>    /* valid in every it_present bitmap, even vendor namespaces */
+>    IEEE80211_RADIOTAP_RADIOTAP_NAMESPACE = 29,
 >
-> The "MCS" field should, perhaps, have been called the "HT" field, as it's information for the HT (11n) PHY, just as the VHT field is information for the VHT (11ac) PHY.
+> Also, there is the matter of whether or not we need to indicate Static
+> Tone Pairing and Dynamic Tone Pairing as that is a bit in the PHY
+> header and is needed to make sense of MCS values 13-17, maybe.
 >
->> The channel frequency is 60480MHz which seems to be reasonable.
->>
->> The MCS field says that the MCS index is present and that index is 0.
->>
->> It seems to me that this last field is perhaps incorrect, because the
->> radiotap information dissector claims that the PHY type is 802.11n,
->> and that seems to come about because the radiotap header use the MCS
->> index info to claim that the PHY type was 802.11n.
-> Well, to be fair, that's the Wireshark code doing that, under the non-unreasonable assumption that if there's an MCS field it's an HT frame, just as it assumes that if there's a VHT field it's a VHT frame.
->
->  From the *radiotap* point of view, I would say that the last field is incorrect because the page for the MCS field on the radiotap site says:
->
-> 	The mcs field indicates the MCS rate index as in IEEE_802.11n-2009.
->
-> which, if we update it to say "as in Clause 20 of IEEE 802.11-2012", means it has values from 0 to 76, with modulations different from the ones in 11ad's Clause 21, i.e. the radiotap MCS field is *not* appropriate for 11ad.
->
->> Should I be letting the capture hardware vendor know that they are
->> generating the wrong info?
-> I'm not even remotely an expert on 802.11 at the PHY level, but I suspect that what we really want for radiotap is a "DMG" field, containing 11ad-specific information.  It would include its own mcs field, giving the MCS values from Clause 21, and perhaps other information, such as a flag to indicate whether "Static Tone Pairing" or "Dynamic Tone Pairing" was used.  (Again, I leave it up to people more familiar with 802.11ad to decide what information would be useful.)
->
-> Would the existing A-MPDU field suffice for MPDUs inside an 11ad A-MPDU?
