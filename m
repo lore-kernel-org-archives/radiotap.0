@@ -1,95 +1,61 @@
 From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: Re: Correct radiotap header for 802.11ad
-Date: Thu, 17 Sep 2015 18:37:59 +0200
-Message-ID: <1442507879.2821.9.camel@sipsolutions.net>
-References: <CACyXjPzq-ePB1ux6wi_Rv3onPKXomcJcm15XJwA51u0E4W2txw@mail.gmail.com>
-		<38F46E1D-1C4A-48DC-A906-9522006E8474@alum.mit.edu>
-		<1606812C-649C-4C06-ABE0-AE2F4474BCD0@alum.mit.edu>
-		<1440402013.3735.1.camel@sipsolutions.net>
-	 <CACyXjPwSZPV+U_=zQpDBpeBnhMntzEFhyJnBOw3-N8qPfyHc1A@mail.gmail.com>
-	 <55DE44EB.6080603@superduper.net>
-	 <126B842D-05EA-4510-BC9B-DB1A4AABEC12@alum.mit.edu>
-	 <1135A126-6A5A-4C84-A52D-13C0387609CC@alum.mit.edu>
+Subject: Re: [RFC] capture file timestamping
+Date: Thu, 17 Sep 2015 18:51:38 +0200
+Message-ID: <1442508698.2821.16.camel@sipsolutions.net>
+References: <1440497229.2192.28.camel@sipsolutions.net>
+		 <20150825162841.GR6823@pobox.com>
+	 <1440521168.2192.50.camel@sipsolutions.net>
+	 <55DE4244.9030407@superduper.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <1135A126-6A5A-4C84-A52D-13C0387609CC-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
+In-Reply-To: <55DE4244.9030407-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-To: Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>, "radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org" <radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org>
-Cc: Simon Barber <simon-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>, Richard Sharpe <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Simon Barber <simon-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>, David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
+Cc: radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-On Thu, 2015-09-10 at 11:25 -0700, Guy Harris wrote:
+On Wed, 2015-08-26 at 15:48 -0700, Simon Barber wrote:
 > 
-> The ones that aren't in the MCS field or the A-MPDU field are:
+> This is exactly what I was doing when I ran into the current TSFT 
+> field limitations a few years ago. 
+
+Right, I vaguely remembered that, hence the CC :)
+
+> GPL code is here:
 > 
-> 	HT Length - is that just the length of the data following 
-> the radiotap header?
+> https://github.com/parc-wifi/wireshark
 
-I don't think so - at least not with A-MPDU.
+> I'm working on getting this updated for 11ac now, so revisiting some 
+> of the same issues.
 
-> 	Smoothing
+Ah, that's really nice! I really needed something like this the other
+day, will check it out.
+
+> The HT and VHT headers in radiotap are incomplete, and would be much 
+> nicer if they could just include the signal field from the plcp 
+> (perhaps with a mask to indicate parts that are missing). This would 
+> be a better approach for 60GHz I think.
+
+Yeah, can't really object to that, even if we might not be able to
+provide all the data for all the hardware, and might have to re
+-assemble the field from the available parsed data.
+
+As far as our device is concerned we might perhaps be able to include
+this data in firmware's monitor mode.
+
+> I'd like to display the L-SIG txop protection on the timeline as 
+> well.
 > 
-> 	Not Sounding
-> 
-> 	CRC - is this of any interest?
-> 
-> 	Tail Bits - always 0, so these are presumably not of 
-> interest
-> 
-> Can:
-> 
-> 	whether "20" means "20", "20L", or "20U";
-> 
-> 	HT mixed vs. greenfield;
-> 
-> both of which are available from the MCS field, be determined from 
-> the PLCP header?
-> 
-> Or is what "20" means not fully determinable for received packets, so 
-> that "20L", "20U", and "40" are indistinguishable, similar to what 
-> the Radiotap spec for the VHT field says?
 
-I have a hard time seeing 20L/20U being distinguishable if you're
-hearing those while tuned to a 20 MHz channel, but if you're tuned to a
-40 MHz channel then perhaps that's possible - likely not from the PLCP
-though since that would have to look like a regular 20 MHz transmission
-for purposes of somebody picking it up on a 20 MHz channel? I'm not
-really all that familiar with the PHY details though.
+Good idea.
 
-> 20.3.9.5.4 "HT-greenfield format HT-SIG" says "The content and format 
-> of the HT-SIG of an HT-greenfield format frame is identical to the HT
-> -SIG in an HT-mixed format frame, as described in 20.3.9.4.3.", so if 
-> that information can be determined for received frames, it sounds as 
-> if greenfield vs. mixed *can't* be determined from the HT-SIG bits.
 
-You can know whether or not it was preceded by a compat preamble
-though.
+As far as the timestamp is concerned though, what would you suggest?
 
-> For *transmitted* frames, I guess you have more control over how it's 
-> transmitted, which is presumably why there's a VHT field rather than 
-> just a PLCP header field.
-> 
-> I.e., as radiotap is used for transmission, it needs to include at 
-> least some of the parameters to the PHY service's transmission 
-> operation, which may not be available in the PLCP header.
-
-That's also a good point - having to build a PLCP signal field for
-transmission would be somewhat painful, especially if you just want to
-control some part of the transmission.
-
-> And is there anything more that would be needed for *injected* 11ad 
-> frames?  If so, that's an argument for a "DMG" field containing the 
-> interesting information from the PLCP header combined with 
-> information necessary for injected frames?
-
-Not being familiar with DMG, I can't really comment on this.
-
-It does sound like we need *some* new field though, be it either a DMG
-field or a PLCP SIGNAL field, or perhaps even both.
-
-Going back to the original thread though, I think using the MCS field
-is quite wrong.
+Also, what timestamp would be best for a tool like yours? I'm assuming
+ours, which is the signal detection timestamp and inherently vague by
+perhaps a dozen microseconds won't really work that well.
 
 johannes
