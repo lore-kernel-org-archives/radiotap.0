@@ -1,24 +1,32 @@
 From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: www.radiotap.org
-Date: Thu, 07 Sep 2017 16:41:17 +0200
-Message-ID: <1504795277.6177.6.camel@sipsolutions.net>
+Subject: Re: HE (11ax) extensions
+Date: Fri, 08 Sep 2017 10:35:11 +0200
+Message-ID: <1504859711.6177.12.camel@sipsolutions.net>
+References: <1486992211.19813.1.camel@sipsolutions.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <1486992211.19813.1.camel-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
-To: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
-Cc: radiotap <radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org>
+To: radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-Hi Dave,
+Hi all,
 
-Could you change www.radiotap.org to be a direct CNAME to
-radiotap.github.io? It's currently a CNAME to
-radiotap.sipsolutions.net, which is then a CNAME to radiotap.github.io,
-but cutting out the extra step would be useful, and would help avoid a
-github page build warning.
+I've updated my HE proposal:
 
-Thanks,
+http://www.radiotap.org/fields/HE
+http://www.radiotap.org/fields/HE-MU
+http://www.radiotap.org/fields/HE-MU-user
+
+This now basically just requires the HE field even for MU
+transmissions, with the HE-MU field giving some more detail of those;
+the HE-MU-user is just for completeness so one can capture the SIG-B
+for multiple users even if the frame isn't captured.
+
+I'll still wait for the spec to settle down more until formally
+proposing this, but feedback is very welcome.
+
 johannes
