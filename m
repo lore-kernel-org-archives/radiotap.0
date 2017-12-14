@@ -1,41 +1,30 @@
-From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: Re: HE (11ax) extensions
-Date: Wed, 25 Oct 2017 14:18:23 +0200
-Message-ID: <1508933903.2421.39.camel@sipsolutions.net>
-References: <1486992211.19813.1.camel@sipsolutions.net>
-	 <1504859711.6177.12.camel@sipsolutions.net>
-	 <1508932475.2421.34.camel@sipsolutions.net>
-	 <CAF7Mx6qFmbyDex8VOV9sxbMXofQVk9dpzBQNK0S57GCTfbw_PA@mail.gmail.com>
-	 (sfid-20171025_141712_460583_A24379E6)
+From: Richard Sharpe <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Allocation of new presence bits, eg for HE, etc
+Date: Thu, 14 Dec 2017 09:34:49 -0800
+Message-ID: <CACyXjPwCj1nmGyh-EDHOVn1aT30WEKdEQrRpOTnQqaV7mV0C0Q@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <CAF7Mx6qFmbyDex8VOV9sxbMXofQVk9dpzBQNK0S57GCTfbw_PA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org> (sfid-20171025_141712_460583_A24379E6)
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
-To: Arend Van Spriel <arend.vanspriel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Cc: radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
+To: radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-On Wed, 2017-10-25 at 14:17 +0200, Arend Van Spriel wrote:
-> Op 25 okt. 2017 13:54 schreef "Johannes Berg" <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>:
-> >
-> > On Fri, 2017-09-08 at 10:35 +0200, Johannes Berg wrote:
-> > > Hi all,
-> > >
-> > > I've updated my HE proposal:
-> > >
-> > > http://www.radiotap.org/fields/HE
-> > > http://www.radiotap.org/fields/HE-MU
-> > > http://www.radiotap.org/fields/HE-MU-user
-> The last link doesn't work (for me?).
+Hi folks,
 
-Indeed, it should be
+Is this the radiotap mailing list?
 
-http://www.radiotap.org/fields/HE-MU-other-user
+I am involved in updating the 802.11 dissector in Wireshark to handle 802.1=
+1AX.
 
-I also notice that github hasn't updated the HE page with the data6
-part of the field yet.
+It seems like the first thing needed is an HE presence flag in the
+radiotap header.
 
-johannes
+Is this correct and has anything happened in that area?
+
+--=20
+Regards,
+Richard Sharpe
+(=E4=BD=95=E4=BB=A5=E8=A7=A3=E6=86=82=EF=BC=9F=E5=94=AF=E6=9C=89=E6=9D=9C=
+=E5=BA=B7=E3=80=82--=E6=9B=B9=E6=93=8D)
