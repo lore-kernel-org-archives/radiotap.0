@@ -1,40 +1,31 @@
 From: Richard Sharpe <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Allocation of new presence bits, eg for HE, etc
-Date: Thu, 14 Dec 2017 10:05:23 -0800
-Message-ID: <CACyXjPzQ8Qc6xqwhjUXggASkG8QVTHGad-4E56iUyjyYAk0jjQ@mail.gmail.com>
-References: <CACyXjPwCj1nmGyh-EDHOVn1aT30WEKdEQrRpOTnQqaV7mV0C0Q@mail.gmail.com>
- <20171214174316.GL12698@pobox.com> <CAF7Mx6q-vv3=nKX=aG5Mg6t0r7_VLQuxt-By2exavf6V6yqvHg@mail.gmail.com>
- <CAF7Mx6pY+zjr9b9iL4B0O2Lqy2-EdvPZ9Uok4DYHN1ns4-GGMQ@mail.gmail.com> <CAF7Mx6oZbpHebL7dO-jB0ngCZoqjRO2O=a456QJfQr1PRQ3-vw@mail.gmail.com>
+Subject: Would it be useful to have preferences for radiotap to allow handling
+ of captures with conflicting presence flags?
+Date: Thu, 14 Dec 2017 13:06:53 -0800
+Message-ID: <CACyXjPy9nUFhKmgzyVt6KBqHZW3oa0dgpkzQyGbtHHLOnC=f1w@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <CAF7Mx6oZbpHebL7dO-jB0ngCZoqjRO2O=a456QJfQr1PRQ3-vw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
 To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-On Thu, Dec 14, 2017 at 9:55 AM, Arend Van Spriel
-<arend.vanspriel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org> wrote:
-> Op 14 dec. 2017 18:51 schreef "Arend Van Spriel"
-> <arend.vanspriel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>:
->>
->> Johannes already posted some proposals.
->>
->> See:
->>
->> http://www.radiotap.org/fields/HE
->> http://www.radiotap.org/fields/HE-MU
->> http://www.radiotap.org/fields/HE-MU-other-user
+I notice on this page
 
-Yes, I noticed those, but no bit assignments have been made. At least
-one organization is interested in this.
+  http://www.radiotap.org/fields/suggested
 
-Is it a case of ANA (Add Next Available?)
+it mentions that there are some conflicting usages of flag bits for radiota=
+p.
 
-It will mean making sure that the tools doing captures add the bits
-and that things like Wireshark are backward compatible.
+Currently, Wireshark knows about bit 14 in the presence flags, but
+hard-codes it for rx-Flags. It also doesn't know about tx-Flags (or
+hardware-queue).
+
+Would it be useful to allow the user to specify they want to be able
+to switch between usages or are we trying to stamp out such
+conflicting uses?
 
 --=20
 Regards,
