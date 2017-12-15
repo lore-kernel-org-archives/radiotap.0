@@ -1,68 +1,46 @@
-From: Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
-Subject: Re: Would it be useful to have preferences for radiotap to allow
- handling of captures with conflicting presence flags?
-Date: Thu, 14 Dec 2017 17:52:02 -0800
-Message-ID: <7A209774-9919-455B-9E04-BDAF26BE99DA@alum.mit.edu>
-References: <CACyXjPy9nUFhKmgzyVt6KBqHZW3oa0dgpkzQyGbtHHLOnC=f1w@mail.gmail.com>
- <481F8A87-D5A1-440F-832F-7E433179A7F9@alum.mit.edu>
- <CACyXjPyh6H6-8BeUY-OPWAmdGEpzAQpYgMYy3rWGfNUxGY1xsQ@mail.gmail.com>
-Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Subject: Re: Allocation of new presence bits, eg for HE, etc
+Date: Fri, 15 Dec 2017 09:21:20 +0100
+Message-ID: <1513326080.26976.90.camel@sipsolutions.net>
+References: <CACyXjPwCj1nmGyh-EDHOVn1aT30WEKdEQrRpOTnQqaV7mV0C0Q@mail.gmail.com>
+	 <20171214174316.GL12698@pobox.com>
+	 <CAF7Mx6q-vv3=nKX=aG5Mg6t0r7_VLQuxt-By2exavf6V6yqvHg@mail.gmail.com>
+	 <CAF7Mx6pY+zjr9b9iL4B0O2Lqy2-EdvPZ9Uok4DYHN1ns4-GGMQ@mail.gmail.com>
+	 <CAF7Mx6oZbpHebL7dO-jB0ngCZoqjRO2O=a456QJfQr1PRQ3-vw@mail.gmail.com>
+	 <CACyXjPzQ8Qc6xqwhjUXggASkG8QVTHGad-4E56iUyjyYAk0jjQ@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <CACyXjPyh6H6-8BeUY-OPWAmdGEpzAQpYgMYy3rWGfNUxGY1xsQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CACyXjPzQ8Qc6xqwhjUXggASkG8QVTHGad-4E56iUyjyYAk0jjQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
-To: Richard Sharpe <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
+To: Richard Sharpe <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-On Dec 14, 2017, at 4:13 PM, Richard Sharpe =
-<realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+On Thu, 2017-12-14 at 10:05 -0800, Richard Sharpe wrote:
+> 
+> Yes, I noticed those, but no bit assignments have been made. At least
+> one organization is interested in this.
 
-> Great. I will get to work adding some of the missing bits and maybe a
-> preference around the tx_flags and hardward_queue.
+:-)
 
-My inclination is 1) not to add the presence bits for suggested fields =
-to any code that processes radiotap headers unless there are capture =
-files or devices that use them and 2) not to add preferences unless =
-there are capture files or devices that one interpretation of the =
-presence bit in question *and* capture files or devices that use the =
-other interpretation.
+> Is it a case of ANA (Add Next Available?)
 
-If you're doing this because you're working on something that =
-*generates* radiotap headers, I would suggest that you use only defined =
-fields if possible and, if you need to add information that's *not* =
-supported by any defined field, try to get a field defined - preferably =
-with its own presence bit assigned.
+Yeah, that's really the only thing that makes sense, since parsing
+relies on the bit order.
 
-> BTW, why is there what looks like 6-bytes of un-interpreted data
-> between the rx-flags and timestamp info?
+I've made my experimental Linux patches write it with bit 23 (and
+haven't implemented the HE-MU/other-user yet).
 
-As the top-level radiotap page says:
+> It will mean making sure that the tools doing captures add the bits
+> and that things like Wireshark are backward compatible.
 
-	Radiotap requires that all fields in the radiotap header are =
-aligned to natural boundaries. For radiotap, that means all 8-, 16-, =
-32-, and 64-bit fields must begin on 8-, 16-, 32-, and 64-bit =
-boundaries, respectively. In this way, generators and parsers can avoid =
-unaligned accesses to radiotap capture fields. Radiotap-compliant =
-generators must insert padding before a capture field to ensure its =
-natural alignment. Radiotap-compliant packet parsers, such as =
-tcpdump(8), expect and skip the padding.
+Yeah.
 
-RX flags:
+Maybe we can/should have a "tentatively defined" state? I have been
+reluctant to post this for formal adoption because the HE spec isn't
+done yet, but at the same time we want this to be already usable by
+people.
 
-	http://www.radiotap.org/fields/RX%20flags.html
-
-is a 2-byte field, requiring 2-byte alignment.
-
-Timestamp:
-
-	http://www.radiotap.org/fields/timestamp.html
-
-requires 8-byte alignment, as it includes an 8-byte numerical value.
-
-So if you have an RX flags field that happens to be aligned on an 8-byte =
-boundary, followed immediately by a timestamp field, there needs to be 6 =
-bytes of padding after the RX flags field to align the timestamp field =
-on an 8-byte boundary.=
+johannes
