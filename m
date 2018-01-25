@@ -1,8 +1,7 @@
 From: Richard Sharpe <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Have new bits been defined for the A-MPDU Status field in the
- radiotap header for HE?
-Date: Thu, 25 Jan 2018 07:14:17 -0800
-Message-ID: <CACyXjPxfD2K_YdHJVU3gm3Ms90gqXV9YnDoQonMviN2y4qXk0Q@mail.gmail.com>
+Subject: Conflicting definitions between the radiotap HE PPDU format field and 802.11axD2
+Date: Thu, 25 Jan 2018 07:32:17 -0800
+Message-ID: <CACyXjPzSHgyBkpXBR7=eqsfiCmeKBOsQD=0dJtUMwqUk=yWxYQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -14,14 +13,14 @@ List-Id: radiotap@radiotap.org
 
 Hi folks,
 
-I have a capture that has the value 0x00c0 in the A-MPDU Flags section
-of the A-MPDU status field. These bits are currently listed as
-reserved.
+It seems that 802.11ax D2 defines, in Table 28-18, in HE-SIG-A, a
+1-bit format fields (B0) that takes the values 0 for HE TB PPDUs and 1
+for HE SU PPDUs and that is reserved for others but must be set to 1.
 
-The HE folks are also saying they need to see an EOF bit to identify
-S-MPDU packets.
+However, what seems to be the equivalent radiotap he ppdu format field
+is 2 bits and uses different values.
 
-Does anyone know anything about that?
+Have I misunderstood? What is the resolution of this?
 
 --=20
 Regards,
