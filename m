@@ -1,7 +1,7 @@
 From: Richard Sharpe <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Is anyone capturing and adding HE-MU or HE-MU-other-user headers?
-Date: Fri, 26 Jan 2018 06:54:36 -0800
-Message-ID: <CACyXjPyFxVj3aNiGY-BWADiH0NeJjeh7hBYUsCSRB9JAQL2-uw@mail.gmail.com>
+Subject: Field defined twice in HE-MU
+Date: Fri, 26 Jan 2018 09:26:53 -0800
+Message-ID: <CACyXjPxD4gpsDWf9mBO8mzCxT7SYQjhV4+eAZ=x-D0Ut63K-NA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -11,16 +11,10 @@ List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subj
 To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-Hi folks,
+Hi Folks,
 
-I know that the Wi-Fi Alliance folks are really interested in the
-HE-SIG-A and HE-SIG-B info.
-
-So far, we have dissection of the suggested Radiotap HE header, but
-does anyone know if any capture software inserts HE-MU headers or
-HE-MU-other-user headers.
-
-I was thinking of adding dissection for those headers soon just in case.
+in http://www.radiotap.org/fields/HE-MU.html the flag SIG-B
+Compression known is defined in both flags1 and flags2.
 
 --=20
 Regards,
