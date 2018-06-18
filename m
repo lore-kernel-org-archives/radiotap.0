@@ -1,52 +1,101 @@
 From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: Re: [ADOPTION] A-MPDU EOF bit
-Date: Mon, 18 Jun 2018 15:59:48 +0200
-Message-ID: <1529330388.3490.24.camel@sipsolutions.net>
-References: <1516963842.2189.27.camel@sipsolutions.net>
-	 <1519118967.16723.23.camel@sipsolutions.net>
+Subject: TLV extension for radiotap
+Date: Mon, 18 Jun 2018 16:35:10 +0200
+Message-ID: <1529332510.3490.47.camel@sipsolutions.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <1519118967.16723.23.camel-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
 To: radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-On Tue, 2018-02-20 at 10:29 +0100, Johannes Berg wrote:
-> On Fri, 2018-01-26 at 11:50 +0100, Johannes Berg wrote:
-> > Hi all,
-> > 
-> > As previously mentioned, here's my RFA for the EOF bit in the A-MPDU
-> > field.
-> > 
-> > For HE in particular, we need to be able to capture the EOF bit in an
-> > A-MPDU, but it also applies in VHT where single frames are really A-
-> > MPDUs with just a single frame inside.
-> > 
-> > The change to make is the following:
-> > 
-> >  | **0x0010** | delimiter CRC error |
-> >  | **0x0020** | delimiter CRC value known: the delimiter CRC value field is valid |
-> > -| **0xffc0** | reserved |
-> > +| **0x0040** | EOF value |
-> > +| **0x0080** | EOF value known |
-> > +| **0xff00** | reserved |
-> > 
-> > 
-> > I have a patch to implement it in a generator here:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/backport-iwlwifi.git/commit/?id=55269b3861b4fbe21fdc6d7392cbe9c5bef98374
-> > (I'll follow up with a driver patch, we have it but not pushed out yet)
-> > 
-> > Richard has a change for wireshark here:
-> > https://code.wireshark.org/review/#/c/25472/
-> > 
-> > 
-> > Hereby starting the 3-week discussion period :-)
-> 
-> Reminder - going to adopt next week.
+Hi,
 
-Forgot this also, but pushed it now ...
+With the HE additions, we had to make a few incompatible changes in the
+last minute, which was somewhat annoying.
+
+Things would be somewhat simpler if we'd been able to extend the length
+of fields.
+
+To that extent, before we run out of bits in the first 32-bit word
+(we've allocated up to bit 22, 23-25 for HE, and 29-31 for extensions)
+I'd like to propose the following additions to radiotap:
+
+
+Bit 28 - TLV extension to radiotap
+
+If this bit is set higher bits shall not be set and the data following
+it is to be understand as a type-length-value format, with the following
+structure:
+
+ * u16 type
+ * u16 length
+ * data ("length" bytes)
+ * 0-3 padding bytes
+   The whole thing is padded to a multiple of 4 bytes length, but that
+   padding is not taken into account in the 'length' field.
+
+The type is taken from the regular radiotap bit allocation, but the
+special values (bits 29-31) are not valid here.
+
+If field alignment is necessary beyond the implied 4-byte alignment,
+type==28 (this extension) shall be used as padding with an appropriate
+length (which would likely often be 0 for 8-byte alignment). This
+ensures parser simplicity, it doesn't need to be aware of alignment
+rules.
+
+
+For backward compatibility, generators should generate data in fields
+with type < 32 in regular non-TLV type fields.
+
+To ensure the ability to do extensions in the future, newly defined
+fields should start at type 0x100, and those with a number >=0x100
+should be parsed as having a minimum length of whatever they get defined
+as, allowing for possible length extension to them if needed.
+Additionally, parts of them may be defined as optional to start with,
+which allows them to be parsed depending on the length, e.g. if some
+data isn't known.
+
+We can also define that fields with numbers >= 32 shall not be used in
+regular presence bitmaps, but only in TLV type fields.
+
+If we start here at 0x100 for new fields, using that is not really
+feasible in presence bitmaps anyway (you'd need a long list of 8
+presence bitmaps), we can also stop reserving every value that's
+29/30/31 modulo 32.
+
+If you pack vendor extension into the TLV format you end up with a
+duplicated length (TLV length vs. skip_length), but I think that's
+reasonable. If we like, we can define a new vendor extension TLV-type
+field that contains only the OUI/subtype, and omits the skip_length.
+
+
+Yes, this format is somewhat bigger than what we have now, but since we
+generate and consume it in software I don't think we really need to
+worry about that too much these days.
+
+The alternative would be to define an entirely new radiotap header
+version, which is possible, but doesn't allow us to be partially
+backward compatible, which seems useful. If we were to do that, we'd
+also only really save 4 bytes (the first it_present dword that indicates
+TLV extension), so it's not really all that worthwhile.
+
+
+
+The simplest way to generate a new TLV-type radiotap header would be
+
+it_version = 0,
+it_len     = ...,
+it_present = 1 << 28,
+
+followed by fields in type/length/data/padding format.
+
+For backward compatibility, it would be useful to generate the currently
+existing data (channel/rate/HT/VHT/A-MPDU/HE and whatnot) in bitmap-
+based format, and then switch to TLV for future fields.
+
+Thoughts?
 
 johannes
