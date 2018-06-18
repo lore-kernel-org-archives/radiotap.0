@@ -1,48 +1,36 @@
-From: Simon Barber <simon-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Subject: Re: [RFC] 0-length PPDU reporting
-Date: Mon, 18 Jun 2018 09:05:36 -0700
-Message-ID: <00986C20-9443-40FC-9A7E-DE636A743951@superduper.net>
+Date: Mon, 18 Jun 2018 21:20:37 +0200
+Message-ID: <1529349637.3092.8.camel@sipsolutions.net>
 References: <1529332670.3490.50.camel@sipsolutions.net>
-Mime-Version: 1.0 (Mac OS X Mail 11.3 \(3445.6.18\))
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+	 <00986C20-9443-40FC-9A7E-DE636A743951@superduper.net>
+	 (sfid-20180618_180542_208407_0C406B67)
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <1529332670.3490.50.camel-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+In-Reply-To: <00986C20-9443-40FC-9A7E-DE636A743951-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org> (sfid-20180618_180542_208407_0C406B67)
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
-To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+To: Simon Barber <simon-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>
 Cc: radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-Some chipsets will also report particular types of noise as a special =
-PPDU - used for radar detection - it might be nice to allow these as =
-well.
+On Mon, 2018-06-18 at 09:05 -0700, Simon Barber wrote:
+> Some chipsets will also report particular types of noise as a special
+> PPDU - used for radar detection - it might be nice to allow these as
+> well.
 
-Simon
+Yeah, I guess we could define plenty of subtypes for these, and then you
+can include all kinds of metadata you want.
 
+These are somewhat less useful because you have less metadata, you
+haven't even decoded any preambles in those cases, and you probably have
+a ton of them if enabled, but sure, why not.
 
-> On Jun 18, 2018, at 7:37 AM, Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org> =
-wrote:
->=20
-> Hi,
->=20
-> With HE in particular, but also previously, there are PPDUs that don't
-> carry any MAC header, for example sounding frames.
->=20
-> It seems useful to report these up, but they cause wireshark to =
-display
-> an error since it's expecting to be able to decode the remainder of =
-the
-> data after radiotap as an 802.11 frame.
->=20
-> To fix that, and to be able to show the type of PPDU, I think we =
-should
-> add a new field, that contains just a 16-bit value (or 8? or even 32
-> since we often need more alignment anyway?) indicating the type of 0-
-> length PPDU.
->=20
-> Does anyone happen to have a more comprehensive list of PPDUs that are
-> like this?
->=20
-> johannes
+I'll try to build a list I guess, to come up with a proposal.
+
+A wireshark patch should be pretty simple, just don't call through to
+the 802.11 dissector?
+
+johannes
