@@ -1,41 +1,43 @@
 From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Subject: Re: [RFC] 0-length PPDU reporting
-Date: Fri, 29 Jun 2018 12:49:26 +0200
-Message-ID: <1530269366.3481.80.camel@sipsolutions.net>
+Date: Mon, 02 Jul 2018 16:33:20 +0200
+Message-ID: <1530542000.3117.4.camel@sipsolutions.net>
 References: <1529332670.3490.50.camel@sipsolutions.net>
-	 <00986C20-9443-40FC-9A7E-DE636A743951@superduper.net>
-	 <1529349637.3092.8.camel@sipsolutions.net>
-	 <3028EC8F-6CFD-4F52-8349-D49B1F37AC22@alum.mit.edu>
-	 <BC6DCA08-4049-4B7A-A7C0-9FC545173FE5@alum.mit.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <BC6DCA08-4049-4B7A-A7C0-9FC545173FE5-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
+In-Reply-To: <1529332670.3490.50.camel-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
-To: Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
-Cc: Simon Barber <simon-vp0mx6+5gkqFX2APIN6yfw@public.gmane.org>, radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
+To: radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-On Tue, 2018-06-19 at 15:50 -0700, Guy Harris wrote:
-> On Jun 19, 2018, at 2:20 PM, Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org> wrote:
-> 
-> > On Jun 18, 2018, at 12:20 PM, Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org> wrote:
-> > 
-> > > A wireshark patch should be pretty simple, just don't call through to
-> > > the 802.11 dissector?
-> > 
-> > Yes, although if it has radio information you should call through to
-> > the "802.11 radio" dissector (so that it shows the radio information
-> > in a pseudo-header-independent format) and pass along information to
-> > let it know that *it* shouldn't call through to the 802.11 frame
-> > dissector.
-> 
-> Tcpdump would also need to be changed not to call ieee802_11_print()
-> at the end of ieee802_11_radio_print() in print-802_11.c - just return
-> "len" for 0-length PPDUs.
+So, does anyone have anything else needed here?
 
-Yes, both good points. Thanks!
+---
+title: 0-length-PPDU
+categories: [suggested]
+---
+Bit Number
+: 26 (tentatively assigned, field data may change)
 
-johannes
+Structure
+  - u8 type
+
+Required Alignment
+: None
+
+Unit(s)
+: none
+
+The presence of this field indicates that there was no PSDU in this
+PPDU,
+only the PHY data is valid and the radiotap header is not followed by an
+802.11 header.
+
+The type field indicates the type of PPDU.
+
+| **type value** | **meaning** |
+| 0              | sounding PPDU |
+| 0xff           | vendor-specific |
