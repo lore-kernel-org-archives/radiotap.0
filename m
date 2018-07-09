@@ -1,7 +1,7 @@
 From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: [RFA] L-SIG field
-Date: Mon, 09 Jul 2018 10:31:09 +0200
-Message-ID: <1531125069.3298.6.camel@sipsolutions.net>
+Subject: [ADOPTION] HE support
+Date: Mon, 09 Jul 2018 10:32:12 +0200
+Message-ID: <1531125132.3298.7.camel@sipsolutions.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
@@ -11,31 +11,13 @@ List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subj
 To: radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
 List-Id: radiotap@radiotap.org
 
----
-title: L-SIG
-categories: [suggested]
----
-Bit Number
-: 27
+As a reminder, since there were no comments in 3 weeks this is
+considered adopted now.
 
-Structure
-  - u16 data1, data2
+http://www.radiotap.org/fields/HE
+http://www.radiotap.org/fields/HE-MU
+http://www.radiotap.org/fields/HE-MU-other-user
 
-Required Alignment
-: 2
+I'll update the web site soon.
 
-Unit(s)
-: none
-
-This field indicates - if known - the contents of the L-SIG.
-
-## data1
-
-| **`0x0001`** | rate known |
-| **`0x0002`** | length known |
-| **`0xfffc`** | (reserved) |
-
-## data2
-
-| **`0x000f`** | rate |
-| **`0xfff0`** | length |
+johannes
