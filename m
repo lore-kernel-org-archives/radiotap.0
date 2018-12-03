@@ -1,46 +1,37 @@
 From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: Re: [RFA] TLV fields for radiotap
-Date: Tue, 20 Nov 2018 21:09:39 +0100
-Message-ID: <81658b7a400e6189c55587c8276d5555b6fe37f0.camel@sipsolutions.net>
-References: <1531126034.3298.18.camel@sipsolutions.net>
-	 <1536063298.3940.12.camel@sipsolutions.net>
+Subject: [RFA] HE addition: TB PPDU bandwidth
+Date: Mon, 03 Dec 2018 15:14:46 +0100
+Message-ID: <8f56ce73baa72725c01eecef8645595cfea71b2b.camel@sipsolutions.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <1536063298.3940.12.camel-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
 To: radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
+Cc: Richard Sharpe <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-On Tue, 2018-09-04 at 14:14 +0200, Johannes Berg wrote:
-> On Mon, 2018-07-09 at 10:47 +0200, Johannes Berg wrote:
-> > Since there were no comments, let's make this more formal. Any
-> > objections now?
-> 
-> Does this look like a good idea/compromise?
-> 
-> It's hard to do an entirely new version, then at least in Linux we'd
-> probably have to be able to switch versions on the fly for some time,
-> which is awkward ... but OTOH this feels a bit hackish.
-> 
-> No comments at all? :)
+Trigger-based PPDUs have an additional bandwidth that determines the
+spectral mask etc., I forgot those before but now we need to be able to
+look at them in a sniffer.
 
-*crickets*
+Since we have a few (very few!) reserved bits, change the HE field as
+follows:
 
-I guess I'll propose this more formally, since nobody really seems to
-have any thoughts on the matter and parsing radiotap is notoriously
-difficult :-)
+data 6
 
-FWIW, especially with vendor fields, there's a problem today: these
-always come more or less last, so you have to understand all bits before
-them. This is also true for radiotap, but due to sequential allocation,
-if you care about a certain field today, your software is guaranteed to
-be able to read it in the future too. If your software cares about a
-vendor radiotap field, that's not true since other new standard fields
-may be inserted before it...
+0x00e0  (reserved)
 
-Speak up now if you do think it's a bad idea ;-)
+to
+
+0x0020  TB PPDU bandwidth known
+0x00c0  TB PPDU bandwidth (bits 24/25 from HE-SIG-A1),
+        0: 20 MHz, 1: 40 MHz, 2: 80 MHz, 3: 160 MHz/80+80 MHz
+
+
+The existing bandwidth field captures only the bandwidth/RU allocation
+of the data, which in this case would be the RU allocation for the
+captured transmitter, not the bandwidth of the overall transmission(s).
 
 johannes
