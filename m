@@ -1,75 +1,35 @@
-From: Ray Wang <rwang-+OaQ/Okkt+3YtjvyW6yDsg@public.gmane.org>
-Subject: RE: Proposal for an S1G header for radiotap
-Date: Fri, 1 Feb 2019 23:04:41 +0000
-Message-ID: <CY1PR07MB27160AEE154215058A2CA4F2FF920@CY1PR07MB2716.namprd07.prod.outlook.com>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Subject: Re: Proposal for an S1G header for radiotap
+Date: Tue, 05 Feb 2019 10:17:41 +0100
+Message-ID: <70cb8aa80158ca9f8db78815747e38366c3e8e71.camel@sipsolutions.net>
 References: <CACyXjPwCydx6fumWdXdLvg-StsRcALBLc5+4fCsGDaC7tcZXCQ@mail.gmail.com>
- <8d1bb1c53c670e7cfddfc0cf2f5e2447b2ee2ecb.camel@sipsolutions.net>
- <CACyXjPzc--Deaecx9HuV5i0jyO5uUKFOqEeUaWWv3oYXqBqc8g@mail.gmail.com>
- <01da01d4ba7a$08824ac0$1986e040$@gmail.com>
+	 <8d1bb1c53c670e7cfddfc0cf2f5e2447b2ee2ecb.camel@sipsolutions.net>
+	 <CACyXjPzc--Deaecx9HuV5i0jyO5uUKFOqEeUaWWv3oYXqBqc8g@mail.gmail.com>
+	 <01da01d4ba7a$08824ac0$1986e040$@gmail.com>
+	 (sfid-20190201_230402_264728_5BA08FEC)
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <01da01d4ba7a$08824ac0$1986e040$@gmail.com>
-Content-Language: en-US
+In-Reply-To: <01da01d4ba7a$08824ac0$1986e040$@gmail.com> (sfid-20190201_230402_264728_5BA08FEC)
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
-To: "yodazhong-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <yodazhong-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, 'Richard Sharpe' <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, 'Johannes Berg' <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Cc: "radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org" <radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>, Tasheng Lin <tlin-+OaQ/Okkt+3YtjvyW6yDsg@public.gmane.org>
+To: yodazhong-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, 'Richard Sharpe' <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org, 'Ray Wang' <rwang-+OaQ/Okkt+3YtjvyW6yDsg@public.gmane.org>, tlin-+OaQ/Okkt+3YtjvyW6yDsg@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-SGkgSm9oYW5uZXMgYW5kIFJpY2hhcmQsDQoNCkFzIHRvIEFnZ3JlZ2F0aW9uIHJlbGF0ZWQgdG8g
-QS1NUERVLCBmcm9tIDgwMi4xMWFoIC0yMDE2IHNwZWMgaXQgY2FuIGJlIHNlZW4gdGhlIGZpZWxk
-IGlzIGRlZmluZWQgaW4gU0lHLTIgb2YgU0lHIGZpZWxkIG9mIFMxR19TSE9SVCBwcmVhbWJsZSwg
-U0lHLUEyIG9mIFNJRy1BIGZpZWxkIG9mIFMxR19MT05HIHByZWFtYmxlLCBhbmQgU0lHLTIgb2Yg
-U0lHIGZpZWxkIG9mIFMxR18xTSBwcmVhbWJsZS4NCg0KSWYgbG9va2luZyBhdCA4MDIuMTEtMjAx
-NiBhbmQgRHJhZnQgUDgwMi4xMWF4X0QzLjMgc3BlY3MsIHRoZSBzYW1lIGZpZWxkIGlzIGRlZmlu
-ZWQgb25seSBpbiBIVC1TSUcsIGJ1dCBub3QgaW4gVkhULVNJRy1BIGFuZCBWSFQtU0lHLUIsIGFu
-ZCBub3QgaW4gSEUtU0lHLUEuDQoNCkZyb20gdGhlIHNwZWMgcGVyc3BlY3RpdmUgcmVnYXJkaW5n
-IHRoZSBBZ2dyZWdhdGlvbiBmaWVsZCwgODAyLjExYWggaXMgZGlmZmVyZW50IGZyb20gODAyLjEx
-bi9hYy9heC4NCg0KQXMgeW91IHBvaW50ZWQgb3V0LCBSaWNoYXJkLCBpZiB0aGUgZXhpc3Rpbmcg
-ZmllbGQgY2FuIGJlIHJldXNlZCBpdCBtaWdodCBuZWVkIHNvbWUgY2hhbmdlcy4gSWYgZGVmaW5p
-bmcgYSBuZXcgb25lLCB0aGUgZXhpc3Rpbmcgb25lIHByb2JhYmx5IGFsc28gbmVlZHMgdG8gYmUg
-aGFuZGxlZC4gDQoNCldoYXQgd291bGQgeW91IHN1Z2dlc3QgaXMgdGhlIGJlc3Qgd2F5IHRvIHRh
-Y2tsZSBpdD8NCg0KDQpUaGFua3MsDQpSYXkNCg0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0t
-LQ0KRnJvbTogeW9kYXpob25nQGdtYWlsLmNvbSBbbWFpbHRvOnlvZGF6aG9uZ0BnbWFpbC5jb21d
-IA0KU2VudDogRnJpZGF5LCBGZWJydWFyeSAwMSwgMjAxOSAyOjA0IFBNDQpUbzogJ1JpY2hhcmQg
-U2hhcnBlJyA8cmVhbHJpY2hhcmRzaGFycGVAZ21haWwuY29tPjsgJ0pvaGFubmVzIEJlcmcnIDxq
-b2hhbm5lc0BzaXBzb2x1dGlvbnMubmV0Pg0KQ2M6IHJhZGlvdGFwQHJhZGlvdGFwLm9yZzsgUmF5
-IFdhbmcgPHJ3YW5nQHdpLWZpLm9yZz47IFRhc2hlbmcgTGluIDx0bGluQHdpLWZpLm9yZz4NClN1
-YmplY3Q6IFJFOiBQcm9wb3NhbCBmb3IgYW4gUzFHIGhlYWRlciBmb3IgcmFkaW90YXANCg0KSGkg
-Sm9oYW5uZXMgYW5kIFJpY2hhcmQsDQoNClRoYW5rIHlvdSBmb3IgeW91ciB3b3JrIGFuZCBncmVh
-dCBjb21tZW50cy4NCg0KRm9yIHRoZSBTLU1QRFUgaXNzdWUsIFMtTVBEVSBpcyBzYW1lIGFzIFZI
-VCBzaW5nbGUgTVBEVSBpbiA4MDIuMTFhYy4NCklmIHRoZXJlJ3MgcHJlLWRlZmluZWQgZmllbGQg
-Zm9yIFZIVCBzaW5nbGUgTVBEVSwgd2UgY291bGQgdXNlIHRoYXQuDQoNCkZvciB0aGUgUzFHIE5E
-UCBpc3N1ZSwgSSBmb3VuZCB0aGF0IHRoZXJlJ3MgUEhEUl84MDJfMTFfU09VTkRJTkdfUFNEVSBm
-b3IgIjAtbGVuZ3RoIFBTRFUiIGZpZWxkLiBUaGF0IHNvdW5kaW5nIFBTRFUgbWVhbnMgTkRQIHNv
-dW5kaW5nIGZyYW1lLCBJIGd1ZXNzLg0KU28gSSB0aGluayB3ZSBjb3VsZCBhZGQgUzFHIE5EUCBm
-cmFtZXMgdW5kZXIgIjAtbGVuZ3RoIFBTRFUiIGZpZWxkLg0KDQotLQ0KQmVzdCwNCkFhcm9uIEou
-IExlZQ0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogUmljaGFyZCBTaGFycGUg
-PHJlYWxyaWNoYXJkc2hhcnBlQGdtYWlsLmNvbT4NClNlbnQ6IEZyaWRheSwgRmVicnVhcnkgMSwg
-MjAxOSAxMDozNSBBTQ0KVG86IEpvaGFubmVzIEJlcmcgPGpvaGFubmVzQHNpcHNvbHV0aW9ucy5u
-ZXQ+DQpDYzogcmFkaW90YXBAcmFkaW90YXAub3JnOyBBYXJvbiBKLiBMZWUgPHlvZGF6aG9uZ0Bn
-bWFpbC5jb20+OyBSYXkgV2FuZyA8cndhbmdAd2ktZmkub3JnPjsgdGxpbkB3aS1maS5vcmcNClN1
-YmplY3Q6IFJlOiBQcm9wb3NhbCBmb3IgYW4gUzFHIGhlYWRlciBmb3IgcmFkaW90YXANCg0KT24g
-RnJpLCBGZWIgMSwgMjAxOSBhdCAzOjMzIEFNIEpvaGFubmVzIEJlcmcgPGpvaGFubmVzQHNpcHNv
-bHV0aW9ucy5uZXQ+IHdyb3RlOg0KPg0KPiBIaSBSaWNoYXJkLA0KPg0KPiA+IEF0dGFjaGVkIGlz
-IGEgZ2l0IGZvcm1hdC1wYXRjaCBwYXRjaCB0aGF0IGNvbnRhaW5zIGEgcHJvcG9zYWwgZm9yIGFu
-IFMxRyBoZWFkZXIuDQo+ID4NCj4gPiBUaGlzIHByb3Bvc2FsIHdhcyBjcmVhdGVkIGJ5IEFhcm9u
-IExlZSBhbmQgdW5kZXJ3ZW50IGEgY291cGxlIG9mIA0KPiA+IHJvdW5kcyBvZiBtb2RpZmljYXRp
-b25zIGFtb25nIHRoZSBXRkEgZm9sa3MuDQo+ID4NCj4gPiBBbGwgSSBoYXZlIGRvbmUgaGVyZSBp
-cyB0byB0cmFuc2NyaWJlIGl0IHRvIHRoZSBmb3JtYXQgcmVxdWlyZWQgYnkgDQo+ID4gdGhlIGRv
-Y3VtZW50YXRpb24gd2ViIHNpdGUuIEhvcGVmdWxseSBJIGhhdmUgbm90IGNoYW5nZWQgYW55IGlu
-dGVudC4NCj4NCj4gVGhhbmtzIGZvciBkb2luZyB0aGlzISA6KQ0KPg0KPiA+IEJlbG93IGlzIHNv
-bWUgZmVlZGJhY2sgZnJvbSBKb2hhbm5lcyBhYm91dCB0aGUgcHJvcG9zYWwgc28gaGUgZG9lcyAN
-Cj4gPiBub3QgaGF2ZSB0byByZXR5cGUgaXQgYWxvbmcgd2l0aCBzb21lIGNvbW1lbnRzIGZyb20g
-bWUuDQo+DQo+IDotKQ0KPg0KPiBTb21lICphZGRpdGlvbmFsKiBmZWVkYmFjayBiZWxvdyAtIHBs
-ZWFzZSBkbyBjaGVjayBteSBwcmV2aW91cyBub3RlIA0KPiBhYm91dCBhZ2dyZWdhdGlvbiBoYW5k
-bGluZywgdGhpcyBpcyB2ZXJ5IHVuY2xlYXIgdG8gbWUuDQoNCkkgd2lsbCBsb29rIGF0IHRoZSBv
-dGhlciBjb21tZW50cyBzZXBhcmF0ZWx5LCBidXQgSSB0aGluayBBZ2dlZ3JhdGlvbiByZWxhdGVz
-IHRvIEEtTVBEVSBpZiBJIGFtIHJlYWRpbmcgc2VjdGlvbiA5Ljcgb2YgODAyLjExYWgtMjAxNiBj
-b3JyZWN0bHkuDQoNCkluIHdoaWNoIGNhc2UsIHdlIGFscmVhZHkgaGF2ZSBhbiBBLU1QRFUgaGVh
-ZGVyIGJ1dCB3ZSBtaWdodCBuZWVkIHNvbWUgY2hhbmdlcy4gUGVyaGFwcyB0aGUgV0ZBIGZvbGtz
-IG9yIEFhcm9uIGNhbiBjb21tZW50IG9uIHRoaXMvDQoNCi0tDQpSZWdhcmRzLA0KUmljaGFyZCBT
-aGFycGUNCijkvZXku6Xop6PmhoLvvJ/llK/mnInmnZzlurfjgIItLeabueaTjSko5Lyg6K+05p2c
-5bq35piv6YWS55qE5Y+R5piO6ICFKQ0KDQo=
+Hi,
+
+> For the S-MPDU issue, S-MPDU is same as VHT single MPDU in 802.11ac.
+> If there's pre-defined field for VHT single MPDU, we could use that.
+
+Since it's kind of packed into an A-MPDU header, we have indeed added
+the A-MPDU field for this to capture the EOF bit in VHT single MPDU.
+
+> For the S1G NDP issue, I found that there's PHDR_802_11_SOUNDING_PSDU 
+> for "0-length PSDU" field. That sounding PSDU means NDP sounding frame, I guess.
+> So I think we could add S1G NDP frames under "0-length PSDU" field.
+
+Sounds good to me. It would mean wireshark shows no PSDU.
+
+johannes
