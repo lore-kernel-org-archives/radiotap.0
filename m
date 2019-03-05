@@ -1,184 +1,141 @@
-From: Richard Sharpe <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Radiotap header for S1G captures and associated changes and other definitions
-Date: Mon, 4 Mar 2019 19:18:46 -0800
-Message-ID: <CACyXjPy-Lr143wcWaLkv-xgs9Ebc0j8pYfw8MzMXNEv2tLA0Kg@mail.gmail.com>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Subject: Re: Radiotap header for S1G captures and associated changes and
+ other definitions
+Date: Tue, 05 Mar 2019 12:58:43 +0100
+Message-ID: <56728a565c1f84862615f8804881bf72b7d12511.camel@sipsolutions.net>
+References: <CACyXjPy-Lr143wcWaLkv-xgs9Ebc0j8pYfw8MzMXNEv2tLA0Kg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="0000000000006ce6920583505683"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <CACyXjPy-Lr143wcWaLkv-xgs9Ebc0j8pYfw8MzMXNEv2tLA0Kg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
-To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org, Ray Wang <rwang-+OaQ/Okkt+3YtjvyW6yDsg@public.gmane.org>, Tasheng Lin <tlin-+OaQ/Okkt+3YtjvyW6yDsg@public.gmane.org>, "Aaron J. Lee" <yodazhong-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Richard Sharpe <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org, Ray Wang <rwang-+OaQ/Okkt+3YtjvyW6yDsg@public.gmane.org>, Tasheng Lin <tlin-+OaQ/Okkt+3YtjvyW6yDsg@public.gmane.org>, "Aaron J. Lee" <yodazhong-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
---0000000000006ce6920583505683
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi Richard,
 
-This is a third attempt at a RADIOTAP header for S1G captures.
+> 1. Channel field:
+> 
+> 3 new values for Mask: 0x0002 for 700 MHz, 0x0004 for 800 MHz and
+> 0x0008 for 900 MHz spectrum channels respectively.
 
-Aaron Lee did the work in creating these definitions. I simply transcribed =
-them.
+How much space do we have there btw? We're going to get 6-7 GHz channels
+soon ... perhaps we should just give up on this field and put the actual
+frequency & bandwidth etc. somewhere? If we don't already ...
 
-The attached patch defines changes to the Channel field, 0-length-MPDU
-field and a new S1G field.
+> 2. 0-length MPDU field:
+> 
+> 1 new value: 0x02 in the type value: 2 indicates that this is an S1G
+> NDP frame and that an S1G field is included in the Radiotap header..
 
-There is also the associated definitions of the S1G NDP field which is
-defined in 802.11ah-2016 Section 9.9.
+I'm not sure I'd go as far as saying that it must have an S1G field in
+this case.
 
-1. Channel field:
+> 3. The new S1G frame.
+> 
+> It consists of three 16-bit fields, an 8-bit field and a 40-bit field:
+> 
+> U16 known, U16 data1, U16 data2, U8 ndp_type, U8 ndp_data[5]
+> 
+> Known:
+> 0x0001 S1G PPDU format known
+> 0x0002 Response indication known
+> 0x0004 Guard Interval known
+> 0x0008 NSS known
+> 0x0010 Bandwidth known
+> 0x0020 MCS known
+> 0x0040 Color known
+> 0x0080 Is NDP
 
-3 new values for Mask: 0x0002 for 700 MHz, 0x0004 for 800 MHz and
-0x0008 for 900 MHz spectrum channels respectively.
+Don't think you need "Is NDP" now with the 0-length field change?
 
-2. 0-length MPDU field:
+> 0x0100 NDP known
 
-1 new value: 0x02 in the type value: 2 indicates that this is an S1G
-NDP frame and that an S1G field is included in the Radiotap header..
+Better reword to "NDP data known" I think. Actually, you probably need
+to split into "NDP type known" and "NDP data known"? Not sure if that's
+realistic though, to know one and not the other? But you have a lot of
+bits so it doesn't hurt to split it either.
 
-3. The new S1G frame.
+> 0xFE00 Reserved
+> 
+> Data1:
+> 0x0003: S1G PPDU Format: 0=S1G_1M, 1=S1G_SHORT, 2=S1G_LONG
+> 0x000C: Response indication: 0=NO_RESPONSE, 1=NDP_RESPONSE,
+> 2=NORMAL_RESPONSE, 3=LONG_RESPPNSE
 
-It consists of three 16-bit fields, an 8-bit field and a 40-bit field:
+typo - LONG_RESPONSE was intended?
 
-U16 known, U16 data1, U16 data2, U8 ndp_type, U8 ndp_data[5]
+> 0x0010: Reserved
+> 0x0020: Guard interval: 0=Long GI, 1=Short GI
+> 0x00C0: Number spatial streams: 0=1 Spatial stream, 1=2, .. 3=4 Spatial streams
+> 0x0F00: Bandwidth: 0=1MHz, 1=2MHz, 2=4MHz, 3=8MHz, 4=16MHz, 5-15 reserved
 
-Known:
-0x0001 S1G PPDU format known
-0x0002 Response indication known
-0x0004 Guard Interval known
-0x0008 NSS known
-0x0010 Bandwidth known
-0x0020 MCS known
-0x0040 Color known
-0x0080 Is NDP
-0x0100 NDP known
-0xFE00 Reserved
+You could make that 0x0700 and leave the 0x0800 bit reserved.
 
-Data1:
-0x0003: S1G PPDU Format: 0=3DS1G_1M, 1=3DS1G_SHORT, 2=3DS1G_LONG
-0x000C: Response indication: 0=3DNO_RESPONSE, 1=3DNDP_RESPONSE,
-2=3DNORMAL_RESPONSE, 3=3DLONG_RESPPNSE
-0x0010: Reserved
-0x0020: Guard interval: 0=3DLong GI, 1=3DShort GI
-0x00C0: Number spatial streams: 0=3D1 Spatial stream, 1=3D2, .. 3=3D4 Spati=
-al streams
-0x0F00: Bandwidth: 0=3D1MHz, 1=3D2MHz, 2=3D4MHz, 3=3D8MHz, 4=3D16MHz, 5-15 =
-reserved
-0xF000:  MCS (MCS rate index, 0-10, 11-15 reserved)
+Not a big deal though since you have a lot of free bits in the 'known'
+and 'data2' fields. But if you leave it reserved you could use it later
+if needed as parsers wouldn't be using/showing it.
 
-Data2:
-0x000F: Color: 0-7
-0xFFF0: Reserved
+> 0xF000:  MCS (MCS rate index, 0-10, 11-15 reserved)
+> 
+> Data2:
+> 0x000F: Color: 0-7
 
-NDP type:
-0x00: NDP Control frame
-0x01: NDP Management frame
-0x02-0xFF: Reserved
+Similarly here, 0-7 fits into 3 bits.
 
-NDP data:
+> 0xFFF0: Reserved
+> 
+> NDP type:
+> 0x00: NDP Control frame
+> 0x01: NDP Management frame
+> 0x02-0xFF: Reserved
+> 
+> NDP data:
+> 
+> These are as defined in 802.11ah-2016 Section 9.9 except that the top
+> two bits of data[4] are:
+> 
+> 0x00: 1MHz
+> 0x01: 2MHz
+> 0x02-0x03: Reserved
 
-These are as defined in 802.11ah-2016 Section 9.9 except that the top
-two bits of data[4] are:
+Is it really worth packing this into the end? You could have lots of
+space in e.g. the data2 or NDP type fields (I guess, you reserved lots
+of values there).
 
-0x00: 1MHz
-0x01: 2MHz
-0x02-0x03: Reserved
+> The S1G NPD format is essentially from section 9.9 of 802.11ah-2016
+> with some additional syntactic sugar:
+> 
+> It is a 40-bit field.
 
-The S1G NPD format is essentially from section 9.9 of 802.11ah-2016
-with some additional syntactic sugar:
+Not sure I understand this sentence. What's the syntactic sugar in being
+a 40-bit field?
 
-It is a 40-bit field.
+> In between, a 1MHz NDP CMAC frame contains 26 used bits and 13 unused
+> bits. The used bits are defined in section 9.9 of 802.11ah-2016. A
+> 2MHz NDP CMAC frame contains 37 used bits and one unused bit. Again,
+> the used bits are defined in 802.11ah-2016.
 
-In between, a 1MHz NDP CMAC frame contains 26 used bits and 13 unused
-bits. The used bits are defined in section 9.9 of 802.11ah-2016. A
-2MHz NDP CMAC frame contains 37 used bits and one unused bit. Again,
-the used bits are defined in 802.11ah-2016.
+Right.
 
---=20
-Regards,
-Richard Sharpe
-(=E4=BD=95=E4=BB=A5=E8=A7=A3=E6=86=82=EF=BC=9F=E5=94=AF=E6=9C=89=E6=9D=9C=
-=E5=BA=B7=E3=80=82--=E6=9B=B9=E6=93=8D)(=E4=BC=A0=E8=AF=B4=E6=9D=9C=E5=BA=
-=B7=E6=98=AF=E9=85=92=E7=9A=84=E5=8F=91=E6=98=8E=E8=80=85)
+However, these also come with a 1-bit "NDP indication", 4-bit CRC and 6-
+bit tail; perhaps it should be at least *possible* to capture those too,
+even if nobody might do that right now? Then you'd need a total of 48
+bits for this, afaict.
 
---0000000000006ce6920583505683
-Content-Type: application/octet-stream;
-	name="0001-Add-an-S1G-field-and-modify-the-0-length-PSDU-defini.patch"
-Content-Disposition: attachment;
-	filename="0001-Add-an-S1G-field-and-modify-the-0-length-PSDU-defini.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_jsv7dxsk0>
-X-Attachment-Id: f_jsv7dxsk0
 
-RnJvbSBmN2RjY2E3MTRjYzY4ZjBjMWI5YzE4NzAxYmIyMzFiOGUwZGFlNjc0IE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBSaWNoYXJkIFNoYXJwZSA8cnNoYXJwZUBsb2NhbGhvc3QubG9j
-YWxkb21haW4+CkRhdGU6IE1vbiwgNCBNYXIgMjAxOSAxODozMTo0MCAtMDgwMApTdWJqZWN0OiBb
-UEFUQ0hdIEFkZCBhbiBTMUcgZmllbGQgYW5kIG1vZGlmeSB0aGUgMC1sZW5ndGggUFNEVSBkZWZp
-bml0aW9uIGZvcgogUzFHIE5EUCBpbmZvIGFzIHdlbGwgYXMgYWRkIHNvbWUgQ2hhbm5lbCB2YWx1
-ZXMuCgpBZnRlciBkaXNjdXNzaW9uIHdpdGggSm9oYW5uZXMsIHRoaXMgaXMgd2hhdCB3ZSBoYXZl
-LgoKVGhlIGF1dGhvciBpcyBBYXJvbiBMZWUuIFRyYW5zY3JpYmVkIGJ5IFJpY2hhcmQgU2hhcnBl
-LgpTaWduZWQtb2ZmLWJ5OiBSaWNoYXJkIFNoYXJwZSA8cmVhbHJpY2hhcmRzaGFycGVAZ21haWwu
-Y29tPgotLS0KIGZpZWxkcy8wLWxlbmd0aC1QU0RVLm1kIHwgIDEgKwogZmllbGRzL0NoYW5uZWwu
-bWQgICAgICAgfCAgMyArKysKIGZpZWxkcy9TMUcubWQgICAgICAgICAgIHwgNjcgKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwogZmllbGRzL3N1Z2dlc3Rl
-ZC5tZCAgICAgfCAgMSArCiA0IGZpbGVzIGNoYW5nZWQsIDcyIGluc2VydGlvbnMoKykKIGNyZWF0
-ZSBtb2RlIDEwMDY0NCBmaWVsZHMvUzFHLm1kCgpkaWZmIC0tZ2l0IGEvZmllbGRzLzAtbGVuZ3Ro
-LVBTRFUubWQgYi9maWVsZHMvMC1sZW5ndGgtUFNEVS5tZAppbmRleCAzMDdjZWUwLi43OTEyNjAx
-IDEwMDY0NAotLS0gYS9maWVsZHMvMC1sZW5ndGgtUFNEVS5tZAorKysgYi9maWVsZHMvMC1sZW5n
-dGgtUFNEVS5tZApAQCAtMjMsNCArMjMsNSBAQCBUaGUgdHlwZSBmaWVsZCBpbmRpY2F0ZXMgdGhl
-IHR5cGUgb2YgUFBEVS4KIHwgKip0eXBlIHZhbHVlKiogfCAqKm1lYW5pbmcqKiB8CiB8IDAgICAg
-ICAgICAgICAgIHwgc291bmRpbmcgUFBEVSB8CiB8IDEgICAgICAgICAgICAgIHwgZGF0YSBub3Qg
-Y2FwdHVyZWQgKGUuZy4gbXVsdGktdXNlciBQUERVKSB8Cit8IDIgICAgICAgICAgICAgIHwgUzFH
-IE5EUCBDTUFDIGZyYW1lIC0gYSA0MC1iaXQgUzFHIE5EUCBDTUFDIGZyYW1lIGlzIGluIHRoZSBT
-MUcgZmllbGR8CiB8IDB4ZmYgICAgICAgICAgIHwgdmVuZG9yLXNwZWNpZmljIHwKZGlmZiAtLWdp
-dCBhL2ZpZWxkcy9DaGFubmVsLm1kIGIvZmllbGRzL0NoYW5uZWwubWQKaW5kZXggNzg0YzVjNC4u
-NTc0Nzg2MiAxMDA2NDQKLS0tIGEvZmllbGRzL0NoYW5uZWwubWQKKysrIGIvZmllbGRzL0NoYW5u
-ZWwubWQKQEAgLTIxLDYgKzIxLDkgQEAgQ3VycmVudGx5LCB0aGUgZm9sbG93aW5nIGZsYWdzIGFy
-ZSBkZWZpbmVkOgogCiB8ICoqTWFzayoqIHwgKipNZWFuaW5nKiogfAogfCAweDAwMTAgfCBUdXJi
-byBDaGFubmVsIHwKK3wgMHgwMDAyIHwgUzFHIDcwME1IeiBzcGVjdHJ1bSBjaGFubmVsIHwKK3wg
-MHgwMDA0IHwgUzFHIDgwME1IeiBzcGVjdHJ1bSBjaGFubmVsIHwKK3wgMHgwMDA4IHwgUzFHIDkw
-ME1IeiBzcGVjdHJ1bSBjaGFubmVsIHwKIHwgMHgwMDIwIHwgQ0NLIGNoYW5uZWwgfAogfCAweDAw
-NDAgfCBPRkRNIGNoYW5uZWwgfAogfCAweDAwODAgfCAyIEdIeiBzcGVjdHJ1bSBjaGFubmVsIHwK
-ZGlmZiAtLWdpdCBhL2ZpZWxkcy9TMUcubWQgYi9maWVsZHMvUzFHLm1kCm5ldyBmaWxlIG1vZGUg
-MTAwNjQ0CmluZGV4IDAwMDAwMDAuLmU0NWNkNzYKLS0tIC9kZXYvbnVsbAorKysgYi9maWVsZHMv
-UzFHLm1kCkBAIC0wLDAgKzEsNjcgQEAKKy0tLQordGl0bGU6IFMxRworY2F0ZWdvcmllczogW3N1
-Z2dlc3RlZF0KKy0tLQorQml0IE51bWJlcgorOiAxNgorCitTdHJ1Y3R1cmUKKzogdTE2IGtub3du
-LCB1MTYgZGF0YTEsIHUxNiBkYXRhMiwgdTggbmRwX3R5cGUsIHU4WzVdIG5kcF9kYXRhOworCitS
-ZXF1aXJlZCBBbGlnbm1lbnQKKzogMgorCitVbml0KHMpCis6IG5vbmUKKworVGhlIHByZXNlbmNl
-IG9mIHRoaXMgZmllbGQgaW5kaWNhdGVzIHRoZSBmcmFtZSB3YXMgY2FwdHVyZSB1c2luZyBhbiBT
-MUcgcGh5LgorCitUaGlzIGZpZWxkIGNvbnRhaW5zIGRhdGEgdG8gYWxsb3cgY29ycmVjdCBoYW5k
-bGluZyBieSBwcm9ncmFtcyBsaWtlCitXaXJlc2hhcmsgZXRjLgorCitJcyBORFAgaW5kaWNhdGVz
-IHRoYXQgdGhpcyBpcyBhbiBORFAgZnJhbWUsIGhvd2V2ZXIsIHRoZSBjb250ZW50IG1pZ2h0IG5v
-dCBiZSBrbm93bi4KKworIyMga25vd24KKworfCAqKmAweDAwMDFgKiogfCBTMUcgUFBEVSBGb3Jt
-YXQga25vd24gfAorfCAqKmAweDAwMDJgKiogfCBSZXNwb25zZSBpbmRpY2F0aW9uIGtub3duIHwK
-K3wgKipgMHgwMDA0YCoqIHwgR3VhcmQgaW50ZXJ2YWwga25vd24gfAorfCAqKmAweDAwMDhgKiog
-fCBOU1Mga25vd24gfCAKK3wgKipgMHgwMDEwYCoqIHwgQmFuZHdpZHRoIGtub3duIHwKK3wgKipg
-MHgwMDIwYCoqIHwgTUNTIGtub3duIHwKK3wgKipgMHgwMDQwYCoqIHwgQ29sb3Iga25vd24gfAor
-fCAqKmAweDAwODBgKiogfCBJcyBORFAgfAorfCAqKmAweDAxMDBgKiogfCBORFAgY29udGVudCBr
-bm93biB8Cit8ICoqYDB4RkUwMGAqKiB8IFJlc2VydmVkIHwKKworIyMgZGF0YTEKKworfCAqKmAw
-eDAwMDNgKiogfCBTMUcgUFBEVSBGb3JtYXQ6IDA9UzFHXzFNLCAxPVMxR19TSE9SVCwgMj1TMUdf
-TE9ORyB8Cit8ICoqYDB4MDAwQ2AqKiB8IFJlc3BvbnNlIGluZGljYXRpb246IDA9Tk9fUkVTUE9O
-U0UsIDE9TkRQX1JFU1BPTlNFLCAyPU5PUk1BTF9SRVNQT05TRSwgMz1MT05HX1JFU1BQTlNFIHwK
-K3wgKipgMHgwMDEwYCoqIHwgUmVzZXJ2ZWQgfAorfCAqKmAweDAwMjBgKiogfCBHdWFyZCBpbnRl
-cnZhbDogMD1Mb25nIEdJLCAxPVNob3J0IEdJIHwKK3wgKipgMHgwMEMwYCoqIHwgTnVtYmVyIHNw
-YXRpYWwgc3RyZWFtczogMD0xIFNwYXRpYWwgc3RyZWFtLCAxPTIsIC4uIDM9NCBTcGF0aWFsIHN0
-cmVhbXMgfAorfCAqKmAweDBGMDBgKiogfCBCYW5kd2lkdGg6IDA9MU1IeiwgMT0yTUh6LCAyPTRN
-SHosIDM9OE1IeiwgND0xNk1IeiwgNS0xNSByZXNlcnZlZCB8Cit8ICoqYDB4RjAwMGAqKiB8IE1D
-UyAoTUNTIHJhdGUgaW5kZXgsIDAtMTAsIDExLTE1IHJlc2VydmVkKSB8CisKKyMjIGRhdGEyCisK
-K3wgKipgMHgwMDBGYCoqIHwgQ29sb3I6IDAtNyB8Cit8ICoqYDB4RkZGMGAqKiB8IFJlc2VydmVk
-IHwKKworIyMgbmRwX3R5cGUKKworVGhpcyB2YWx1ZSBpcyBvbmx5IGRlZmluZWQgaWYgbmRwX2tu
-b3duIGlzIHRydWUuCisKK3wgKipuZHBfdHlwZSB2YWx1ZSoqIHwgKipNZWFuaW5nKiogfAorfCAw
-eDAwIHwgTkRQIENvbnRyb2wgZnJhbWUgfAorfCAweDAxIHwgTkRQIE1hbmFnZW1lbnQgRnJhbWUg
-fAorfCAweDAyLTB4RkYgfCBSZXNlcnZlZCB8CisKKyMjIG5kcF9kYXRhCisKK1RoaXMgdmFsdWUg
-aXMgb25seSBkZWZpbmVkIGlmIG5kcF9rbm93biBpcyB0cnVlLiBUaGUgYnl0ZXMgYXJlIGFzIGRl
-ZmluZWQgaW4gSUVFRTgwMi4xMWFoLCBTZWN0aW9uIDkuOSwgZXhjZXB0IHRoYXQgbmRwX2RhdGFb
-NF0gaXMgZGVmaW5lZCBhczoKKworfCAqKmAweDNGYCoqIHwgdXNlZCBhbmQgdW51c2VkIGJpdHMg
-ZGVwZW5kaW5nIG9uIHRoZSBCVyBmaWVsZCBhbmQgdHlwZSB8Cit8ICoqYDB4QzBgKiogfCBCYW5k
-d2lkdGg6IDAgPSAxTWh6LCAxID0gMk1IeiwgMi0zIFJlc2VydmVkIHwKKwpkaWZmIC0tZ2l0IGEv
-ZmllbGRzL3N1Z2dlc3RlZC5tZCBiL2ZpZWxkcy9zdWdnZXN0ZWQubWQKaW5kZXggMzI1NzdkOS4u
-ZWM1OThiYiAxMDA2NDQKLS0tIGEvZmllbGRzL3N1Z2dlc3RlZC5tZAorKysgYi9maWVsZHMvc3Vn
-Z2VzdGVkLm1kCkBAIC0xOCwzICsxOCw0IEBAIFRoaXMgdGFibGUgbGlzdHMgdGhlIGZpZWxkcyBz
-b21lIE9TZXMgYXNzaWduZWQgYnkgYml0IG51bWJlcjoKIHwgMTYgfCBbUlRTIHJldHJpZXNdKC9m
-aWVsZHMvUlRTIHJldHJpZXMpLCBbUlNTSV0oL2ZpZWxkcy9SU1NJKSB8CiB8IDE3IHwgW2RhdGEg
-cmV0cmllc10oL2ZpZWxkcy9kYXRhIHJldHJpZXMpIHwKIHwgMTggfCBbWENoYW5uZWxdKC9maWVs
-ZHMvWENoYW5uZWwpIHwKK3wgMjggfCBbUzFHXSgvZmllbGRzL1MxRykgfAotLSAKMS44LjMuMQoK
---0000000000006ce6920583505683--
+I guess a more fundamental question would be whether we should treat
+these as metadata or payload. Obviously here we're treating them as
+metadata and saying (by way of the 0-length field) that there's no
+payload. But perhaps these *should* in fact be the payload instead, and
+not use the 0-length field at all?
+
+I really don't know the answer to that. It seems fairly obvious that
+this one is more convenient, and the format of those frames is very
+specific to the S1G things, and they couldn't really be used outside of
+S1G unlike the 802.11 header & frame. So I think I'm happy with this,
+just wanted to note this design decision explicitly.
+
+johannes
