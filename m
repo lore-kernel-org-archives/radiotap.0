@@ -1,133 +1,67 @@
-From: <yodazhong-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: RE: Radiotap header for S1G captures and associated changes and other definitions
-Date: Wed, 6 Mar 2019 00:07:22 -0800
-Message-ID: <015d01d4d3f3$a8776e60$f9664b20$@gmail.com>
-References: <CACyXjPy-Lr143wcWaLkv-xgs9Ebc0j8pYfw8MzMXNEv2tLA0Kg@mail.gmail.com> <56728a565c1f84862615f8804881bf72b7d12511.camel@sipsolutions.net> <CACyXjPxL1Jr7xXCh9tDBaORB5YyiJH7Zb2H+sKsz3mjUCbxkkQ@mail.gmail.com>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Subject: Re: [RFA] TLV fields for radiotap
+Date: Tue, 09 Apr 2019 10:38:37 +0200
+Message-ID: <a6ec00b90901fba1264c8943003a25786a595d6d.camel@sipsolutions.net>
+References: <1531126034.3298.18.camel@sipsolutions.net>
+	 <1536063298.3940.12.camel@sipsolutions.net>
+	 <81658b7a400e6189c55587c8276d5555b6fe37f0.camel@sipsolutions.net>
+	 <20181218020526.GH27633@pobox.com>
+	 <2c771c875d88d51d1cd98023686f084a5b6486bc.camel@sipsolutions.net>
 Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <CACyXjPxL1Jr7xXCh9tDBaORB5YyiJH7Zb2H+sKsz3mjUCbxkkQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: ko
+In-Reply-To: <2c771c875d88d51d1cd98023686f084a5b6486bc.camel-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
-To: 'Richard Sharpe' <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, 'Johannes Berg' <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Cc: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org, 'Ray Wang' <rwang-+OaQ/Okkt+3YtjvyW6yDsg@public.gmane.org>, 'Tasheng Lin' <tlin-+OaQ/Okkt+3YtjvyW6yDsg@public.gmane.org>
+To: David Young <dyoung-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>, radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org
 List-Id: radiotap@radiotap.org
 
-Hi all,
+On Tue, 2018-12-18 at 14:45 +0100, Johannes Berg wrote:
 
-Thank you for your valuable comments.
-For the NDP related questions, yes. Hardware and its firmware can =
-capture whole NDP
-and get the NDP indication value.
-And 802.11ah defines frequency spectrum from 750-950MHz; 700 for China, =
-800 for EU,
-and 900 for others in general.
+> > I had a thought about this tonight: maybe the solution is to define
+> > a new radiotap field, "hint," that contains a hint about the offset
+> > to a field.  The field begins with a 16-bit (?) field number, f, to
+> > be interpreted in the current namespace.  Following that is a 16-bit
+> > (?) absolute offset from the end of the hint field to field f.  If you
+> > introduce your vendor namespace when the last-assigned presence bit is
+> > bit p, and later you reuse the vendor namespace with newly-assigned
+> > presence bit p+k, then you can supply a hint for the vendor namespace
+> > field so that old readers can still benefit from presence bits 0..p and
+> > your vendor fields.
 
-Best regards,
-Aaron
------Original Message-----
-From: Richard Sharpe <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>=20
-Sent: Tuesday, March 5, 2019 7:29 AM
-To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Cc: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org; Ray Wang <rwang-+OaQ/Okkt+3YtjvyW6yDsg@public.gmane.org>; Tasheng Lin =
-<tlin-+OaQ/Okkt+3YtjvyW6yDsg@public.gmane.org>; Aaron J. Lee <yodazhong-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Radiotap header for S1G captures and associated changes and =
-other definitions
+I thought about this again ... and I decided I still don't think it's a
+good idea.
 
-On Tue, Mar 5, 2019 at 3:58 AM Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org> =
-wrote:
->
-> Hi Richard,
->
-> > 1. Channel field:
-> >
-> > 3 new values for Mask: 0x0002 for 700 MHz, 0x0004 for 800 MHz and
-> > 0x0008 for 900 MHz spectrum channels respectively.
->
-> How much space do we have there btw? We're going to get 6-7 GHz=20
-> channels soon ... perhaps we should just give up on this field and put =
+> Hmm. Actually, yes, I think that would work. However, it's hard to guess
+> which fields the parser can do, so unless you have a really smart parser
+> you'd end up with
+> 
+> fields 0..n, hint, n+1, hint, n+2, hint, n+3, vendor_data
 
-> the actual frequency & bandwidth etc. somewhere? If we don't already =
-...
+I think this one's the killer to me, in a sense.
 
-Yes, although that is possibly a more general question. S1G will always =
-be below 1GHz, I believe.
+If you think about it - yes, right now, you could say
 
-However, in general, I think we need a separate field that specifies the =
-BW as a string, and probably even one per antenna.
+   Implementations currently understand fields 0..HE-MU, and I want to
+   have some new field (e.g. S1G) and will add a hint.
 
-> > NDP type:
-> > 0x00: NDP Control frame
-> > 0x01: NDP Management frame
-> > 0x02-0xFF: Reserved
-> >
-> > NDP data:
-> >
-> > These are as defined in 802.11ah-2016 Section 9.9 except that the=20
-> > top two bits of data[4] are:
-> >
-> > 0x00: 1MHz
-> > 0x01: 2MHz
-> > 0x02-0x03: Reserved
->
-> Is it really worth packing this into the end? You could have lots of=20
-> space in e.g. the data2 or NDP type fields (I guess, you reserved lots =
+With this thinking, you get:
 
-> of values there).
->
-> > The S1G NPD format is essentially from section 9.9 of 802.11ah-2016=20
-> > with some additional syntactic sugar:
-> >
-> > It is a 40-bit field.
->
-> Not sure I understand this sentence. What's the syntactic sugar in=20
-> being a 40-bit field?
->
-> > In between, a 1MHz NDP CMAC frame contains 26 used bits and 13=20
-> > unused bits. The used bits are defined in section 9.9 of=20
-> > 802.11ah-2016. A 2MHz NDP CMAC frame contains 37 used bits and one=20
-> > unused bit. Again, the used bits are defined in 802.11ah-2016.
->
-> Right.
->
-> However, these also come with a 1-bit "NDP indication", 4-bit CRC and=20
-> 6- bit tail; perhaps it should be at least *possible* to capture those =
+ 0..HE-MU, vendor-data-hint, S1G, vendor-data
 
-> too, even if nobody might do that right now? Then you'd need a total=20
-> of 48 bits for this, afaict.
->
->
-> I guess a more fundamental question would be whether we should treat=20
-> these as metadata or payload. Obviously here we're treating them as=20
-> metadata and saying (by way of the 0-length field) that there's no=20
-> payload. But perhaps these *should* in fact be the payload instead,=20
-> and not use the 0-length field at all?
->
-> I really don't know the answer to that. It seems fairly obvious that=20
-> this one is more convenient, and the format of those frames is very=20
-> specific to the S1G things, and they couldn't really be used outside=20
-> of S1G unlike the 802.11 header & frame. So I think I'm happy with=20
-> this, just wanted to note this design decision explicitly.
+But like I described above, the next time you do this you probably don't
+want to change it to be
 
-I will clean up the others over the next few days, but yes, I went back =
-and forward between having the NDP info be a separate payload versus =
-placing it in the S1G header. Placing it in the S1G header is more =
-convenient but will mean moving code around over what we currently have, =
-however, that is relatively easy.
+ 0..HE-MU, S1G, vendor-data-hint, EHT, vendor-data
 
-It is a matter of convenience.
+but rather
 
-A question for Aaron and the WFA folks, however, is: Is there utility =
-capturing the NDP indication, or is that already captured in IS NDP =
-above? Similarly, is it useful to capture the CRC and tail etc. Does the =
-hardware give you access to these extra fields?
+ 0..HE-MU, vendor-data-hint, S1G, vendor-data-hint, EHT, vendor-data
 
---
-Regards,
-Richard Sharpe
-(=E4=BD=95=E4=BB=A5=E8=A7=A3=E6=86=82=EF=BC=9F=E5=94=AF=E6=9C=89=E6=9D=9C=
-=E5=BA=B7=E3=80=82--=E6=9B=B9=E6=93=8D)(=E4=BC=A0=E8=AF=B4=E6=9D=9C=E5=BA=
-=B7=E6=98=AF=E9=85=92=E7=9A=84=E5=8F=91=E6=98=8E=E8=80=85)
+and that gets complex really fast, and also *bigger* than any sort of
+TLV formatting would ever get.
+
+I'll resend the adoption proposal now, I think it's the better solution.
+
+johannes
