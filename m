@@ -1,97 +1,37 @@
 From: Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
 Subject: Re: gsmtap design/extensions?
-Date: Fri, 12 Apr 2019 12:48:54 -0700
-Message-ID: <1089142F-2966-4C41-921B-465FBA721E79__45392.3745475308$1555103635$gmane$org@alum.mit.edu>
+Date: Fri, 12 Apr 2019 15:47:26 -0700
+Message-ID: <1D6FE33B-DC15-47D8-A1AD-E95608300FDC@alum.mit.edu>
 References: <cf07ae24c436f92769f9289d208f01846ebe8826.camel@sipsolutions.net>
- <20190410233213.GN25552@nataraja>
- <1462659018bc40830efbe2348791b8df45b54cff.camel@sipsolutions.net>
+ <CAPEnp=bHTVARr7WA9Qkq4=y7kk8_FLWhrkqKOEXubMO4X=BHCw@mail.gmail.com>
+ <46474c61d7748042cc0a1f23773186786020638e.camel@sipsolutions.net>
+ <20190410234555.GO25552@nataraja>
+ <f0a64bb751b8c601f58130a7f3a3158d70f18f63.camel@sipsolutions.net>
+ <196E881D-AB4A-4569-9C1F-5BCB41FE832F@alum.mit.edu>
 Mime-Version: 1.0 (Mac OS X Mail 11.5 \(3445.9.1\))
 Content-Type: text/plain;
 	charset=us-ascii
 Content-Transfer-Encoding: quoted-printable
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <1462659018bc40830efbe2348791b8df45b54cff.camel-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+In-Reply-To: <196E881D-AB4A-4569-9C1F-5BCB41FE832F-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
 To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Cc: Harald Welte <laforge-TgoAw6mPHtdg9hUCZPvPmw@public.gmane.org>, openbsc-qjLDD68F18N4m7O/Vxda39i2O/JbrIOy@public.gmane.org, radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org, linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Subash Abhinov Kasiviswanathan <subashab-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Dan Williams <dcbw-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn-yOkvZcmFvRU@public.gmane.org>, netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Sean Tranchetti <stranche-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, Aleksander Morgado <aleksander-Dvg4H30XQSRVIjRurl1/8g@public.gmane.org>
+Cc: Harald Welte <laforge-TgoAw6mPHtdg9hUCZPvPmw@public.gmane.org>, Vadim Yanitskiy <axilirator-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, OpenBSC Mailing List <openbsc-qjLDD68F18N4m7O/Vxda39i2O/JbrIOy@public.gmane.org>, Sean Tranchetti <stranche-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org, Dan Williams <dcbw-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, netdev <netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Aleksander Morgado <aleksander-Dvg4H30XQSRVIjRurl1/8g@public.gmane.org>, Subash Abhinov Kasiviswanathan <subashab-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn-yOkvZcmFvRU@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-On Apr 12, 2019, at 5:24 AM, Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org> =
-wrote:
+On Apr 12, 2019, at 12:54 PM, Guy Harris <guy-FrUbXkNCsVf2fBVCVOL8/A@public.gmane.org> wrote:
 
-> On Thu, 2019-04-11 at 01:32 +0200, Harald Welte wrote:
+> I see nothing about a struct gsmtap_hdr:
 >=20
->> GSMTAP was designed as a format to encapsulate protocols normally not =
-spoken over IP
->> (such as classic GSM radio protocols, e.g. the Layer 2 LAPDm over GSM =
-Um)
->> inside an IP transport.
+> 	http://osmocom.org/projects/baseband/wiki/GSMTAP
 >=20
-> Sure, but wifi is also not spoken over IP, yet we don't encapsulate =
-our
-> 802.11 frames into IP to show them in wireshark :-)
-
-That's just because the rpcap protocol hasn't been revved yet to handle =
-the new create/set options/activate mechanism in libpcap to allow =
-monitor-mode capturing, so you only get to see fake Ethernet frames. :-)
-
-I.e., there's a split there between "capture" and "getting the packets =
-from a capture delivered to you over an IP network".
-
-Perhaps there should be a GSMTAP link-layer header type, so you can have =
-a GSMTAP pcap file or GSMTAP interface in a pcapng file, combined with a =
-more general "remote capture" mechanism in libpcap so that you could =
-capture on gsmtap://host:port and capture from a host using the =
-GSMTAP-over-UDP encapsulation - or capture using rpcap.
-
->> No userspace source would ever be able to generate such data and =
-stream
->> it real-time into wireshark, would it?  Sure, I can write pcap file =
-with
->> such ARPHDR_* values, but I could never do this in real-time.  For =
-many
->> but not all use cases, that's really what it is: A vehicle to stream
->> real-time non-IP protocol traces into wireshark so it can visualize
->> the protocol traces.
+> that...
 >=20
-> I think you can pipe a stream into wireshark?
+> 	2) would prevent it from being at the beginning of a =
+LINKTYPE_GSMTAP/DLT_GSMTAP packet in a pcap or pcapng file.
 
-1) You could pipe into libpcap or otherwise have a way for a libpcap =
-module to connect to a user space source and get packets from it.
-
-2) You could pipe a pcap file into tcpdump/Wireshark/etc..
-
-3) You could have an extcap program:
+With a specification based on
 
 	=
-https://www.wireshark.org/docs/wsdg_html_chunked/ChCaptureExtcap.html
-
-provide packets to Wireshark.
-
-> To me it feels like the wrong thing to actually make wireshark listen =
-on
-> "lo" or "eth0" or something to get data from the cellular that's
-> (locally) generated by another application, but I guess that's only
-> about how you think about it - and if it's not generated locally then
-> that's an easy transport. I'm not sure it makes *sense* because then =
-you
-> need permissions to capture on the wired network etc.
-
-Depending on how your system is set up:
-
-	$ ls -l /dev/bpf*
-	crw-rw----  1 root  access_bpf   23,   0 Apr 10 22:57 /dev/bpf0
-	crw-rw----  1 root  access_bpf   23,   1 Apr 10 22:56 /dev/bpf1
-
-		...
-
-and it could just be rw-rw-rw-.  Perhaps other systems make it harder to =
-grant capture privileges.
-
-> where you don't *really* need that for this stream
-
-If there's a need for that, whatever provides the packets could impose =
-that (by finding out the UID/GID of the other process if this is going =
-over a UNIX-domain socket, at least on some UN*Xes, or by requiring a =
-login if this is going over a network).=
+http://cgit.osmocom.org/libosmocore/plain/include/osmocom/core/gsmtap.h=
