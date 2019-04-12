@@ -1,88 +1,108 @@
-From: Harald Welte <laforge-TgoAw6mPHtdg9hUCZPvPmw@public.gmane.org>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
 Subject: Re: gsmtap design/extensions?
-Date: Thu, 11 Apr 2019 01:45:55 +0200
-Message-ID: <20190410234555.GO25552__16868.7731189252$1554939977$gmane$org@nataraja>
+Date: Fri, 12 Apr 2019 14:12:44 +0200
+Message-ID: <1d64c578cd5b254d301cf1cac82f32a062916888.camel@sipsolutions.net>
 References: <cf07ae24c436f92769f9289d208f01846ebe8826.camel@sipsolutions.net>
- <CAPEnp=bHTVARr7WA9Qkq4=y7kk8_FLWhrkqKOEXubMO4X=BHCw@mail.gmail.com>
- <46474c61d7748042cc0a1f23773186786020638e.camel@sipsolutions.net>
+	 <CAPEnp=bHTVARr7WA9Qkq4=y7kk8_FLWhrkqKOEXubMO4X=BHCw@mail.gmail.com>
+	 <46474c61d7748042cc0a1f23773186786020638e.camel@sipsolutions.net>
+	 <6F1998DC-EFD2-4145-BD81-A80F9DC7ED2D@holtmann.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <46474c61d7748042cc0a1f23773186786020638e.camel-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+In-Reply-To: <6F1998DC-EFD2-4145-BD81-A80F9DC7ED2D-kz+m5ild9QBg9hUCZPvPmw@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
-To: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Cc: Vadim Yanitskiy <axilirator-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, OpenBSC Mailing List <openbsc-qjLDD68F18N4m7O/Vxda39i2O/JbrIOy@public.gmane.org>, Sean Tranchetti <stranche-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org, Dan Williams <dcbw-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Aleksander Morgado <aleksander-Dvg4H30XQSRVIjRurl1/8g@public.gmane.org>, Subash Abhinov Kasiviswanathan <subashab-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, =?iso-8859-1?Q?Bj=F8rn?= Mork <bjorn-yOkvZcmFvRU@public.gmane.org>
+To: Marcel Holtmann <marcel-kz+m5ild9QBg9hUCZPvPmw@public.gmane.org>
+Cc: Vadim Yanitskiy <axilirator-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Harald Welte <laforge-TgoAw6mPHtdg9hUCZPvPmw@public.gmane.org>, OpenBSC Mailing List <openbsc-qjLDD68F18N4m7O/Vxda39i2O/JbrIOy@public.gmane.org>, Sean Tranchetti <stranche-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org, Dan Williams <dcbw-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, netdev <netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "open list:NFC
+ SUBSYSTEM" <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Aleksander Morgado <aleksander-Dvg4H30XQSRVIjRurl1/8g@public.gmane.org>, Subash Abhinov Kasiviswanathan <subashab-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, =?ISO-8859-1?Q?Bj=F8rn?= Mork <bjorn-yOkvZcmFvRU@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
-Hi Johannes,
+Hi Marcel,
 
-On Wed, Apr 10, 2019 at 09:23:13AM +0200, Johannes Berg wrote:
-> > but unfortunately, nobody has invested time into this (yet?).
-> 
-> 2012! 
+> before you go all out and define this, it would suggest to understand
+> what meta-data for the connection contexts you actually need as well.
+> The data path itself is just a pipe and has not all the information
+> attached with it. That goes via the control path and that is normally
+> in user space and carries the real important information to make
+> useful analysis of how the data path / context is setup.
 
-Well, Osmocom is a very small community, with probably somewhere less than
-25 active developers over the last few years (less than 15 full-time),
-with an *incredibly* large scope:  Implement virtually any protocol
-layer of any protocol stack on any of the 3GPP interfaces and all their
-related network elements for 2G/3G as well as even other technologies
-like TETRA, GMR-1, ...
+Yes, that's true, though the control path is actually going through one
+of the data pipes as well.
 
-And all that in a field of technology that has less free software than
-the Operating Systems world had in the mid-1990ies.  It really feels a
-bit like the Linux community 20 years ago.
+> From what I am seeing right now is that unless you have a method to
+> also feed the control path into your GSMTAPv3, then this is rather
+> useless. 
 
-So resources are always *extremely* tight, and given those limited
-resources, I'm actually very happy with the results by now, having
-automatied CI, build verifications, unit tests, functional test suites,
-end-to-end testing, and all the code we implemented on git.osmocom.org :)
+So the control path *itself* would be there, I guess, but ...
 
-While current GSMTAPv2 is ugly, it works rather solid for all known
-existing use cases, so there was no urgency to introduce a new version
-of it.
+> The majority of the debugging is really done for the control path. For
+> oFono that is OFONO_DEBUG=1 environment variable and while it works it
+> is not the most elegant solution. I would love to feed that into a
+> generic debugging / tap that you can read out later.
 
-> Not sure I get this, but I also don't really care all that much. 
+there's definitely room for more information than _just_ the control
+path "chat", also application state etc. would be useful, and logging
+etc.
 
-Well, with all respect, GSMTAP was created for a variety of use cases,
-see my other lengthy mail.  It's fine if you don't care, but unless you
-could explain your use cases with a few paragraphs, neither you nor us
-are able to determine if there is common functionality and if it makes
-sense to use GSMTAP or not :)
+Typically on wifi we feed all of this together into kernel tracing (to
+record with trace-cmd) rather than trying to encapsulate it some other
+way.
 
-So far I have not seen any explanation about what kind of data you want
-to encapsulate at all.
+> As a side note, for Bluetooth we created a path where the bluetoothd
+> can feed back its control debugging data back into the Bluetooth
+> monitor in the kernel to allow combined userspace, mgmt and HCI
+> tracing. Some really nasty issues could only be triaged by having all
+> the meta data with a common timestamp.
 
-> just a pretty strange design if the kernel were to output this, I'm not
-> even sure how I'd do that properly. I don't want to be generating UDP
-> packets there...
+Right. This is something we'd typically use tracing for in wifi.
 
-There are well-established APIs for having sockets in the kernel and for
-generating + receiving UDP packets from it.  NFS has been doing this for
-decades, as do various kernel-side tunneling helpers including the GTP
-kernel module.
+I don't really know what the right model for WWAN would be, I guess.
 
-I'm not saying it's the right approach for your problem, I'm just saying
-kernel-side code can for sure use UDP sockets.
 
-> Perhaps we can define something (GSMTAPv3) to not really care how it's
-> encapsulated, and for 'native' packet captures like what I want on Linux
-> when integrated with the driver, actually use an ARPHDR_GSMTAP, and
-> encapsulate in UDP when you create it in an application and want to send
-> it elsewhere, rather than just writing it to a pcap file?
+Right now - and I really should've said this before - really the only
+problem I was thinking of was how we can mux multiple "chat" sessions
+with a device into a single data stream.
 
-Sure, that works.  But the real question is, to me:  Are there common
-GSMTAP payload types that both the existing GSMTAP users carry, as well
-as what you would want to carry?  If yes, then it makes sense to think
-about a common encapsulation like GSMTAP.  If the payload types differ,
-then it seems rather like there are two distinct use cases that
-wouldn't benefit from standardizing on one format.
+Currently, this is all vendor-specific. If you have a Qualcomm modem,
+you'd be able to see all the open sessions on the underlying netdev, and
+the QMI header tells you what session a given 'packet' belongs to, and
+if you follow along maybe you can figure out if this is a control or IP
+'packet' (could be an AT command).
 
-Regards,
-	Harald
--- 
-- Harald Welte <laforge-TgoAw6mPHtdg9hUCZPvPmw@public.gmane.org>           http://laforge.gnumonks.org/
-============================================================================
-"Privacy in residential applications is a desirable marketing option."
-                                                  (ETSI EN 300 175-7 Ch. A6)
+cdc_mbim uses VLAN tags instead to achieve this, and decapsulates the
+VLAN tags to send them down to the hardware in a different way.
+
+There are a few reasons why I think that this model of having a single
+underlying netdev controlled by the modem driver, with additional
+netdevs layered on top in software will not work right in the future. I
+think drivers should and will need to migrate to creating "real" netdevs
+for the sessions instead of pure software ones.
+
+But if you do this, you lose the ability to listen to all the session
+streams at the same time, you can only do it for each netdev. Adding
+this ability back seems worthwhile, but then we probably shouldn't do it
+in a vendor-specific way, but rather in a generic way.
+
+So basically right now that's all I'm trying to solve. In WiFi we don't
+have the problem of "sessions" because we just use the addresses in the
+frames to disambiguate - on such 'monitor' netdevs we see the frames
+including full 802.11 headers.
+
+Now, here's maybe where I'm getting off the right path - in wifi we
+mostly couple that with PHY information as well, and so we have PHY
+information + full 802.11 headers + data for capturing what's going on.
+I figured that theoretically at least that would be possible/useful for
+the modem as well (obviously control packets have no PHY data), but
+there doesn't seem to be any hardware that would actually expose data in
+this way. Everyone I've spoken to says these things are only available
+as modem trace data. What I haven't figured out though is if that's by
+some other design trade-off, or just because no such infrastructure
+is/was available.
+
+It may well be that doing kernel-tracing instead of doing it via some
+kind of monitor netdev is perfectly sufficient, but I have a feeling
+that the relative simplicity of starting tcpdump/wireshark might be
+preferable.
+
+johannes
