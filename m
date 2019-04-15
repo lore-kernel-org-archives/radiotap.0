@@ -1,274 +1,87 @@
-From: Richard Sharpe <realrichardsharpe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: A modified, and maybe final, proposal for an S1G header for RadioTap
-Date: Sun, 14 Apr 2019 08:57:27 -0700
-Message-ID: <CACyXjPx40--VvxKhxbM1tekOcoXtpt-Cu7_KCPTk_+khfkQkHw@mail.gmail.com>
+From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
+Subject: Re: gsmtap design/extensions?
+Date: Mon, 15 Apr 2019 11:11:54 +0200
+Message-ID: <92e8e142b6d441c1c995abc57d64ad7b7747a688.camel@sipsolutions.net>
+References: <cf07ae24c436f92769f9289d208f01846ebe8826.camel@sipsolutions.net>
+	 <CAPEnp=bHTVARr7WA9Qkq4=y7kk8_FLWhrkqKOEXubMO4X=BHCw@mail.gmail.com>
+	 <46474c61d7748042cc0a1f23773186786020638e.camel@sipsolutions.net>
+	 <6F1998DC-EFD2-4145-BD81-A80F9DC7ED2D@holtmann.org>
+	 <1d64c578cd5b254d301cf1cac82f32a062916888.camel@sipsolutions.net>
+	 <D4D12CF9-9CE5-46FB-9738-F89DB6B6F9EA@holtmann.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="000000000000b10df305867f9ae3"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <D4D12CF9-9CE5-46FB-9738-F89DB6B6F9EA-kz+m5ild9QBg9hUCZPvPmw@public.gmane.org>
 Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
 List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
-To: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org, Ray Wang <rwang-+OaQ/Okkt+3YtjvyW6yDsg@public.gmane.org>, Aaron Lee <jehun.lee-bG5vExI61OVWk0Htik3J/w@public.gmane.org>, Tasheng Lin <tlin-+OaQ/Okkt+3YtjvyW6yDsg@public.gmane.org>
+To: Marcel Holtmann <marcel-kz+m5ild9QBg9hUCZPvPmw@public.gmane.org>
+Cc: Vadim Yanitskiy <axilirator-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Harald Welte <laforge-TgoAw6mPHtdg9hUCZPvPmw@public.gmane.org>, OpenBSC Mailing List <openbsc-qjLDD68F18N4m7O/Vxda39i2O/JbrIOy@public.gmane.org>, Sean Tranchetti <stranche-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, radiotap-S783fYmB3Ccdnm+yROfE0A@public.gmane.org, Dan Williams <dcbw-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, netdev <netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "open list:NFC
+ SUBSYSTEM" <linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Aleksander Morgado <aleksander-Dvg4H30XQSRVIjRurl1/8g@public.gmane.org>, Subash Abhinov Kasiviswanathan <subashab-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, =?ISO-8859-1?Q?Bj=F8rn?= Mork <bjorn-yOkvZcmFvRU@public.gmane.org>
 List-Id: radiotap@radiotap.org
 
---000000000000b10df305867f9ae3
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Fri, 2019-04-12 at 21:49 +0200, Marcel Holtmann wrote:
+> 
+> > Yes, that's true, though the control path is actually going through one
+> > of the data pipes as well.
+> 
+> I think that viewpoint is too simplistic. And for sure we have no such
+> system where the control path is done as IP packets for Ethernet
+> packets.
 
-Hi folks,
+That's true, but as far as I can tell in a lot of cases the pipe is
+actually still a virtual netdev (session, encoded in whatever way) using
+some sort of serial line format on top?
 
-Here is an updated proposal for this header.
+But I agree that typically this will not be sufficient anyway.
 
-It has undergone some modifications.
+> > Right. This is something we'd typically use tracing for in wifi.
+> 
+> Same thing, but different way of doing it. Mind you that Bluetooth
+> support is older than tracing.
 
-I include the patch to the radiotap git repo as well as a small C
-program for generating such headers.
+Sure. Looking forward though, perhaps tracing *would* indeed be the
+simplest thing to do.
 
-I have moved to using TLVs and have integrated Johannes' code for
-handling Radiotap RLVs into Wireshark 2.6.2 and used my test program
-to test the code.
+> > There are a few reasons why I think that this model of having a single
+> > underlying netdev controlled by the modem driver, with additional
+> > netdevs layered on top in software will not work right in the future. I
+> > think drivers should and will need to migrate to creating "real" netdevs
+> > for the sessions instead of pure software ones.
+> 
+> I do not follow on why is that. Why would I care if wwan0 is self-
+> sustained of just a VLAN device. Or for that matter any other kind of
+> slave/child device.
 
-The test code only generates three frames so far, but it could be
-modified to provide broarder coverage.
+>From a driver perspective I think it makes a difference. For example, if
+you just have a single netdev from the driver, it gets harder to do
+multiple TX/RX queues properly.
 
-I suggest that people making Radiotap proposals in the future should
-also include code for generating such headers as it is pretty easy to
-do so and makes it easier for people writing parsers.
+> 3GPP and 3GPP2 are not Ethernet frame based. We only have raw IPv4 and
+> IPv6 packets for the data path.
 
-We want to move forward with this and I have code now that dissects it
-in Wireshark. Of course, that code is easy to change as well.
+Sure. Though some drivers/devices fake them anyway.
 
-Here are the changes for the Channel field. Add three seemingly unused valu=
-es:
+> And for 3GPP you have context identifiers that at least within the
+> context of the control path make logical sense of the data streams and
+> what they are assigned to. This goes back to my original point. You
+> need to capture the control path to see what APN context is set up and
+> how. Mind you that you also have the fun between primary context and
+> secondary context (primarily for quality of service in VoLTE cases).
 
-| 0x0002 | S1G 700MHz spectrum channel |
-| 0x0004 | S1G 800MHz spectrum channel |
-| 0x0008 | S1G 900MHz spectrum channel |
+Right.
 
-Here is the new S1G field. It uses TLV Type value 32.
+> > It may well be that doing kernel-tracing instead of doing it via some
+> > kind of monitor netdev is perfectly sufficient, but I have a feeling
+> > that the relative simplicity of starting tcpdump/wireshark might be
+> > preferable.
+> 
+> As I said, as long as you do not get the QMI, AT command, MBIM etc.
+> control path session recorded as well, you have nothing to really
+> analyze.
 
-Note, we have also explicitly decided to place the Null Data Packet
-(NDP) info into the S1G header. This reduces the amount of change
-needed in dissectors but it does mean that the zero_length_ppdu
-infrastructure that is already in Wireshark for example.
+But you do - afaict there are no ways other than the netdevs to
+communicate with the device, and people do things like "socat" to set up
+PTYs and pretend to have serial channels there, on top of the netdevs?
 
-TLV Type Number
-: 32
-
-Structure
-: u16 known, u16 data1, u16 data2, u8 ndp_type, u8[5] ndp_data;
-
-Required Alignment
-: 4
-
-Unit(s)
-: none
-
-The presence of this field indicates the frame was capture using an S1G phy=
-.
-
-This field contains data to allow correct handling by programs like
-Wireshark etc.
-
-Is NDP indicates that this is an NDP frame, however, the content might
-not be known.
-
-## known
-
-| **`0x0001`** | S1G PPDU Format known |
-| **`0x0002`** | Response indication known |
-| **`0x0004`** | Guard interval known |
-| **`0x0008`** | NSS known |
-| **`0x0010`** | Bandwidth known |
-| **`0x0020`** | MCS known |
-| **`0x0040`** | Color known |
-| **`0x0080`** | Is NDP, which means no packet data follows this header! |
-| **`0x0100`** | NDP content known |
-| **`0xFE00`** | Reserved |
-
-## data1
-
-| **`0x0003`** | S1G PPDU Format: 0=3DS1G_1M, 1=3DS1G_SHORT, 2=3DS1G_LONG |
-| **`0x000C`** | Response indication: 0=3DNO_RESPONSE, 1=3DNDP_RESPONSE,
-2=3DNORMAL_RESPONSE, 3=3DLONG_RESPPNSE |
-| **`0x0010`** | Reserved |
-| **`0x0020`** | Guard interval: 0=3DLong GI, 1=3DShort GI |
-| **`0x00C0`** | Number spatial streams: 0=3D1 Spatial stream, 1=3D2, ..
-3=3D4 Spatial streams |
-| **`0x0700`** | Bandwidth: 0=3D1MHz, 1=3D2MHz, 2=3D4MHz, 3=3D8MHz, 4=3D16M=
-Hz,
-5-15 reserved |
-| **`0x0800`** | Reserved |
-| **`0xF000`** | MCS (MCS rate index, 0-10, 11-15 reserved) |
-
-## data2
-
-| **`0x0007`** | Color: 0-7 |
-| **`0xFFF8`** | Reserved |
-
-## ndp_type
-
-This value is only defined if ndp_known is true.
-
-| **ndp_type value** | **Meaning** |
-| 0x00 | NDP Control frame |
-| 0x01 | NDP Management Frame |
-| 0x02-0xFF | Reserved |
-
-## ndp_data
-
-This value is only defined if ndp_known is true. The bytes are as
-defined in IEEE802.11ah, Section 9.9, except that ndp_data[4] is
-defined as:
-
-| **`0x3F`** | used and unused bits depending on the BW field and type |
-| **`0xC0`** | Bandwidth: 0 =3D 1Mhz, 1 =3D 2MHz, 2-3 Reserved |
-
---=20
-Regards,
-Richard Sharpe
-(=E4=BD=95=E4=BB=A5=E8=A7=A3=E6=86=82=EF=BC=9F=E5=94=AF=E6=9C=89=E6=9D=9C=
-=E5=BA=B7=E3=80=82--=E6=9B=B9=E6=93=8D)(=E4=BC=A0=E8=AF=B4=E6=9D=9C=E5=BA=
-=B7=E6=98=AF=E9=85=92=E7=9A=84=E5=8F=91=E6=98=8E=E8=80=85)
-
---000000000000b10df305867f9ae3
-Content-Type: text/plain; charset="US-ASCII"; name="pkt-gen.c"
-Content-Disposition: attachment; filename="pkt-gen.c"
-Content-Transfer-Encoding: base64
-Content-ID: <f_juh3jifj0>
-X-Attachment-Id: f_juh3jifj0
-
-LyoKICogQSBnZW5lcmljIHBhY2tldCBnZW5lcmF0b3IgYXBwbGljYXRpb24uCiAqCiAqIENvcHly
-aWdodCBSaWNoYXJkIFNoYXJwZSwgMjAxOS4KICoKICogWW91IGFyZSB3ZWxjb21lIHRvIHVzZSwg
-bW9kaWZ5LCBvdGhlcndpc2UsIHRoaXMgY29kZS4KICoKICogWW91IHdpbGwgbmVlZCBsaWJwY2Fw
-IGluc3RhbGxlZC4KICoKICogQ3JlYXRlIGEgTWFrZWZpbGUgd2l0aCB0aGlzOgogKiAKICogYWxs
-OgogKgljYyAtZyAtbyBwa3QtZ2VuIHBrdC1nZW4uYyAtSSAuIC1scGNhcAogKgogKi8KCiNpbmNs
-dWRlIDxlcnJuby5oPgojaW5jbHVkZSA8cGNhcC9wY2FwLmg+CiNpbmNsdWRlIDxzdGRsaWIuaD4K
-I2luY2x1ZGUgPHN0cmluZy5oPgoKc3RydWN0IHMxZ19yYWRpb3RhcF9oZHIgewoJdWludDE2X3Qg
-dHlwZTsKCXVpbnQxNl90IGxlbjsKCXVpbnQxNl90IGtub3duOwoJdWludDE2X3QgZGF0YTE7Cgl1
-aW50MTZfdCBkYXRhMjsKCXVpbnQ4X3QgbmRwX3R5cGU7Cgl1aW50OF90IG5kcF9kYXRhWzVdOwp9
-IF9fYXR0cmlidXRlX18oKHBhY2tlZCkpOwoKc3RydWN0IHJhZGlvdGFwX2hkciB7Cgl1aW50OF90
-IHZlcnM7Cgl1aW50OF90IHBhZDsKCXVpbnQxNl90IGxlbjsKCXVpbnQzMl90IHByZXNlbmNlX2Zs
-YWdzOwoJdWludDMyX3QgTUFDX3RpbWVzdGFtcFsyXTsKCXVpbnQ4X3QgZmxhZ3M7Cgl1aW50OF90
-IGRhdGFfcmF0ZTsKCXVpbnQxNl90IHBhZDI7CglzdHJ1Y3QgczFnX3JhZGlvdGFwX2hkciBzMWdf
-aGRyOwp9IF9fYXR0cmlidXRlX18oKHBhY2tlZCkpOwoKc3RydWN0IGNvbXBsZXRlX3BrdCB7Cglz
-dHJ1Y3QgcmFkaW90YXBfaGRyIHJhZGlvdGFwOwoJdWludDhfdCBwa3RfZGF0YVsyNl07Cn0gX19h
-dHRyaWJ1dGVfXygocGFja2VkKSk7Cgp1aW50OF90IHBrdF9kYXRhWzI2XSA9IHsgMHgxYywgMHgw
-YiwgMHgwMCwgMHgwMCwgMHgwMiwgMHgwMCwgMHhlYiwgMHg0YiwKCQkJIDB4MDIsIDB4OGIsIDB4
-MTIsIDB4NTIsIDB4YTcsIDB4NmIsIDB4MDAsIDB4NjIsCgkJCSAweDljLCAweDZiLCAweDY0LCAw
-eDRlLCAweDM1LCAweGFlLCAweDA1LCAweDAyLAoJCQkgMHgwMCwgMHgwMiB9OwoKaW50IG1haW4o
-aW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKewoJaW50IGVyciA9IC0xOwoJcGNhcF90ICpwZCA9IE5V
-TEw7Cgl2b2lkICpjdHggPSBOVUxMOwoJc3RydWN0IHBjYXBfcGt0aGRyIGhkcjsKCXN0cnVjdCB0
-aW1ldmFsIHRzOwoJcGNhcF9kdW1wZXJfdCAqZHVtcGVyID0gTlVMTDsKCXN0cnVjdCBjb21wbGV0
-ZV9wa3QgcGt0OwoKCWlmIChhcmdjIDwgMikgewoJCXByaW50ZigiVXNhZ2U6ICVzIDxwY2FwLWZp
-bGUtbmFtZT5cbiIsIGFyZ3ZbMF0pOwoJCXJldHVybiAxOwoJfQoKCXBkID0gcGNhcF9vcGVuX2Rl
-YWQoRExUX0lFRUU4MDJfMTFfUkFESU8sIDY1NTM1KTsKCWlmIChwZCA9PSBOVUxMKSB7CgkJZnBy
-aW50ZihzdGRlcnIsICJVbmFibGUgdG8gb3BlbiBwY2FwIGRldmljZTogJXNcbiIsCgkJCXN0cmVy
-cm9yKGVycm5vKSk7CgkJcmV0dXJuIC0xOwoJfQoKCWR1bXBlciA9IHBjYXBfZHVtcF9vcGVuKHBk
-LCBhcmd2WzFdKTsKICAgICAgICBpZiAoZHVtcGVyID09IE5VTEwpIHsKCQlmcHJpbnRmKHN0ZGVy
-ciwgIlVuYWJsZSB0byBjcmVhdGUgZHVtcCBmaWxlICVzOiAlc1xuIiwKCQkJYXJndlsxXSwgcGNh
-cF9nZXRlcnIocGQpKTsKCQlnb3RvIGNsb3NlX3BkOwoJfQoKCS8qCgkgKiBOb3cgY3JlYXRlIHRo
-ZSBjb21sZXRlIHBhY2tldC4KCSAqLwoJcGt0LnJhZGlvdGFwLnZlcnMgPSAwOwoJcGt0LnJhZGlv
-dGFwLnBhZCA9IDA7Cglwa3QucmFkaW90YXAubGVuID0gc2l6ZW9mKHN0cnVjdCByYWRpb3RhcF9o
-ZHIpOwoJcGt0LnJhZGlvdGFwLnByZXNlbmNlX2ZsYWdzID0gMHgxMDAwMDAwNzsKCXBrdC5yYWRp
-b3RhcC5NQUNfdGltZXN0YW1wWzBdID0gMHgxNzg2MDUwMDsKCXBrdC5yYWRpb3RhcC5NQUNfdGlt
-ZXN0YW1wWzFdID0gMHgyMmFjOWIxYTsKCXBrdC5yYWRpb3RhcC5mbGFncyA9IDA7Cglwa3QucmFk
-aW90YXAuZGF0YV9yYXRlID0gMHgwYzsKCXBrdC5yYWRpb3RhcC5wYWQyID0gMHhmZmZmOwoJcGt0
-LnJhZGlvdGFwLnMxZ19oZHIudHlwZSA9IDMyOwoJcGt0LnJhZGlvdGFwLnMxZ19oZHIubGVuID0g
-MTI7Cglwa3QucmFkaW90YXAuczFnX2hkci5rbm93biA9IDB4MDAwNTsgLyogUzFHIFBQRFUgZm9y
-bWFuIGFuZCBHVSBrbm93biAqLwoJcGt0LnJhZGlvdGFwLnMxZ19oZHIuZGF0YTEgPSAweDAwMjA7
-Cglwa3QucmFkaW90YXAuczFnX2hkci5kYXRhMiA9IDB4MDsKCXBrdC5yYWRpb3RhcC5zMWdfaGRy
-Lm5kcF90eXBlID0gMDsKCXBrdC5yYWRpb3RhcC5zMWdfaGRyLm5kcF9kYXRhWzBdID0gMDsKCXBr
-dC5yYWRpb3RhcC5zMWdfaGRyLm5kcF9kYXRhWzFdID0gMDsKCXBrdC5yYWRpb3RhcC5zMWdfaGRy
-Lm5kcF9kYXRhWzJdID0gMDsKCXBrdC5yYWRpb3RhcC5zMWdfaGRyLm5kcF9kYXRhWzNdID0gMDsK
-CXBrdC5yYWRpb3RhcC5zMWdfaGRyLm5kcF9kYXRhWzRdID0gMDsKCW1lbWNweShwa3QucGt0X2Rh
-dGEsIHBrdF9kYXRhLCBzaXplb2YocGt0LnBrdF9kYXRhKSk7CgoJZ2V0dGltZW9mZGF5KCZ0cywg
-TlVMTCk7CgloZHIudHMgPSB0czsKCWhkci5jYXBsZW4gPSBzaXplb2Yoc3RydWN0IGNvbXBsZXRl
-X3BrdCk7CgloZHIubGVuID0gc2l6ZW9mKHN0cnVjdCBjb21wbGV0ZV9wa3QpOwoKCXBjYXBfZHVt
-cCgodV9jaGFyICopZHVtcGVyLCAmaGRyLCAodV9jaGFyICopJnBrdCk7CgoJLyogRHVtcCBhbm90
-aGVyIHdpdGggZGlmZmVyZW50IHZhbHVlcyAqLwoJcGt0LnJhZGlvdGFwLnMxZ19oZHIua25vd24g
-PSAweDAwMzU7Cglwa3QucmFkaW90YXAuczFnX2hkci5kYXRhMSA9IDB4QjQyMTsKCglwY2FwX2R1
-bXAoKHVfY2hhciAqKWR1bXBlciwgJmhkciwgKHVfY2hhciAqKSZwa3QpOwoKCXBrdC5yYWRpb3Rh
-cC5zMWdfaGRyLmtub3duID0gMHgwMTgwOwoJcGt0LnJhZGlvdGFwLnMxZ19oZHIuZGF0YTEgPSAw
-OwoJcGt0LnJhZGlvdGFwLnMxZ19oZHIubmRwX3R5cGUgPSAwOwoJcGt0LnJhZGlvdGFwLnMxZ19o
-ZHIubmRwX2RhdGFbMF0gPSAweGUyOwoJcGt0LnJhZGlvdGFwLnMxZ19oZHIubmRwX2RhdGFbMV0g
-PSAweGQ5OwoJcGt0LnJhZGlvdGFwLnMxZ19oZHIubmRwX2RhdGFbMl0gPSAweDAzOwoJcGt0LnJh
-ZGlvdGFwLnMxZ19oZHIubmRwX2RhdGFbM10gPSAweDAwOwoJcGt0LnJhZGlvdGFwLnMxZ19oZHIu
-bmRwX2RhdGFbNF0gPSAweDgwOwoKCWhkci5jYXBsZW4gPSBzaXplb2Yoc3RydWN0IHJhZGlvdGFw
-X2hkcik7CgloZHIubGVuID0gc2l6ZW9mKHN0cnVjdCByYWRpb3RhcF9oZHIpOwoKCXBjYXBfZHVt
-cCgodV9jaGFyICopZHVtcGVyLCAmaGRyLCAodV9jaGFyICopJnBrdCk7CgpjbG9zZV9kdW1wZXI6
-CglwY2FwX2R1bXBfY2xvc2UoZHVtcGVyKTsKY2xvc2VfcGQ6CglwY2FwX2Nsb3NlKHBkKTsKCXJl
-dHVybiBlcnI7Cn0K
---000000000000b10df305867f9ae3
-Content-Type: application/octet-stream;
-	name="0001-Add-an-S1G-field-as-well-as-add-some-Channel-values.patch"
-Content-Disposition: attachment;
-	filename="0001-Add-an-S1G-field-as-well-as-add-some-Channel-values.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_juh3x7bj1>
-X-Attachment-Id: f_juh3x7bj1
-
-RnJvbSA2MTVmNDViNzg4MDRmYzM2OWZkZjRkNjNhYjRiNmY1MGFhMTkxMGE0IE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBSaWNoYXJkIFNoYXJwZSA8cnNoYXJwZUBsb2NhbGhvc3QubG9j
-YWxkb21haW4+CkRhdGU6IE1vbiwgNCBNYXIgMjAxOSAxODozMTo0MCAtMDgwMApTdWJqZWN0OiBb
-UEFUQ0hdIEFkZCBhbiBTMUcgZmllbGQgYXMgd2VsbCBhcyBhZGQgc29tZSBDaGFubmVsIHZhbHVl
-cy4KCkFmdGVyIGRpc2N1c3Npb24gd2l0aCBKb2hhbm5lcywgdGhpcyBpcyB3aGF0IHdlIGhhdmUu
-CgpUaGUgYXV0aG9yIGlzIEFhcm9uIExlZS4gVHJhbnNjcmliZWQgYnkgUmljaGFyZCBTaGFycGUu
-ClNpZ25lZC1vZmYtYnk6IFJpY2hhcmQgU2hhcnBlIDxyZWFscmljaGFyZHNoYXJwZUBnbWFpbC5j
-b20+Ci0tLQogZmllbGRzL0NoYW5uZWwubWQgICB8ICAzICsrCiBmaWVsZHMvUzFHLm1kICAgICAg
-IHwgNjggKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiBmaWVs
-ZHMvc3VnZ2VzdGVkLm1kIHwgIDMgKysKIDMgZmlsZXMgY2hhbmdlZCwgNzQgaW5zZXJ0aW9ucygr
-KQogY3JlYXRlIG1vZGUgMTAwNjQ0IGZpZWxkcy9TMUcubWQKCmRpZmYgLS1naXQgYS9maWVsZHMv
-Q2hhbm5lbC5tZCBiL2ZpZWxkcy9DaGFubmVsLm1kCmluZGV4IDc4NGM1YzQuLjU3NDc4NjIgMTAw
-NjQ0Ci0tLSBhL2ZpZWxkcy9DaGFubmVsLm1kCisrKyBiL2ZpZWxkcy9DaGFubmVsLm1kCkBAIC0y
-MSw2ICsyMSw5IEBAIEN1cnJlbnRseSwgdGhlIGZvbGxvd2luZyBmbGFncyBhcmUgZGVmaW5lZDoK
-IAogfCAqKk1hc2sqKiB8ICoqTWVhbmluZyoqIHwKIHwgMHgwMDEwIHwgVHVyYm8gQ2hhbm5lbCB8
-Cit8IDB4MDAwMiB8IFMxRyA3MDBNSHogc3BlY3RydW0gY2hhbm5lbCB8Cit8IDB4MDAwNCB8IFMx
-RyA4MDBNSHogc3BlY3RydW0gY2hhbm5lbCB8Cit8IDB4MDAwOCB8IFMxRyA5MDBNSHogc3BlY3Ry
-dW0gY2hhbm5lbCB8CiB8IDB4MDAyMCB8IENDSyBjaGFubmVsIHwKIHwgMHgwMDQwIHwgT0ZETSBj
-aGFubmVsIHwKIHwgMHgwMDgwIHwgMiBHSHogc3BlY3RydW0gY2hhbm5lbCB8CmRpZmYgLS1naXQg
-YS9maWVsZHMvUzFHLm1kIGIvZmllbGRzL1MxRy5tZApuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRl
-eCAwMDAwMDAwLi42YmM1N2IzCi0tLSAvZGV2L251bGwKKysrIGIvZmllbGRzL1MxRy5tZApAQCAt
-MCwwICsxLDY4IEBACistLS0KK3RpdGxlOiBTMUcKK2NhdGVnb3JpZXM6IFtzdWdnZXN0ZWRdCist
-LS0KK1RMViBUeXBlIE51bWJlcgorOiAzMgorCitTdHJ1Y3R1cmUKKzogdTE2IGtub3duLCB1MTYg
-ZGF0YTEsIHUxNiBkYXRhMiwgdTggbmRwX3R5cGUsIHU4WzVdIG5kcF9kYXRhOworCitSZXF1aXJl
-ZCBBbGlnbm1lbnQKKzogNAorCitVbml0KHMpCis6IG5vbmUKKworVGhlIHByZXNlbmNlIG9mIHRo
-aXMgZmllbGQgaW5kaWNhdGVzIHRoZSBmcmFtZSB3YXMgY2FwdHVyZSB1c2luZyBhbiBTMUcgcGh5
-LgorCitUaGlzIGZpZWxkIGNvbnRhaW5zIGRhdGEgdG8gYWxsb3cgY29ycmVjdCBoYW5kbGluZyBi
-eSBwcm9ncmFtcyBsaWtlCitXaXJlc2hhcmsgZXRjLgorCitJcyBORFAgaW5kaWNhdGVzIHRoYXQg
-dGhpcyBpcyBhbiBORFAgZnJhbWUsIGhvd2V2ZXIsIHRoZSBjb250ZW50IG1pZ2h0IG5vdCBiZSBr
-bm93bi4KKworIyMga25vd24KKworfCAqKmAweDAwMDFgKiogfCBTMUcgUFBEVSBGb3JtYXQga25v
-d24gfAorfCAqKmAweDAwMDJgKiogfCBSZXNwb25zZSBpbmRpY2F0aW9uIGtub3duIHwKK3wgKipg
-MHgwMDA0YCoqIHwgR3VhcmQgaW50ZXJ2YWwga25vd24gfAorfCAqKmAweDAwMDhgKiogfCBOU1Mg
-a25vd24gfCAKK3wgKipgMHgwMDEwYCoqIHwgQmFuZHdpZHRoIGtub3duIHwKK3wgKipgMHgwMDIw
-YCoqIHwgTUNTIGtub3duIHwKK3wgKipgMHgwMDQwYCoqIHwgQ29sb3Iga25vd24gfAorfCAqKmAw
-eDAwODBgKiogfCBJcyBORFAsIHdoaWNoIG1lYW5zIG5vIHBhY2tldCBkYXRhIGZvbGxvd3MgdGhp
-cyBoZWFkZXIhIHwKK3wgKipgMHgwMTAwYCoqIHwgTkRQIGNvbnRlbnQga25vd24gfAorfCAqKmAw
-eEZFMDBgKiogfCBSZXNlcnZlZCB8CisKKyMjIGRhdGExCisKK3wgKipgMHgwMDAzYCoqIHwgUzFH
-IFBQRFUgRm9ybWF0OiAwPVMxR18xTSwgMT1TMUdfU0hPUlQsIDI9UzFHX0xPTkcgfAorfCAqKmAw
-eDAwMENgKiogfCBSZXNwb25zZSBpbmRpY2F0aW9uOiAwPU5PX1JFU1BPTlNFLCAxPU5EUF9SRVNQ
-T05TRSwgMj1OT1JNQUxfUkVTUE9OU0UsIDM9TE9OR19SRVNQUE5TRSB8Cit8ICoqYDB4MDAxMGAq
-KiB8IFJlc2VydmVkIHwKK3wgKipgMHgwMDIwYCoqIHwgR3VhcmQgaW50ZXJ2YWw6IDA9TG9uZyBH
-SSwgMT1TaG9ydCBHSSB8Cit8ICoqYDB4MDBDMGAqKiB8IE51bWJlciBzcGF0aWFsIHN0cmVhbXM6
-IDA9MSBTcGF0aWFsIHN0cmVhbSwgMT0yLCAuLiAzPTQgU3BhdGlhbCBzdHJlYW1zIHwKK3wgKipg
-MHgwNzAwYCoqIHwgQmFuZHdpZHRoOiAwPTFNSHosIDE9Mk1IeiwgMj00TUh6LCAzPThNSHosIDQ9
-MTZNSHosIDUtMTUgcmVzZXJ2ZWQgfAorfCAqKmAweDA4MDBgKiogfCBSZXNlcnZlZCB8Cit8ICoq
-YDB4RjAwMGAqKiB8IE1DUyAoTUNTIHJhdGUgaW5kZXgsIDAtMTAsIDExLTE1IHJlc2VydmVkKSB8
-CisKKyMjIGRhdGEyCisKK3wgKipgMHgwMDA3YCoqIHwgQ29sb3I6IDAtNyB8Cit8ICoqYDB4RkZG
-OGAqKiB8IFJlc2VydmVkIHwKKworIyMgbmRwX3R5cGUKKworVGhpcyB2YWx1ZSBpcyBvbmx5IGRl
-ZmluZWQgaWYgbmRwX2tub3duIGlzIHRydWUuCisKK3wgKipuZHBfdHlwZSB2YWx1ZSoqIHwgKipN
-ZWFuaW5nKiogfAorfCAweDAwIHwgTkRQIENvbnRyb2wgZnJhbWUgfAorfCAweDAxIHwgTkRQIE1h
-bmFnZW1lbnQgRnJhbWUgfAorfCAweDAyLTB4RkYgfCBSZXNlcnZlZCB8CisKKyMjIG5kcF9kYXRh
-CisKK1RoaXMgdmFsdWUgaXMgb25seSBkZWZpbmVkIGlmIG5kcF9rbm93biBpcyB0cnVlLiBUaGUg
-Ynl0ZXMgYXJlIGFzIGRlZmluZWQgaW4gSUVFRTgwMi4xMWFoLCBTZWN0aW9uIDkuOSwgZXhjZXB0
-IHRoYXQgbmRwX2RhdGFbNF0gaXMgZGVmaW5lZCBhczoKKworfCAqKmAweDNGYCoqIHwgdXNlZCBh
-bmQgdW51c2VkIGJpdHMgZGVwZW5kaW5nIG9uIHRoZSBCVyBmaWVsZCBhbmQgdHlwZSB8Cit8ICoq
-YDB4QzBgKiogfCBCYW5kd2lkdGg6IDAgPSAxTWh6LCAxID0gMk1IeiwgMi0zIFJlc2VydmVkIHwK
-KwpkaWZmIC0tZ2l0IGEvZmllbGRzL3N1Z2dlc3RlZC5tZCBiL2ZpZWxkcy9zdWdnZXN0ZWQubWQK
-aW5kZXggMzI1NzdkOS4uM2I2ZTcyMCAxMDA2NDQKLS0tIGEvZmllbGRzL3N1Z2dlc3RlZC5tZAor
-KysgYi9maWVsZHMvc3VnZ2VzdGVkLm1kCkBAIC0xOCwzICsxOCw2IEBAIFRoaXMgdGFibGUgbGlz
-dHMgdGhlIGZpZWxkcyBzb21lIE9TZXMgYXNzaWduZWQgYnkgYml0IG51bWJlcjoKIHwgMTYgfCBb
-UlRTIHJldHJpZXNdKC9maWVsZHMvUlRTIHJldHJpZXMpLCBbUlNTSV0oL2ZpZWxkcy9SU1NJKSB8
-CiB8IDE3IHwgW2RhdGEgcmV0cmllc10oL2ZpZWxkcy9kYXRhIHJldHJpZXMpIHwKIHwgMTggfCBb
-WENoYW5uZWxdKC9maWVsZHMvWENoYW5uZWwpIHwKKworfCAqKlRMViB0eXBlIG51bWJlciB8ICAq
-KmZpZWxkKiogfAorfCAzMiB8IFtTMUddKC9maWVsZHMvUzFHKSB8Ci0tIAoyLjE5LjEKCg==
---000000000000b10df305867f9ae3--
+johannes
