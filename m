@@ -1,116 +1,69 @@
-From: Johannes Berg <johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org>
-Subject: Re: Channel field info for 6 GHz channels
-Date: Mon, 15 Jul 2019 09:06:08 +0200
-Message-ID: <1ed8b7fd7008a356adb2020d2cd891bf93b3aea3.camel@sipsolutions.net>
-References: <1F1CB1A0-193E-4591-AD86-ECEA34B97030@me.com>
-	 <8e6970d56da3998227aef4df44c7430c9c41822c.camel@sipsolutions.net>
-	 <3A61B59B-0D87-46AF-8943-5EF5A1207DFB@me.com>
-Mime-Version: 1.0
+Return-Path: <SRS0=8ZJt=X2=radiotap.org=bounces-radiotap-owner-radiotap=archiver.kernel.org@kernel.org>
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	aws-us-west-2-korg-lkml-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+	version=3.4.0
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E1DE0C352AA
+	for <radiotap@archiver.kernel.org>; Tue,  1 Oct 2019 08:51:44 +0000 (UTC)
+X-Greylist: delayed 902 seconds by postgrey-1.34 at mail.kernel.org; Tue, 01 Oct 2019 08:51:44 UTC
+DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org 92DB32133F
+Authentication-Results: mail.kernel.org; dmarc=none (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: mail.kernel.org; spf=none smtp.mailfrom=bounces-radiotap-owner-radiotap=archiver.kernel.org@radiotap.org
+Received: from mail.netbsd.org (mail.netbsd.org [199.233.217.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.kernel.org (Postfix) with ESMTPS id 92DB32133F
+	for <radiotap@archiver.kernel.org>; Tue,  1 Oct 2019 08:51:44 +0000 (UTC)
+Received: by mail.netbsd.org (Postfix, from userid 605)
+	id EC14F84DC2; Tue,  1 Oct 2019 08:36:41 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.netbsd.org (Postfix) with ESMTP id D0C1084D9C
+	for <radiotap@radiotap.org>; Tue,  1 Oct 2019 08:36:41 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at netbsd.org
+Received: from mail.netbsd.org ([127.0.0.1])
+	by localhost (mail.netbsd.org [127.0.0.1]) (amavisd-new, port 10025)
+	with ESMTP id YZwSufy44UxB for <radiotap@radiotap.org>;
+	Tue,  1 Oct 2019 08:36:41 +0000 (UTC)
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.netbsd.org (Postfix) with ESMTPS id 463DD84D35
+	for <radiotap@radiotap.org>; Tue,  1 Oct 2019 08:36:40 +0000 (UTC)
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.92.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1iFDeA-0002PZ-Hw
+	for radiotap@radiotap.org; Tue, 01 Oct 2019 10:36:38 +0200
+Message-ID: <0be92668cd7a0d4541dd63c5338976a49440522b.camel@sipsolutions.net>
+Subject: FYI: new radiotap archive
+From: Johannes Berg <johannes@sipsolutions.net>
+To: radiotap@radiotap.org
+Date: Tue, 01 Oct 2019 10:36:37 +0200
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-Return-path: <bounces-radiotap-owner-gnwr-radiotap=gmane.org-sUITvd46vNxg9hUCZPvPmw@public.gmane.org>
-In-Reply-To: <3A61B59B-0D87-46AF-8943-5EF5A1207DFB-BUHhN+a2lJ4@public.gmane.org>
-Sender: radiotap-owner-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-List-Unsubscribe: <mailto:majordomo-sUITvd46vNxg9hUCZPvPmw@public.gmane.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
-To: Bill Stafford <bill.stafford-BUHhN+a2lJ4@public.gmane.org>
-Cc: radiotap-sUITvd46vNxg9hUCZPvPmw@public.gmane.org
-List-Id: radiotap@radiotap.org
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Sender: radiotap-owner@radiotap.org
+List-Id: radiotap.NetBSD.org
+Precedence: bulk
+List-Unsubscribe: <mailto:majordomo@radiotap.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
 
-Hi Bill,
+Hi all,
 
-> I took a look at the current Wireshark code and see that the bits are being used to set the phy type of the rx frame.
-> 
-> Here are some excerpts from packet-ieee80211-radiotap.c, creating some masks including the radiotap channel flags for 2g/5g:
-> #define	IEEE80211_CHAN_DSSS \
-> 	(IEEE80211_CHAN_2GHZ)
-> #define	IEEE80211_CHAN_A \
-> 	(IEEE80211_CHAN_5GHZ | IEEE80211_CHAN_OFDM)
-> #define	IEEE80211_CHAN_B \
-> 	(IEEE80211_CHAN_2GHZ | IEEE80211_CHAN_CCK)
-> 
-> Then in dissect_radiotap_channel(), paraphrasing the switch on the channel flags:
-> 
-[...]
+The kernel.org admins have graciously agreed to host a public-inbox
+archive of this list at
 
-Interesting, ok.
+https://lore.kernel.org/radiotap/
 
-> The frequency could be used just as well, but I also see this comment in the same function:
-> 	if (freq != 0) {
-> 		/*
-> 		 * XXX - some captures have 0, which is
-> 		 * obviously bogus.
-> 		 */
-> I don’t know if captures that have a zero freq bother setting 2g/5g bits.
 
-That I don't know either, I haven't ever seen any such captures.
+I've loaded into the the entire archive David Young and I had going back
+to March 2007.
 
-> > OTOH, we could say it's not relevant and tools that want to
-> > handle 6 GHz will just have to not use the bits. I don't know. Or we can
-> > add a bit for 6-7 GHz?
-> 
-> I don’t think a 6 GHz bit is necessary. Maybe if there is no 6G bit
-> the drivers will be more inclined to fill out the frequency.
+Just FYI, in case you need this.
 
-I think mostly they do. In Linux certainly we always have it, you can't
-really *not* have it. I've never seen any captures from elsewhere that
-don't have it either.
-
-> > Now, oddly enough, it looks like we don't actually capture the
-> > *position* of the 40 MHz channel at all.
-> 
-> Not really an issue I think other than 2 GHz band use. Since 5G and 6G
-> bands have non-overlapping channels of any bandwidth, given a 20 MHz
-> primary channel, you know the one and only 40/80/160 that contains
-> that channel.
-
-At least theoretically, yes. For monitor mode we might actually want to
-be able to capture non-standard deployments.
-
-It occurred to me later though that this is something you have to
-actually *configure* on the sniffer to start with, i.e. you have to tell
-it "please capture on channel 36 80+80 MHz with CF1==xyz, CF2==abc". So
-you already must have that information, though recording it again in the
-file could be useful since you might not _remember_ it.
-
-Except in merged multi-device captures or simulation scenarios, where
-you could possibly have a single capture file that contains more than
-just a single channel, in simulation possibly *everything* that was
-going on...
-
-> But 2 GHz 40MHz seems like it is left without knowing which of the 2
-> 40MHz channels that contain a primary 20 MHz btwn 5-9.
-
-Right, only out-of-band from configuration again.
-
-> > If we need to capture more detailed channel position data (relative to
-> > the primary channel whose center frequency is captured in the existing
-> > channel field) I'd probably say we should have some new field that
-> > captures this in more detail. In Linux, we capture the configuration in
-> > something like
-> > 
-> > 	u32 control_freq;
-> > 	enum ... bandwidth;
-> > 	u32 center_freq1;
-> > 	u32 center_freq2; // for 80+80
-> > 
-> > but we've already found that it's not sufficient for
-> > * S1G, which has channels with fractional MHz center frequency
-> > * EDMG, which has a bunch of non-contiguous chunks
-> 
-> I noticed that radiotap did not have any 80+80 encoding. 
-
-We didn't actually need it, because we only captured the *rate*, and
-those are the same for 160 and 80+80. 80+80 also doesn't really seem to
-be used much in practice, if ever?
-
-Anyway, again, if we need/want to capture it we'll need to add a new
-field that captures the channel configuration for that frame.
-
-> But it make sense to me to have some extended channel info in radiotap
-> to encode these cases.  
-
-Agree. I don't have a real need for that right now so am unlikely to
-work on a proposal, but if somebody did I'd be willing to support it
-with Linux code.
-
+Thanks,
 johannes
+
