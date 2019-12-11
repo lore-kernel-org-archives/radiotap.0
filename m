@@ -2,69 +2,88 @@ Return-path: <bounces-radiotap-owner-johannes=sipsolutions.net@radiotap.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,URIBL_BLOCKED autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.5 required=3.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
+	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+	SPF_HELO_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from localhost (localhost [127.0.0.1])
-	by mail.netbsd.org (Postfix) with ESMTP id D2B4484DE4
-	for <radiotap@netbsd.org>; Fri, 20 Dec 2019 21:56:30 +0000 (UTC)
+	by mail.netbsd.org (Postfix) with ESMTP id AABA884D92
+	for <radiotap@netbsd.org>; Wed, 11 Dec 2019 13:20:59 +0000 (UTC)
 Received: from mail.netbsd.org ([IPv6:::1])
 	by localhost (mail.netbsd.org [IPv6:::1]) (amavisd-new, port 10025)
-	with ESMTP id UyJze5oIoQRa for <radiotap@netbsd.org>;
-	Fri, 20 Dec 2019 21:56:30 +0000 (UTC)
-Received: from c.mail.sonic.net (c.mail.sonic.net [64.142.111.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail.netbsd.org (Postfix) with ESMTPS id 10D1E84DDE
-	for <radiotap@netbsd.org>; Fri, 20 Dec 2019 21:56:29 +0000 (UTC)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
-Subject: Re: Correct radiotap header for 802.11ad
-From: Guy Harris <guy@alum.mit.edu>
-In-Reply-To: <4cf0c2a4a2d1cd92dff4f1a791d74523e446cf01.camel@sipsolutions.net>
-Date: Fri, 20 Dec 2019 13:56:16 -0800
-Message-Id: <AC268742-D34D-411A-A170-B807010E13E6@alum.mit.edu>
+	with ESMTP id 063Hy0pAL8ZU for <radiotap@netbsd.org>;
+	Wed, 11 Dec 2019 13:20:59 +0000 (UTC)
+Received: from mail-yw1-xc42.google.com (mail-yw1-xc42.google.com
+ [IPv6:2607:f8b0:4864:20::c42]) (using TLSv1.2 with cipher
+ ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits)) (No client certificate
+ requested) by mail.netbsd.org (Postfix) with ESMTPS id C8D9284CFC for
+ <radiotap@netbsd.org>; Wed, 11 Dec 2019 13:20:58 +0000 (UTC)
+Received: by mail-yw1-xc42.google.com with SMTP id t141so8895537ywc.11
+        for <radiotap@netbsd.org>; Wed, 11 Dec 2019 05:20:58 -0800 (PST)
+MIME-Version: 1.0
 References: <CACyXjPzq-ePB1ux6wi_Rv3onPKXomcJcm15XJwA51u0E4W2txw@mail.gmail.com>
- <38F46E1D-1C4A-48DC-A906-9522006E8474@alum.mit.edu>
- <1606812C-649C-4C06-ABE0-AE2F4474BCD0@alum.mit.edu>
- <1440402013.3735.1.camel@sipsolutions.net>
- <CACyXjPwSZPV+U_=zQpDBpeBnhMntzEFhyJnBOw3-N8qPfyHc1A@mail.gmail.com>
- <55DE44EB.6080603@superduper.net>
- <126B842D-05EA-4510-BC9B-DB1A4AABEC12@alum.mit.edu>
- <1135A126-6A5A-4C84-A52D-13C0387609CC@alum.mit.edu>
- <1442507879.2821.9.camel@sipsolutions.net>
- <C5FF46C6-BDEE-41D8-B7E1-1EFFE9411DE3@alum.mit.edu>
- <4cf0c2a4a2d1cd92dff4f1a791d74523e446cf01.camel@sipsolutions.net>
+ <38F46E1D-1C4A-48DC-A906-9522006E8474@alum.mit.edu> <1606812C-649C-4C06-ABE0-AE2F4474BCD0@alum.mit.edu>
+ <1440402013.3735.1.camel@sipsolutions.net> <CACyXjPwSZPV+U_=zQpDBpeBnhMntzEFhyJnBOw3-N8qPfyHc1A@mail.gmail.com>
+ <55DE44EB.6080603@superduper.net> <126B842D-05EA-4510-BC9B-DB1A4AABEC12@alum.mit.edu>
+ <1135A126-6A5A-4C84-A52D-13C0387609CC@alum.mit.edu> <1442507879.2821.9.camel@sipsolutions.net>
+ <C5FF46C6-BDEE-41D8-B7E1-1EFFE9411DE3@alum.mit.edu> <4cf0c2a4a2d1cd92dff4f1a791d74523e446cf01.camel@sipsolutions.net>
+ <CABPxzY+0v-Rb-GWkL-iwCfefzhFE5AiGBh2xxV_U_OC0Q+eoVQ@mail.gmail.com> <8f7c0c22c9732cc831686df4b93dedf37e72d219.camel@sipsolutions.net>
+In-Reply-To: <8f7c0c22c9732cc831686df4b93dedf37e72d219.camel@sipsolutions.net>
+From: Krishna Chaitanya <chaitanya.mgit@gmail.com>
+Date: Wed, 11 Dec 2019 18:50:46 +0530
+Message-ID: <CABPxzY+BCcjFvQtPPdeBBOY1zcXzVd23GsSPKbd5BRsKRsTeog@mail.gmail.com>
+Subject: Re: Correct radiotap header for 802.11ad
+Content-Type: text/plain; charset="UTF-8"
 Sender: radiotap-owner@radiotap.org
 List-Id: <radiotap.netbsd.org>
 List-Unsubscribe: 
  <mailto:majordomo@radiotap.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
 Content-Transfer-Encoding: 8bit
 To: Johannes Berg <johannes@sipsolutions.net>
-Cc: "radiotap@netbsd.org" <radiotap@netbsd.org>, Simon Barber <simon@superduper.net>, Richard Sharpe <realrichardsharpe@gmail.com>, linux-wireless@vger.kernel.org, Maya Erez <merez@codeaurora.org>, wil6210@qti.qualcomm.com
+Cc: Guy Harris <guy@alum.mit.edu>, "radiotap@netbsd.org" <radiotap@netbsd.org>, Simon Barber <simon@superduper.net>, Richard Sharpe <realrichardsharpe@gmail.com>, linux-wireless <linux-wireless@vger.kernel.org>, Maya Erez <merez@codeaurora.org>, wil6210@qti.qualcomm.com
 
-On Dec 11, 2019, at 12:32 AM, Johannes Berg <johannes@sipsolutions.net> wrote:
-
-> On Tue, 2019-12-10 at 15:51 -0800, Guy Harris wrote:
->> On Sep 17, 2015, at 9:37 AM, Johannes Berg <johannes@sipsolutions.net> wrote:
-> 
-> Reviving an old thread :-)
-
-Yes - it came up with the Wireshark bug in question.
-
->> But a presumably-Linux system does appear to use it; see Wireshark bug
->> 
->> 	https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=16272
->> 
->> For now, I'll throw a hack into Wireshark to treat a signal >= 60 GHz
->> as meaning 11ad, 
-> 
-> I don't think that's quite right - you'll need to do something like >=
-> 56 GHz.
-
-Yes - there's a macro in Wireshark to test whether a frequency is in the 11ad range; it was testing for frequencies between 57 and 66 GHz.  I changed the code to use that.
-
-I also changed it to test for 57 to 71 GHz; apparently, some regulatory domains have added (US) or may add (Canada, EU) more frequencies to the range allowed.
+On Wed, Dec 11, 2019 at 6:28 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> On Wed, 2019-12-11 at 15:09 +0530, Krishna Chaitanya wrote:
+> >
+> > > For both the Linux userspace reporting and radiotap then, this
+> > > completely ignores the existence of the MCSes 9.1 and 12.1-12.6, which
+> > > cannot be captured in either format right now. Maybe the extended SC
+> > > MCSes are just not used by equipment in the field?
+> > >
+> > They are used. Unfortunately, Linux-wireless doesn't have native support for DMG
+> > wil6210 and our driver has to workaround by using HT IE's
+> > (ieee80211_supported_band).
+>
+> You make it sound like that some sort of thing that Linux cannot really
+> do better. That's far from the truth! We keep extending this (HT, VHT,
+> HE recently) and there's no fundamental reason we couldn't do extensions
+> for DMG. It's just that nobody who actually has a driver for Linux
+> bothered doing so!
+Sorry, that wasn't my intent, as there is a single upstream driver I guess
+it was easier to workaround than to properly add support. I agree that
+it shouldn't
+be hard, may be we can do it properly for 11ay.
+> > > In any case, to capture DMG properly I'd say we need a new radiotap
+> > > field with at least
+> > >  * (base) MCS
+> > >  * Extended SC MCS bit
+> > > and it should probably optionally cover the other possible fields as
+> > > well
+> > >  * Scrambler Initialization
+> > >  * Length (?)
+> > >  * Additional PPDU bit
+> > >  * PPDU type bit
+> > >  * Training Length
+> > >  * Beam Tracking Request
+> > >  * Last RSSI
+> > >  * Turnaround
+> > yes, we definitely need this, there are some additional fields in
+> > 11ay, but I guess that
+> > discussion is for another time.
+>
+> Somebody (@QCA I guess, I don't have any functioning driver/hardware for
+> Linux for this) really should sit down and define the extensions to
+> cfg80211/nl80211 to capture the data properly, and a radiotap extension.
+> None of that is hard, I've done it for VHT before and HE recently.
 
 
