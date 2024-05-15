@@ -4,49 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from mail.netbsd.org (mail.netbsd.org [199.233.217.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2650C25B75
-	for <radiotap@archiver.kernel.org>; Wed, 15 May 2024 07:49:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B1FFC25B75
+	for <radiotap@archiver.kernel.org>; Wed, 15 May 2024 09:37:49 +0000 (UTC)
 Received: by mail.netbsd.org (Postfix, from userid 605)
-	id CB18584EF0; Wed, 15 May 2024 07:49:23 +0000 (UTC)
+	id 5504584EF0; Wed, 15 May 2024 09:37:49 +0000 (UTC)
 Received: from localhost (localhost [127.0.0.1])
-	by mail.netbsd.org (Postfix) with ESMTP id A704484ED2
-	for <radiotap@radiotap.org>; Wed, 15 May 2024 07:49:23 +0000 (UTC)
+	by mail.netbsd.org (Postfix) with ESMTP id 33F9184EDA
+	for <radiotap@radiotap.org>; Wed, 15 May 2024 09:37:49 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at netbsd.org
 Authentication-Results: mail.netbsd.org (amavisd-new);
 	dkim=pass (2048-bit key) header.d=sipsolutions.net
-Received: from mail.netbsd.org ([IPv6:::1])
-	by localhost (mail.netbsd.org [IPv6:::1]) (amavisd-new, port 10025)
-	with ESMTP id OWfhZTnZZriG for <radiotap@radiotap.org>;
-	Wed, 15 May 2024 07:49:22 +0000 (UTC)
+Received: from mail.netbsd.org ([127.0.0.1])
+	by localhost (mail.netbsd.org [127.0.0.1]) (amavisd-new, port 10025)
+	with ESMTP id 2e6dOHANsUvP for <radiotap@radiotap.org>;
+	Wed, 15 May 2024 09:37:48 +0000 (UTC)
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.netbsd.org (Postfix) with ESMTPS id 6C92B84CEB
-	for <radiotap@radiotap.org>; Wed, 15 May 2024 07:49:21 +0000 (UTC)
+	by mail.netbsd.org (Postfix) with ESMTPS id 7553484D35
+	for <radiotap@radiotap.org>; Wed, 15 May 2024 09:37:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=dTDO4aoO0MvsxiTbaCV6o9XX4Mz8+4+Dd3UUIPSS2j4=;
-	t=1715759362; x=1716968962; b=LEZGZE3bv8xKkgJOx3v+FOUbGQDFhlEEe1Eb9vIaFCLqda6
-	qxQ5LtNeKugjZrwN5JcaDQWuZ9wB+qEsM3CiEca1BJ0iH09GMYZhq5ycQKZD0V18YNVW5CIq9XCh4
-	dD1hEsfobFDLPA+eVLjuXgUoRIErhfYaA9TcU4noy8jg3K7Td2jViNYjdNB9QJIf0WVBVgOpP33DA
-	MJRqtxT/Ht6KNGExGKTH8Mm2MFlPjBKlMaYzsfacyidD8EXnSsYh9PJJC9J/VaLlhTX+WQqU0uTP8
-	sXzXZ4tRak/sxxt1AF5My86q3ibcBavjJC6VfA23wEUSdEewpQDiIWDxjrjYryyA==;
+	Content-Type:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=bFE6ZUZ8vwf1azRMiNKMOnSud9/8lciFqxqpClZJF5A=; t=1715765868; x=1716975468; 
+	b=Ut0CBOp3rQlDrHrzsaUkmO22CcN+v3b1flFZN4UQdPD5s/lYHDPXXblA9m+jAANYHQa8nHcQMd3
+	LuWySrNVoBOjSSCd6/1RkCOIFxZ31nKJjXtX8RBPuNA0U0pKHY8rBtXll6uVeL0evCUTJSqglk0aW
+	CYj/Lk/MfYcTKM0QKdyrVil5nmyWciTrZ7wU70l0+Yv12Ulb0yLwH+t/YjA/Ewt45fPIdSMoTmWAr
+	B5+0sv0IVTWDe3A63/O7PebDsQ2i/u683wA/Pom/40IBYam1qoJ8RzYpg86czW6FyRWeWuSlsb/IV
+	6sJmMJvNRD5q8+MX8FTfosFeU6hmXhWnzLDQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1s79O3-000000064nn-0UHq
+	id 1s7B50-00000006DNg-11nS
 	for radiotap@radiotap.org;
-	Wed, 15 May 2024 09:49:19 +0200
-Message-ID: <46b6342096486631272e0b5073dc521bb487339f.camel@sipsolutions.net>
-Subject: Re: [RFA] EHT (and U-SIG as part of it)
+	Wed, 15 May 2024 11:37:46 +0200
+Message-ID: <53383c98330768858ffdaab344fb9495eeede093.camel@sipsolutions.net>
+Subject: S1G field
 From: Johannes Berg <johannes@sipsolutions.net>
 To: radiotap@radiotap.org
-Date: Wed, 15 May 2024 09:49:18 +0200
-In-Reply-To: <0a24ce293e808b94f1057b68159d95ebffb8634e.camel@sipsolutions.net>
-References: 
-	<0a24ce293e808b94f1057b68159d95ebffb8634e.camel@sipsolutions.net>
+Date: Wed, 15 May 2024 11:37:45 +0200
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
@@ -57,13 +55,11 @@ List-Id: <radiotap.NetBSD.org>
 Precedence: bulk
 List-Unsubscribe: <mailto:majordomo@radiotap.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
 
-On Mon, 2023-08-28 at 16:34 +0200, Johannes Berg wrote:
-> Time flies, it's been almost a year and a half! There were a few
-> adjustments along the way, but mostly this was proven with code in
-> wireshark / Linux and being used for tests.
->=20
+Hi all,
 
-Umm. I completely forgot about this - I'll adopt this now, no comments
-in 8.5 months should do it ;)
+So I've been doing some other work on radiotap (EHT, U-SIG, cleanups on
+the site) and also added S1G - can someone double-check? I took the
+version from Richard, and updated it a bit with what wireshark parses
+now.
 
 johannes
