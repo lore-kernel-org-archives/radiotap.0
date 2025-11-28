@@ -4,154 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from mail.netbsd.org (mail.netbsd.org [199.233.217.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB7F3CCA470
-	for <radiotap@archiver.kernel.org>; Thu,  9 Oct 2025 09:11:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A1DDD111A8
+	for <radiotap@archiver.kernel.org>; Fri, 28 Nov 2025 02:01:22 +0000 (UTC)
 Received: by mail.netbsd.org (Postfix, from userid 605)
-	id 0B87E8575E; Thu,  9 Oct 2025 09:11:18 +0000 (UTC)
+	id B69208570D; Fri, 28 Nov 2025 02:01:21 +0000 (UTC)
 Received: from localhost (localhost [127.0.0.1])
-	by mail.netbsd.org (Postfix) with ESMTP id B04DC85832
-	for <radiotap@netbsd.org>; Thu,  9 Oct 2025 09:11:18 +0000 (UTC)
+	by mail.netbsd.org (Postfix) with ESMTP id 8F6A78570C
+	for <radiotap@radiotap.org>; Fri, 28 Nov 2025 02:01:21 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at netbsd.org
 Authentication-Results: mail.netbsd.org (amavisd-new);
-	dkim=pass (2048-bit key) header.d=sipsolutions.net
+	dkim=pass (2048-bit key) header.d=pobox.com header.b="JJIPJNvO";
+	dkim=pass (2048-bit key) header.d=messagingengine.com
+	header.b="y1GOYgty"
 Received: from mail.netbsd.org ([127.0.0.1])
 	by localhost (mail.netbsd.org [127.0.0.1]) (amavisd-new, port 10025)
-	with ESMTP id 7dkXv46pyJ3R for <radiotap@netbsd.org>;
-	Thu,  9 Oct 2025 09:11:18 +0000 (UTC)
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+	with ESMTP id 4WoDt1LW0RBu for <radiotap@radiotap.org>;
+	Fri, 28 Nov 2025 02:01:20 +0000 (UTC)
+X-Greylist: delayed 303 seconds by postgrey-1.37 at homeworld.NetBSD.org; Fri, 28 Nov 2025 02:01:20 UTC
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by mail.netbsd.org (Postfix) with ESMTPS id 98C0A859BC
-	for <radiotap@netbsd.org>; Thu,  9 Oct 2025 09:11:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:To:From:Content-Type:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=I/R36dezj+TfnMAEPr7lg293STPI4l7KAPvRHjxEfXU=;
-	t=1760001077; x=1761210677; b=figsdhSfkFP4byP/5oHz2IzFzh8pmLOd5k/IsItUuB/Sg5E
-	H/eCT+nv6zyYH626N5qLwwUJwtBq1eSfqbk3MmZjdxmJov3hdW4nklsXtNEeTbRo5YXSUwvfcBubD
-	faVKxKOVyMr11tA0QaV7okukrsLEqch58e/Rpc+M+vQT0sZjQICLXTYog0siSLEkwGbhyvNPBCFwf
-	y+x1hnc+L69C65w2ZomDEPFCf4YAXFdOwxMNbJFcgbpGFLg1IKISpOICRo2CiW6NYVxG5aDvlNXU/
-	klvqvn35CXxo9eu2/TbuS9Mw6Me2MQ3r4rLd9h/ZhBPrDqsYRIv3gyJKl5Ny0Tbw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1v6mg6-00000001vZt-20BD
-	for radiotap@netbsd.org;
-	Thu, 09 Oct 2025 11:11:14 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: radiotap@netbsd.org
-Subject: [RFC PATCH 1/2] UHR-ELR: add a new field
-Date: Thu,  9 Oct 2025 11:03:17 +0200
-Message-ID: <20251009091110.10697-2-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251009091110.10697-1-johannes@sipsolutions.net>
-References: <20251009091110.10697-1-johannes@sipsolutions.net>
+	by mail.netbsd.org (Postfix) with ESMTPS id 42F9984D41
+	for <radiotap@radiotap.org>; Fri, 28 Nov 2025 02:01:20 +0000 (UTC)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 1DE1D7A0609
+	for <radiotap@radiotap.org>; Thu, 27 Nov 2025 20:56:16 -0500 (EST)
+Received: from phl-frontend-02 ([10.202.2.161])
+  by phl-compute-05.internal (MEProxy); Thu, 27 Nov 2025 20:56:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:content-type:content-type:date:date:from:from:in-reply-to
+	:message-id:mime-version:reply-to:subject:subject:to:to; s=fm3;
+	 t=1764294975; x=1764381375; bh=row4+8vpveyTPbKYag+/AvlOZYYomZbu
+	bJf/U7wr0Ck=; b=JJIPJNvOAYPtBt/DX6p+nBlt8d+aCB96a656HJMLEG+tHUE0
+	N/OwcqwCIJSFXN18XsxM9Rf8i6YjoyS/pB/4MjpnqAWU/gw2Po6midrxa0wcI8Ez
+	XOETydJDMKj6s2IHkTlSPXet7EYzZkZgazRH+rNoIBEDS6q8yzCpZAFpoV1yIHvP
+	g+b4Ai0ETcWK7wtPVhKUNtBfFltEm//CeKzNHTqjxTLo40o0lOfp6TZ7qAwVV+RE
+	TxvyOSBedExPBdmsV2jngw9R8VTIbhj/bNQ1n1Ughg2/Ps/3p/OW5QU69aiphfQT
+	Ii/29DOoOlugRRT9+GW7uVOzLJdQDUMeoYZXkA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:message-id
+	:mime-version:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1764294975; x=
+	1764381375; bh=row4+8vpveyTPbKYag+/AvlOZYYomZbubJf/U7wr0Ck=; b=y
+	1GOYgty1SnqcuASpvbfSgkqFb70Caj55zhbdza37R0BRFLZ28gMBFMQKaa+APoti
+	8P4Aqzck35lQE7u0RGh9+u5H2JmIo5alWkLQ76FZZ9XHVMbOm2R0tjTvAk+R7tpZ
+	IFZ3S5nRSPfGsMBCJS6bNFwiX2SgEoQ/HHcMM6GYncYKhElh0CSkhWb367nkzbIs
+	mpCujQ5FZEDuH4y/LH18XTR2qGDwm7eJmltF9XYD2EEixPusXL9ae0Ucy+paSGy5
+	JABWUKkg6SeQah562jofjHCS/gMKvmK2+X4rfYdIvlZbG1o+841Q2a5WZmSBMY8z
+	zOzLvsCeoQvoYqDB0JfHg==
+X-ME-Sender: <xms:PwEpaY6kXX8aszIURPTTnNYstkaD9EsUlnolEN6-YuPkjH3t3Sdhfw>
+    <xme:PwEpafw1PKYZwV7b_nQ9BPe2d6ScF5Z21Eu3G9DKmS-pCrDRGhNaSjWob9d3Ru5sr
+    MHoKflL-d07E_G0U4XSXgIvtDcFIWsWM5M2jpUHSXIv8uB_ZmLT>
+X-ME-Received: <xmr:PwEpaSgxJDUepxEhStvI0tLW_L1DEj32cqMt1_BehUAf_E2OQARFVbXP0te7ASefKw1B3e48E9A5R6DYtWY7_tGpeqSn8SCIUNC4AjKxugSlMSXJyVVnzcH6F04zejZpTpd0RoUI9ytN4w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvgeekieeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvuffkgggtugesthdtredttddtvd
+    enucfhrhhomhepffgrvhhiugcujghouhhnghcuoeguhihouhhnghesphhosghogidrtgho
+    mheqnecuggftrfgrthhtvghrnhepuddvieffvedvieduhfevueefhfejgfevhfffhfegff
+    evueetveekheejjefhjeffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehm
+    rghilhhfrhhomhepugihohhunhhgsehpohgsohigrdgtohhmpdhnsggprhgtphhtthhope
+    dupdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrrgguihhothgrphesrhgrughi
+    ohhtrghprdhorhhg
+X-ME-Proxy: <xmx:PwEpaZ_yEszWsmNO58M4Am4sy_aaZjAf-7nmHoQ9YPwtOtPNUNMsow>
+    <xmx:PwEpafuSwvKCycGYuVoLNWqxRvjzCWa-TpqkH3I-h9lmoafzj9yM0w>
+    <xmx:PwEpaQaYv77fFPe2dExWv1pmBmZQHFDeT94B0_xgb_hZWJqxa099uw>
+    <xmx:PwEpafoT1lRnDqUPJlHEwOe3FR8p8Y4ox_feywrpyAGbFlewMYtwqg>
+    <xmx:PwEpaVqtkUpLakiMBquudpOIPPsb-Z-4s3zQbP3w_mj-1-KxIf6tTBbG>
+Feedback-ID: ibd28432f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA for
+ <radiotap@radiotap.org>; Thu, 27 Nov 2025 20:56:15 -0500 (EST)
+Received: by elmendorf.whitecoralislands.com (Postfix, from userid 1000)
+	id D09E71BF0D8; Thu, 27 Nov 2025 19:56:14 -0600 (CST)
+Date: Thu, 27 Nov 2025 19:56:14 -0600
+From: David Young <dyoung@pobox.com>
+To: radiotap@radiotap.org
+Subject: radiotap.org domain expiration
+Message-ID: <aSkBPqTF0KThhZFc@pobox.com>
+Mail-Followup-To: radiotap@radiotap.org
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Sender: radiotap-owner@radiotap.org
-List-Id: <radiotap.netbsd.org>
+List-Id: <radiotap.NetBSD.org>
 Precedence: bulk
 List-Unsubscribe: <mailto:majordomo@radiotap.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
 
-UHR adds a completely different PPDU type, UHR enhanced long range
-(ELR) PPDUs. These are very much limited, with just two MCSes, one
-spatial stream, 20 MHz only, etc. It's much easier to suppor them
-in a separate, limited, UHR-ELR field than trying to put it into a
-single field with other UHR PPDUs.
+FYI, the radiotap.org domain is expiring in a couple of weeks.  I don't
+want to pay for its renewal any more.  Can I hand it off to somebody
+else before it expires?
 
-Add the UHR-ELR field for these PPDUs, other UHR PPDUs will be in
-a different UHR field.
----
- fields/UHR-ELR.md | 78 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 78 insertions(+)
- create mode 100644 fields/UHR-ELR.md
+David
 
-diff --git a/fields/UHR-ELR.md b/fields/UHR-ELR.md
-new file mode 100644
-index 000000000000..0dfe6363e932
---- /dev/null
-+++ b/fields/UHR-ELR.md
-@@ -0,0 +1,78 @@
-+---
-+title: UHR-ELR
-+categories: [suggested]
-+type: 35
-+---
-+Type
-+: 35
-+
-+Structure
-+: - u32 known
-+  - u32 sig1, sig2, mark
-+
-+Required Alignment
-+: 4
-+
-+Unit(s)
-+: none
-+
-+This field represents (data taken from) the ELR preamble for a UHR
-+ELR (enhanced long range) PPDU. Such PPDUs are always transmitted
-+with a single spatial stream and on a 20 MHz channel.
-+
-+## known
-+
-+| **bits**         | **meaning** |
-+| **`0x00000001`** | ELR Version Identifier Known |
-+| **`0x00000002`** | UL/DL Known |
-+| **`0x00000004`** | MCS Known |
-+| **`0x00000008`** | Coding Known |
-+| **`0x00000010`** | Length Known |
-+| **`0x00000020`** | LDPC Extra OFDM Symbol Known |
-+| **`0x00000040`** | ELR-SIG-1 CRC Known |
-+| **`0x00000080`** | ELR-SIG-1 Tail Known |
-+| **`0x00000100`** | STA-ID Known |
-+| **`0x00000200`** | Disregard Known |
-+| **`0x00000400`** | ELR-SIG-2 CRC Known |
-+| **`0x00000800`** | ELR-SIG-2 Tail Known |
-+| **`0x00001000`** | ELR-SIG-1 CRC Checked |
-+| **`0x00002000`** | ELR-SIG-2 CRC Checked |
-+| **`0x0000C000`** | (reserved) |
-+| **`0x00010000`** | ELR-MARK BSS Color Known |
-+| **`0xFFFE0000`** | (reserved) |
-+
-+## sig1
-+
-+Represents data from ELR-SIG-1, subject to availability (`known` flags)
-+
-+| **bits**         | **meaning** |
-+| **`0x00000001`** | ELR Version Identifier |
-+| **`0x00000002`** | UL/DL |
-+| **`0x00000004`** | MCS |
-+| **`0x00000008`** | Coding |
-+| **`0x00001FF0`** | Length |
-+| **`0x00002000`** | LDPC Extra OFDM Symbol |
-+| **`0x0003C000`** | CRC |
-+| **`0x00FC0000`** | Tail |
-+| **`0x7F000000`** | (reserved) |
-+| **`0x80000000`** | CRC valid (if checked) |
-+
-+## sig2
-+
-+Represents data from ELR-SIG-2, subject to availability (`known` flags)
-+
-+| **bits**         | **meaning** |
-+| **`0x000007FF`** | STA-ID |
-+| **`0x00003800`** | Disregard |
-+| **`0x0003C000`** | CRC |
-+| **`0x00FC0000`** | Tail |
-+| **`0x7F000000`** | (reserved) |
-+| **`0x80000000`** | CRC valid (if checked) |
-+
-+## mark
-+
-+Represents data from ELR-MARK, subject to availability (`known` flags)
-+
-+| **bits**         | **meaning** |
-+| **`0x0000003F`** | BSS Color |
-+| **`0xFFFFFFC0`** | (reserved) |
 -- 
-2.51.0
-
+David Young
+dyoung@pobox.com
