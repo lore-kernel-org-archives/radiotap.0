@@ -4,72 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from mail.netbsd.org (mail.netbsd.org [199.233.217.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14BCBD29FF5
-	for <radiotap@archiver.kernel.org>; Wed, 14 Jan 2026 12:08:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CBA7D29FEF
+	for <radiotap@archiver.kernel.org>; Wed, 14 Jan 2026 12:08:41 +0000 (UTC)
 Received: by mail.netbsd.org (Postfix, from userid 605)
-	id CB9E585587; Wed, 14 Jan 2026 12:08:27 +0000 (UTC)
+	id 8FD2E85593; Wed, 14 Jan 2026 12:08:40 +0000 (UTC)
 Received: from localhost (localhost [127.0.0.1])
-	by mail.netbsd.org (Postfix) with ESMTP id A87CC84DA8
-	for <radiotap@radiotap.org>; Wed, 14 Jan 2026 12:08:27 +0000 (UTC)
+	by mail.netbsd.org (Postfix) with ESMTP id 69F5D8558E
+	for <radiotap@radiotap.org>; Wed, 14 Jan 2026 12:08:40 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at netbsd.org
 Authentication-Results: mail.netbsd.org (amavisd-new);
 	dkim=pass (2048-bit key) header.d=sipsolutions.net
-Received: from mail.netbsd.org ([IPv6:::1])
-	by localhost (mail.netbsd.org [IPv6:::1]) (amavisd-new, port 10025)
-	with ESMTP id NCUluk2C2fbA for <radiotap@radiotap.org>;
-	Wed, 14 Jan 2026 12:08:27 +0000 (UTC)
-X-Greylist: delayed 306 seconds by postgrey-1.37 at homeworld.NetBSD.org; Wed, 14 Jan 2026 12:08:26 UTC
+Received: from mail.netbsd.org ([127.0.0.1])
+	by localhost (mail.netbsd.org [127.0.0.1]) (amavisd-new, port 10025)
+	with ESMTP id tRYWeICHVJ8X for <radiotap@radiotap.org>;
+	Wed, 14 Jan 2026 12:08:40 +0000 (UTC)
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.netbsd.org (Postfix) with ESMTPS id D7BAE85584
-	for <radiotap@radiotap.org>; Wed, 14 Jan 2026 12:08:26 +0000 (UTC)
+	by mail.netbsd.org (Postfix) with ESMTPS id 9A14A85584
+	for <radiotap@radiotap.org>; Wed, 14 Jan 2026 12:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=IsQszgptaGnS0Ytyrt/VwbZGM5HApXIPHMm/lSJG/N0=;
-	t=1768392506; x=1769602106; b=l8Zxx5mRj/yAoCN7PqjIfkMrcYf7d1HE9Xz+L5dT0y0sORz
-	9tnAFsX8D4Wu7BPlSfiGpzOnpbvY1n0yh3r42hohxQxh5jISqDC1S4GQiyYilR0WZX0FnRqAACocT
-	KAb5ysMgg2XKU32j6Smu8PW+qI+et2gi2MLKamUzzVxyLbq2LzwWRUTLW2JXG53NZUDj+4ZhfuWG7
-	Cw78LTap2MZTLaWluhG+Tz9qaENbeOBa1Ceu9i3oHk85uxXY4zIdnksS+zu90/GLUEhtXOf8gO3lO
-	eCIhYpQHNtDEIvH/FZ/hVTl7VetCUOdeQdpkDDDuD3IzbGWLfppoEHOkikJrzdPQ==;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:To:From:Content-Type:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=QPI1zgV+CoXrKrX9Nv/VExkL8u8mZ/5NMap/up1xRvk=; t=1768392519; x=1769602119; 
+	b=FL7EdmIUG59tXIUKjty+mqGd4388IiumdQhJeuCalY9jii/a+8o7cK7o1jr64qi29xxlOk8djJh
+	89cTay+y5pLe7W9GzSXEzKwxoFatsewp/wNjFoESj0vaczFihSGEQo5OQFas9bhHnZjX+RGTTfbXh
+	7irP2eOlHjA8qaWPBRO5Hq+HnzusWetTZtcMTa8NM0jC26nwjByTmX98dv/TYHs0UHjzMB5cFWuFB
+	NPF6jD57gGmmln7jJdovFpdpnElBY478Y4eOeOOCN0Jch5G+hyRihfD7oBVmvYJd+lIalxj4IjQr1
+	4wl0Z9u+RamrV///nT7n5RF/UcBcgBqBevbQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vfzao-0000000Bd5Z-3CsM
+	id 1vfzfx-0000000BdFW-29W4
 	for radiotap@radiotap.org;
-	Wed, 14 Jan 2026 13:03:18 +0100
-Message-ID: <a6f85fb7e529c65571faef6cb41824fcb1765715.camel@sipsolutions.net>
-Subject: Re: [PATCH 0/2] Add new fields relevant for bandwidth signalling
+	Wed, 14 Jan 2026 13:08:37 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: radiotap@radiotap.org
-Date: Wed, 14 Jan 2026 13:03:18 +0100
-In-Reply-To: <20251128160018.300334-1-benjamin@sipsolutions.net>
-References: <20251128160018.300334-1-benjamin@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+Subject: [RFC v2 0/3] UHR additions
+Date: Wed, 14 Jan 2026 13:07:08 +0100
+Message-ID: <20260114120835.238489-1-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 Sender: radiotap-owner@radiotap.org
 List-Id: <radiotap.NetBSD.org>
 Precedence: bulk
 List-Unsubscribe: <mailto:majordomo@radiotap.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
 
-On Fri, 2025-11-28 at 17:00 +0100, Benjamin Berg wrote:
-> Hi all,
->=20
-> These new fields can be relevant when inspecting whether bandwidth
-> signalling is handled correctly. For this, the signalling information
-> itself can be reported as well as information about the observed signal
-> to determine whether the frame was duplicated over multiple channels.
->=20
-> We will post patches for iwlwifi that use these new fields.
-> Corresponding wireshark dissectors should also be submitted in due
-> course.
+Add the necessary documentation/fields for UHR/WiFi8.
 
-Anyone have any objections to this?
+We've reviewed this again carefully with a few people
+and the only changes made are what I just described
+in my other email.
 
 johannes
+
