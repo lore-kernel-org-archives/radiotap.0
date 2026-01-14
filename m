@@ -4,47 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from mail.netbsd.org (mail.netbsd.org [199.233.217.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1658AD29FF5
-	for <radiotap@archiver.kernel.org>; Wed, 14 Jan 2026 12:08:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EF94D29FF8
+	for <radiotap@archiver.kernel.org>; Wed, 14 Jan 2026 12:08:43 +0000 (UTC)
 Received: by mail.netbsd.org (Postfix, from userid 605)
-	id 575F08559A; Wed, 14 Jan 2026 12:08:41 +0000 (UTC)
+	id BF289855A6; Wed, 14 Jan 2026 12:08:41 +0000 (UTC)
 Received: from localhost (localhost [127.0.0.1])
-	by mail.netbsd.org (Postfix) with ESMTP id 2EB638559C
+	by mail.netbsd.org (Postfix) with ESMTP id 955988559C
 	for <radiotap@radiotap.org>; Wed, 14 Jan 2026 12:08:41 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at netbsd.org
 Authentication-Results: mail.netbsd.org (amavisd-new);
 	dkim=pass (2048-bit key) header.d=sipsolutions.net
 Received: from mail.netbsd.org ([IPv6:::1])
 	by localhost (mail.netbsd.org [IPv6:::1]) (amavisd-new, port 10025)
-	with ESMTP id j-eeb1h7BBXU for <radiotap@radiotap.org>;
-	Wed, 14 Jan 2026 12:08:40 +0000 (UTC)
+	with ESMTP id 8WiNevXEOz-h for <radiotap@radiotap.org>;
+	Wed, 14 Jan 2026 12:08:41 +0000 (UTC)
 Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.netbsd.org (Postfix) with ESMTPS id 1E39A85585
+	by mail.netbsd.org (Postfix) with ESMTPS id 9CC448558E
 	for <radiotap@radiotap.org>; Wed, 14 Jan 2026 12:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:To:From:Content-Type:Sender:
 	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=kEJmWILjZ39+9wMtn8zmX6hr5f8/37SUSXRoRWfY8is=;
-	t=1768392520; x=1769602120; b=S2QsV12tYtj73RowZwLIsyPaHJBowrUCcEr/+KfVIysJ8h6
-	DQEoMtqsmxfrjqjyaznyUGhzmbbZhCl0Pw6wigkYCULDMP87LopU62wLitiedE8dqVta79QQnudiY
-	HsQlJoBQUnllFcunbCD4iIYT5AHCnhBIwKnB60iOCcjb6DNw+qzn1Xp4qs6YOPjRHJlbXjYF6M5yx
-	xRc/V/kfKZyz6hzXUtVItG4U5+xo3VUKGF3fnoyq6S5BWKMUAWoXnq0PDk4YMmq+AqTusroZYNSFO
-	N3E5YyrW25gqsBNdTB0eEsFfB77yrCD42BON5cRX79dmju/GtXOIofxR+J6gAemQ==;
+	Resent-Cc:Resent-Message-ID; bh=pL06EgnA/OHr7MOu/PeHUlrNyh+4WaAJE00K+0y7D7E=;
+	t=1768392520; x=1769602120; b=a9xXuI7NViK3EGqAAT3+XlQSKzTU8WPY3gYdElY674pm8uk
+	mBS8rfuYccI1rrFwt4kZ2FoTt6iEKdQQdSjOisZ8vO0iygqBehwgHtidbWdGvu+wTZWOiHED6jjRG
+	gYHdouvnebHy/gmxNU12zVbWDCKYJw5MQICtDju6J8+eHDWa5+xg+vAVmXPlKn4GxyJj9I/KOn/2i
+	fcKibdmlxSiNtaVhzL4IK+hUjdnIEP7y1+L2erkFCa9wx2dKJqhNi8xPR9bbvCDwBUavIPdXJc07W
+	u3JNRBQynIKpqxqBbyZ/ygGDxRdPBMzsbukMbTnc2PVr9vr0S0pJ3XwdYatj/8rw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98.2)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1vfzfy-0000000BdFW-0CVz
+	id 1vfzfy-0000000BdFW-2Mw1
 	for radiotap@radiotap.org;
 	Wed, 14 Jan 2026 13:08:38 +0100
 From: Johannes Berg <johannes@sipsolutions.net>
 To: radiotap@radiotap.org
-Subject: [RFC v2 1/3] U-SIG: add UHR descriptions
-Date: Wed, 14 Jan 2026 13:07:09 +0100
-Message-ID: <20260114120835.238489-2-johannes@sipsolutions.net>
+Subject: [RFC v2 2/3] UHR-ELR: add a new field
+Date: Wed, 14 Jan 2026 13:07:10 +0100
+Message-ID: <20260114120835.238489-3-johannes@sipsolutions.net>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260114120835.238489-1-johannes@sipsolutions.net>
 References: <20260114120835.238489-1-johannes@sipsolutions.net>
@@ -55,88 +55,103 @@ List-Id: <radiotap.NetBSD.org>
 Precedence: bulk
 List-Unsubscribe: <mailto:majordomo@radiotap.org?subject=Unsubscribe%20radiotap&body=unsubscribe%20radiotap>
 
-Add descriptions of the UHR U-SIG formats. This is not
-normative for radiotap since we just follow IEEE 802.11.
----
- fields/U-SIG.md | 54 ++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 51 insertions(+), 3 deletions(-)
+UHR adds a completely different PPDU type, UHR enhanced long range
+(ELR) PPDUs. These are very much limited, with just two MCSes, one
+spatial stream, 20 MHz only, etc. It's much easier to suppor them
+in a separate, limited, UHR-ELR field than trying to put it into a
+single field with other UHR PPDUs.
 
-diff --git a/fields/U-SIG.md b/fields/U-SIG.md
-index 65f9b21f631d..3f30d01ef31c 100644
---- a/fields/U-SIG.md
-+++ b/fields/U-SIG.md
-@@ -56,8 +56,8 @@ by U-SIG-2 `B0-25`. Thus, U-SIG-1 `B20-25` are in `mask` and
- Dissectors should show these per spec, in a PHY version specific
- namespace (e.g. "U-SIG::EHT::PPDU-Type-And-Compression-Mode").
- 
--For the only currently defined version (PHY Version identifier 0
--for EHT), the bits are shown in the following tables:
-+For the currently defined versions (PHY Version identifier 0
-+for EHT, 1 for UHR), the bits are shown in the following tables:
- 
- ### EHT MU PPDU U-SIG contents
- 
-@@ -79,7 +79,7 @@ An EHT PPDU is an EHT MU PPDU if
- 
- ### EHT TB PPDU U-SIG contents
- 
--An EHT PPDU is a EHT TB PPDU if
-+An EHT PPDU is an EHT TB PPDU if
- * the UL/DL field is set to 1 and the PPDU Type And Compression Mode field is set to 0.
- 
- | **bits**         | **U-SIG reference** | **Content** |
-@@ -91,3 +91,51 @@ An EHT PPDU is a EHT TB PPDU if
- | **`0x003e0000`** | `U-SIG-2 B11-B15`   | Disregard (...) |
- | **`0x03c00000`** | `U-SIG-2 B16-B19`   | CRC (for the bits `U-SIG-1 B0` to `U-SIG-2 B15`) |
- | **`0xfc000000`** | `U-SIG-2 B20-B25`   | Tail (must be 0) |
+Add the UHR-ELR field for these PPDUs, other UHR PPDUs will be in
+a different UHR field.
+---
+ fields/UHR-ELR.md | 78 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
+ create mode 100644 fields/UHR-ELR.md
+
+diff --git a/fields/UHR-ELR.md b/fields/UHR-ELR.md
+new file mode 100644
+index 000000000000..8b31b1d5c954
+--- /dev/null
++++ b/fields/UHR-ELR.md
+@@ -0,0 +1,78 @@
++---
++title: UHR-ELR
++categories: [suggested]
++type: 37
++---
++Type
++: 37 (not assigned yet)
 +
-+### UHR MU PPDU U-SIG contents
++Structure
++: - u32 known
++  - u32 sig1, sig2, mark
 +
-+A UHR PPDU is a UHR MU PPDU if
-+* the UL/DL field is set to 0 and the PPDU Type And Compression Mode field is set to 0, 1 or 2;
-+* the UL/DL field is set to 1 and the PPDU Type And Compression Mode field is set to 1.
++Required Alignment
++: 4
 +
-+| **bits**         | **U-SIG reference** | **Content** |
-+| **`0x0000003f`** | `U-SIG-1 B20-B25`   | BSS Color 2 (under conditions, see spec) |
-+| **`0x0000001f`** | `U-SIG-1 B20-B24`   | Disregard (if not BSS Color 2) |
-+| **`0x00000020`** | `U-SIG-1 B25`       | Validate (must be 1, if not BSS Color 2) |
-+| **`0x000000c0`** | `U-SIG-2 B0-B1`     | PPDU Type And Compression Mode |
-+| **`0x00000100`** | `U-SIG-2 B2`        | Co-BF/Co-SR Indication |
-+| **`0x00003e00`** | `U-SIG-2 B3-B7`     | Punctured Channel Information |
-+| **`0x00004000`** | `U-SIG-2 B8`        | Validate (must be 1) |
-+| **`0x00018000`** | `U-SIG-2 B9-B10`    | UHR-SIG MCS |
-+| **`0x003e0000`** | `U-SIG-2 B11-B15`   | Number Of UHR-SIG Symbols |
-+| **`0x03c00000`** | `U-SIG-2 B16-B19`   | CRC (for the bits `U-SIG-1 B0` to `U-SIG-2 B15`) |
-+| **`0xfc000000`** | `U-SIG-2 B20-B25`   | Tail (must be 0) |
++Unit(s)
++: none
 +
-+### UHR TB PPDU U-SIG contents
++This field represents (data taken from) the ELR preamble for a UHR
++ELR (enhanced long range) PPDU. Such PPDUs are always transmitted
++with a single spatial stream and on a 20 MHz channel.
 +
-+A UHR PPDU is a UHR TB PPDU if
-+* the UL/DL field is set to 1 and the PPDU Type And Compression Mode field is set to 0.
++## known
 +
-+| **bits**         | **U-SIG reference** | **Content** |
-+| **`0x0000003f`** | `U-SIG-1 B20-B25`   | Disregard (all ones) |
-+| **`0x000000c0`** | `U-SIG-2 B0-B1`     | PPDU Type And Compression Mode |
-+| **`0x00000100`** | `U-SIG-2 B2`        | Validate (must be 1) |
-+| **`0x00001e00`** | `U-SIG-2 B3-B6`     | Spatial Reuse 1 |
-+| **`0x0001e000`** | `U-SIG-2 B7-B10`    | Spatial Reuse 2 |
-+| **`0x003e0000`** | `U-SIG-2 B11-B15`   | Disregard (...) |
-+| **`0x03c00000`** | `U-SIG-2 B16-B19`   | CRC (for the bits `U-SIG-1 B0` to `U-SIG-2 B15`) |
-+| **`0xfc000000`** | `U-SIG-2 B20-B25`   | Tail (must be 0) |
++| **bits**         | **meaning** |
++| **`0x00000001`** | ELR Version Identifier Known |
++| **`0x00000002`** | UL/DL Known |
++| **`0x00000004`** | MCS Known |
++| **`0x00000008`** | Coding Known |
++| **`0x00000010`** | Length Known |
++| **`0x00000020`** | LDPC Extra OFDM Symbol Known |
++| **`0x00000040`** | ELR-SIG-1 CRC Known |
++| **`0x00000080`** | ELR-SIG-1 Tail Known |
++| **`0x00000100`** | STA-ID Known |
++| **`0x00000200`** | Disregard Known |
++| **`0x00000400`** | ELR-SIG-2 CRC Known |
++| **`0x00000800`** | ELR-SIG-2 Tail Known |
++| **`0x00001000`** | ELR-SIG-1 CRC Checked |
++| **`0x00002000`** | ELR-SIG-2 CRC Checked |
++| **`0x0000C000`** | (reserved) |
++| **`0x00010000`** | ELR-MARK BSS Color Known |
++| **`0xFFFE0000`** | (reserved) |
 +
-+### UHR ELR PPDU U-SIG contents
++## sig1
 +
-+A UHR PPDU is a UHR ELR PPDU if
-+* the PPDU Type And Compression Mode field is set to 3.
++Represents data from ELR-SIG-1, subject to availability (`known` flags)
 +
-+| **bits**         | **U-SIG reference** | **Content** |
-+| **`0x0000001f`** | `U-SIG-1 B20-B24`   | Disregard |
-+| **`0x00000020`** | `U-SIG-1 B25`       | Validate (must be 1) |
-+| **`0x000000c0`** | `U-SIG-2 B0-B1`     | PPDU Type And Compression Mode |
-+| **`0x0007ff00`** | `U-SIG-2 B2-B12`    | STA-ID |
-+| **`0x00380000`** | `U-SIG-2 B13-B15`   | ELR Validate |
-+| **`0x03c00000`** | `U-SIG-2 B16-B19`   | CRC (for the bits `U-SIG-1 B0` to `U-SIG-2 B15`) |
-+| **`0xfc000000`** | `U-SIG-2 B20-B25`   | Tail (must be 0) |
++| **bits**         | **meaning** |
++| **`0x00000001`** | ELR Version Identifier |
++| **`0x00000002`** | UL/DL |
++| **`0x00000004`** | MCS |
++| **`0x00000008`** | Coding |
++| **`0x00001FF0`** | Length |
++| **`0x00002000`** | LDPC Extra OFDM Symbol |
++| **`0x0003C000`** | CRC |
++| **`0x00FC0000`** | Tail |
++| **`0x7F000000`** | (reserved) |
++| **`0x80000000`** | CRC valid (if checked) |
++
++## sig2
++
++Represents data from ELR-SIG-2, subject to availability (`known` flags)
++
++| **bits**         | **meaning** |
++| **`0x000007FF`** | STA-ID |
++| **`0x00003800`** | Disregard |
++| **`0x0003C000`** | CRC |
++| **`0x00FC0000`** | Tail |
++| **`0x7F000000`** | (reserved) |
++| **`0x80000000`** | CRC valid (if checked) |
++
++## mark
++
++Represents data from ELR-MARK, subject to availability (`known` flags)
++
++| **bits**         | **meaning** |
++| **`0x0000003F`** | BSS Color |
++| **`0xFFFFFFC0`** | (reserved) |
 -- 
 2.52.0
 
